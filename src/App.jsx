@@ -1,13 +1,17 @@
-import { Button, Text } from '@chakra-ui/react';
+import { useMediaQuery } from '@chakra-ui/react';
+
+import Header from './components/Layout/Header/Header';
+import Navbar from './components/Layout/Header/Navbar';
+import MobileHeader from './components/Layout/Header/MobileHeader';
+import MobileNavbar from './components/Layout/Header/MobileNavbar';
 
 function App() {
+  const [isLargerThan900] = useMediaQuery('(min-width: 900px)');
   return (
-    <div>
-      <Text fontSize='xl'>Chakra UI is working! 🎉</Text>
-      <Button bg='brand.600' color='white' _hover={{ bg: 'brand.700' }}>
-        Click Me
-      </Button>
-    </div>
+    <>
+      {isLargerThan900 ? <Header /> : <MobileHeader />}
+      {isLargerThan900 ? <Navbar /> : <MobileNavbar />}
+    </>
   );
 }
 
