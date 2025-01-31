@@ -11,6 +11,7 @@ import Home from './pages/Home';
 import Auctions from './pages/Auctions';
 import Profile from './pages/Profile';
 import NotFound from './pages/NotFound';
+import Footer from './components/Layout/Header/Footer';
 
 function App() {
   const [isLargerThan900] = useMediaQuery('(min-width: 900px)');
@@ -24,6 +25,7 @@ function App() {
         <Route path='/profile' element={<Profile />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
+      <Footer />
     </Router>
   );
 }
