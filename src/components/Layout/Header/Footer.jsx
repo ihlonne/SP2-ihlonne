@@ -1,38 +1,21 @@
 import {
+  Box,
   Image,
-  Text,
-  Icon,
-  Flex,
-  IconButton,
+  HStack,
   Link,
-  Drawer,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerHeader,
-  DrawerBody,
-  DrawerCloseButton,
-  Stack,
   Divider,
+  Button,
   useDisclosure,
   FormControl,
   FormLabel,
   Input,
-  Button,
+  Flex,
+  Text,
 } from '@chakra-ui/react';
-import { HamburgerIcon } from '@chakra-ui/icons';
-import { FaSignInAlt } from 'react-icons/fa';
-import { TiUserAdd } from 'react-icons/ti';
-import logo from '../../../assets/sp2logodark.png';
+import logo from '../../../assets/sp2logolight.png';
 import CustomModal from '../../UI/Modal';
 
-function MobileNavbar() {
-  // Manage drawer state
-  const {
-    isOpen: isMenuOpen,
-    onOpen: openMenu,
-    onClose: closeMenu,
-  } = useDisclosure();
-
+function Footer() {
   const {
     isOpen: isRegisterOpen,
     onOpen: openRegister,
@@ -45,88 +28,54 @@ function MobileNavbar() {
     onClose: closeLogin,
   } = useDisclosure();
 
-  const categories = [
-    'Jewelry',
-    'Art',
-    'Watches',
-    'Fashion',
-    'Vintage',
-    'Cars',
-    'Books',
-    'Collectibles',
-  ];
-
   return (
-    <Flex
+    <Box
       position='fixed'
-      bottom='0'
-      left='0'
-      justify='space-between'
-      align='center'
-      p='15px'
-      bg='brand.100'
+      display='flex'
+      flexDirection={{ base: 'column', md: 'row' }}
+      justifyContent='space-between'
+      alignItems='center'
+      gap={{ base: '20', md: '0' }}
       w='full'
+      bottom={{ base: '80px', md: '0px' }}
+      left='0'
+      bg='black'
+      p={{ base: '24px 8px', md: '24px 80px' }}
     >
-      <Flex flexDirection='column' justify='center'>
-        <IconButton bg='brand.100' onClick={openMenu}>
-          <HamburgerIcon boxSize='8' />
-        </IconButton>
-        <Text fontSize='xs'>Categories</Text>
-      </Flex>
-
-      <Flex flexDirection='column' justify='center'>
-        <IconButton bg='brand.100' onClick={openLogin}>
-          <Icon as={FaSignInAlt} boxSize='8' />
-        </IconButton>
-        <Text fontSize='xs'>Sign in</Text>
-      </Flex>
-
-      <Flex flexDirection='column' justify='center'>
-        <IconButton bg='brand.100' onClick={openRegister}>
-          <Icon as={TiUserAdd} boxSize='8' color='brand.600' />
-        </IconButton>
-        <Text fontSize='xs'>Register</Text>
-      </Flex>
-
-      <Drawer placement='left' onClose={closeMenu} isOpen={isMenuOpen}>
-        <DrawerOverlay />
-        <DrawerContent
-          bg='white'
-          color='black'
-          w={{ base: '100%', md: '400px' }}
+      <Image src={logo} alt='Company logo' maxH='40px' />
+      <HStack spacing={{ base: '4', md: '8' }}>
+        <Button
+          to='/auctions'
+          bg='transparent'
+          color='white'
+          m='0'
+          p='0'
+          _hover={{ bg: 'transparent', textDecoration: 'underline' }}
+          onClick={openLogin}
+          fontSize={{ base: 'xs', md: 'md' }}
         >
-          <DrawerCloseButton />
-          <DrawerHeader>
-            <Image src={logo} />
-          </DrawerHeader>
-          <DrawerBody>
-            <Stack>
-              <Link
-                to='/auctions'
-                onClick={closeMenu}
-                style={{ display: 'block', padding: '10px 0', color: 'black' }}
-              >
-                View all listings
-              </Link>
-              <Divider />
-              {categories.map((category) => (
-                <Link
-                  key={category}
-                  to={`/auctions?category=${category.toLowerCase()}`}
-                  onClick={closeMenu}
-                  style={{
-                    display: 'block',
-                    padding: '10px 0',
-                    color: 'black',
-                  }}
-                >
-                  {category}
-                </Link>
-              ))}
-            </Stack>
-          </DrawerBody>
-        </DrawerContent>
-      </Drawer>
+          Login
+        </Button>
+        <Button
+          to='/auctions'
+          bg='transparent'
+          color='white'
+          m='0'
+          p='0'
+          _hover={{ bg: 'transparent', textDecoration: 'underline' }}
+          onClick={openRegister}
+          fontSize={{ base: 'xs', md: 'md' }}
+        >
+          Register
+        </Button>
+        <Divider orientation='vertical' h='6' />
+        <Link color='white' fontSize={{ base: 'xs', md: 'md' }}>
+          Privacy & Policy
+        </Link>
+      </HStack>
+      <Link href='https://github.com/ihlonne' color='white'>
+        © ihlonne
+      </Link>
 
       <CustomModal
         isOpen={isLoginOpen}
@@ -213,8 +162,8 @@ function MobileNavbar() {
           </Button>
         </Flex>
       </CustomModal>
-    </Flex>
+    </Box>
   );
 }
 
-export default MobileNavbar;
+export default Footer;
