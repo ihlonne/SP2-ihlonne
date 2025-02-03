@@ -15,10 +15,12 @@ export async function handleRegister(userData) {
 export async function handleLogin(credentials) {
   try {
     const response = await loginUser(credentials);
-    console.log('Login successful:', response);
+
+    localStorage.setItem('token', response.data.accessToken);
+    localStorage.setItem('user', JSON.stringify(response.data));
     return response;
   } catch (error) {
-    console.error('Error logging inn:', error);
+    console.error('Error logging inn:', error.response?.data || error);
     throw error;
   }
 }
