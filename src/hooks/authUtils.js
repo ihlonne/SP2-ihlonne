@@ -18,9 +18,6 @@ export async function handleLogin(credentials) {
 
     localStorage.setItem('token', response.data.accessToken);
     localStorage.setItem('user', JSON.stringify(response.data));
-
-    console.log('Login successful:', response);
-    console.log('AccessToken:', response.data.accessToken);
     return response;
   } catch (error) {
     console.error('Error logging inn:', error.response?.data || error);
