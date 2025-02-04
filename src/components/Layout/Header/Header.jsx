@@ -20,6 +20,7 @@ import RegisterForm from '../../UI/Forms/RegisterForm';
 import LoginForm from '../../UI/Forms/LoginForm';
 import { handleLogout } from '../../../hooks/authUtils';
 import { useAuth } from '../../../hooks/useAuth';
+import { Link } from 'react-router-dom';
 
 function Header() {
   const { user, setUser } = useAuth(); // ✅ Extract setUser so we can update state
@@ -38,7 +39,9 @@ function Header() {
 
   return (
     <Flex align='center' justify='space-between' p='20px 80px' gap='5'>
-      <Image src={logo} maxH='30px' alt='Company logo' />
+      <Link to='/'>
+        <Image src={logo} maxH='30px' alt='Company logo' />
+      </Link>
 
       <InputGroup maxW='400px'>
         <Input
@@ -58,7 +61,9 @@ function Header() {
       {user?.accessToken ? (
         <Flex gap='4' align='center'>
           <Text>1000 credits</Text>
-          <Avatar size='sm' name={user?.name} src={user?.avatar?.url} />
+          <Link to='profile'>
+            <Avatar size='sm' name={user?.name} src={user?.avatar?.url} />
+          </Link>
 
           <IconButton
             bg='transparent'

@@ -2,7 +2,6 @@ import {
   Box,
   Image,
   HStack,
-  Link,
   Divider,
   Button,
   useDisclosure,
@@ -14,6 +13,7 @@ import {
 } from '@chakra-ui/react';
 import logo from '../../../assets/sp2logolight.png';
 import CustomModal from '../../UI/Modal';
+import { Link } from 'react-router-dom';
 
 function Footer() {
   const {
@@ -42,7 +42,9 @@ function Footer() {
       bg='black'
       p={{ base: '24px 8px', md: '24px 80px' }}
     >
-      <Image src={logo} alt='Company logo' maxH='40px' />
+      <Link to='/'>
+        <Image src={logo} alt='Company logo' maxH='40px' />
+      </Link>
       <HStack spacing={{ base: '4', md: '8' }}>
         <Button
           to='/auctions'
@@ -52,7 +54,6 @@ function Footer() {
           p='0'
           _hover={{ bg: 'transparent', textDecoration: 'underline' }}
           onClick={openLogin}
-          fontSize={{ base: 'xs', md: 'md' }}
         >
           Login
         </Button>
@@ -64,12 +65,11 @@ function Footer() {
           p='0'
           _hover={{ bg: 'transparent', textDecoration: 'underline' }}
           onClick={openRegister}
-          fontSize={{ base: 'xs', md: 'md' }}
         >
           Register
         </Button>
         <Divider orientation='vertical' h='6' />
-        <Link color='white' fontSize={{ base: 'xs', md: 'md' }}>
+        <Link to='/privacy' style={{ color: 'white' }}>
           Privacy & Policy
         </Link>
       </HStack>

@@ -1,4 +1,6 @@
-import { Flex, HStack, Divider, Link } from '@chakra-ui/react';
+import { Flex, HStack, Divider } from '@chakra-ui/react';
+
+import { Link } from 'react-router-dom';
 
 function Navbar() {
   const categories = [
