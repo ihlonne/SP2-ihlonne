@@ -15,10 +15,6 @@ import {
   Stack,
   Divider,
   useDisclosure,
-  FormControl,
-  FormLabel,
-  Input,
-  Button,
 } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { FaSignInAlt } from 'react-icons/fa';
@@ -29,6 +25,8 @@ import logo from '../../../assets/sp2logodark.png';
 import CustomModal from '../../UI/Modal';
 import { useAuth } from '../../../hooks/useAuth';
 import { handleLogout } from '../../../hooks/authUtils';
+import LoginForm from '../../UI/Forms/LoginForm';
+import RegisterForm from '../../UI/Forms/RegisterForm';
 
 function MobileNavbar() {
   const { user, setUser } = useAuth();
@@ -185,40 +183,7 @@ function MobileNavbar() {
         onClose={closeLogin}
         title='Login to Your Account'
       >
-        <FormControl isRequired>
-          <FormLabel>E-mail</FormLabel>
-          <Input placeholder='name@stud.noroff.no' />
-        </FormControl>
-        <FormControl isRequired>
-          <FormLabel>Password</FormLabel>
-          <Input placeholder='********' />
-        </FormControl>
-        <Button
-          type='submit'
-          bg='brand.600'
-          color='white'
-          _hover={{ bg: 'brand.700' }}
-          w='full'
-          mt='4'
-        >
-          Login
-        </Button>
-        <Divider mt='8' />
-        <Flex align='center' gap='2' mt='4'>
-          <Text fontSize='xs'>Don&apos;t have an account?</Text>{' '}
-          <Button
-            bg='transparent'
-            m='0'
-            p='0'
-            fontSize='xs'
-            onClick={() => {
-              closeLogin();
-              openRegister();
-            }}
-          >
-            Register now
-          </Button>
-        </Flex>
+        <LoginForm closeLogin={closeLogin} openRegister={openRegister} />
       </CustomModal>
 
       <CustomModal
@@ -226,44 +191,7 @@ function MobileNavbar() {
         onClose={closeRegister}
         title='Create a New Account'
       >
-        <FormControl isRequired>
-          <FormLabel>Name</FormLabel>
-          <Input placeholder='Name' />
-        </FormControl>
-        <FormControl isRequired>
-          <FormLabel>E-mail</FormLabel>
-          <Input placeholder='name@stud.noroff.no' />
-        </FormControl>
-        <FormControl isRequired>
-          <FormLabel>Password</FormLabel>
-          <Input placeholder='********' />
-        </FormControl>
-        <Button
-          type='submit'
-          bg='brand.600'
-          color='white'
-          _hover={{ bg: 'brand.700' }}
-          w='full'
-          mt='4'
-        >
-          Register
-        </Button>
-        <Divider mt='8' />
-        <Flex align='center' gap='2' mt='4'>
-          <Text fontSize='xs'>Already have an account?</Text>{' '}
-          <Button
-            bg='transparent'
-            m='0'
-            p='0'
-            fontSize='xs'
-            onClick={() => {
-              closeRegister();
-              openLogin();
-            }}
-          >
-            Login here
-          </Button>
-        </Flex>
+        <RegisterForm closeRegister={closeRegister} openLogin={openLogin} />
       </CustomModal>
     </Flex>
   );
