@@ -27,6 +27,7 @@ const RegisterForm = ({ closeRegister, openLogin }) => {
   const [errorMessage, setErrorMessage] = useState('');
 
   const onSubmit = async (data) => {
+    console.log(data);
     setLoading(true);
     setSuccessMessage('');
     setErrorMessage('');
@@ -52,6 +53,7 @@ const RegisterForm = ({ closeRegister, openLogin }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      {/* Success & Error Messages */}
       {successMessage && (
         <Alert
           status='success'
@@ -79,7 +81,7 @@ const RegisterForm = ({ closeRegister, openLogin }) => {
         </Alert>
       )}
 
-      {/* Name */}
+      {/* Name Field */}
       <FormControl isInvalid={errors.name}>
         <FormLabel>Name</FormLabel>
         <Input
@@ -97,7 +99,7 @@ const RegisterForm = ({ closeRegister, openLogin }) => {
         )}
       </FormControl>
 
-      {/* Email */}
+      {/* Email Field - Fixed Regex Validation */}
       <FormControl isInvalid={errors.email}>
         <FormLabel>Email</FormLabel>
         <Input
@@ -105,7 +107,7 @@ const RegisterForm = ({ closeRegister, openLogin }) => {
           placeholder='name@stud.noroff.no'
           {...register('email', {
             required: 'Email is required',
-            minLength: {
+            pattern: {
               value: /^[a-zA-Z0-9._%+-]+@stud\.noroff\.no$/,
               message: 'Must be a @stud.noroff.no email',
             },
@@ -118,15 +120,15 @@ const RegisterForm = ({ closeRegister, openLogin }) => {
         )}
       </FormControl>
 
-      {/* Password */}
+      {/* Password Field - Fixed Validation */}
       <FormControl isInvalid={errors.password}>
         <FormLabel>Password</FormLabel>
         <Input
           type='password'
-          placeholder='Enter password'
+          placeholder='********'
           {...register('password', {
             required: 'Password is required',
-            pattern: {
+            minLength: {
               value: 8,
               message: 'Must be at least 8 characters',
             },
@@ -138,6 +140,8 @@ const RegisterForm = ({ closeRegister, openLogin }) => {
           </Text>
         )}
       </FormControl>
+
+      {/* Register Button */}
       <Button
         type='submit'
         bg='brand.600'
@@ -149,9 +153,11 @@ const RegisterForm = ({ closeRegister, openLogin }) => {
       >
         {loading ? <Spinner size='sm' /> : 'Register'}
       </Button>
+
+      {/* Divider & Link to Login */}
       <Divider mt='8' />
       <Flex align='center' gap='2' mt='4'>
-        <Text fontSize='xs'>Already have an account?</Text>{' '}
+        <Text fontSize='xs'>Already have an account?</Text>
         <Button
           bg='transparent'
           m='0'
