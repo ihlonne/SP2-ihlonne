@@ -14,8 +14,10 @@ import {
   Alert,
   AlertIcon,
 } from '@chakra-ui/react';
+import { useAuth } from '../../../hooks/useAuth';
 
 const LoginForm = ({ closeLogin, openRegister }) => {
+  const { setUser } = useAuth();
   const {
     register,
     handleSubmit,
@@ -30,7 +32,7 @@ const LoginForm = ({ closeLogin, openRegister }) => {
     setErrorMessage('');
 
     try {
-      await handleLogin(data);
+      await handleLogin(data, setUser);
       closeLogin();
     } catch (error) {
       setErrorMessage(
@@ -62,7 +64,6 @@ const LoginForm = ({ closeLogin, openRegister }) => {
         <FormLabel>E-mail</FormLabel>
         <Input
           type='text'
-          name='email'
           placeholder='name@stud.noroff.no'
           {...register('email', { required: 'Email is required' })}
         />
@@ -78,7 +79,6 @@ const LoginForm = ({ closeLogin, openRegister }) => {
         <FormLabel>Password</FormLabel>
         <Input
           type='password'
-          name='password'
           placeholder='********'
           {...register('password', {
             required: 'Password is required',

@@ -1,29 +1,27 @@
 import { useState, useEffect } from 'react';
+import AuthContext from './AuthContext';
 import PropTypes from 'prop-types';
-import { AuthContext } from './AuthContext';
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
+  // Load user from localStorage on first render
+  const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
+
+  // Sync localStorage when `user` changes
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('token', user?.accessToken);
+    } else {
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
     }
-  }, []);
-
-  const login = (userData) => {
-    setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
-  };
-
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('user');
-  };
+  }, [user]);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, setUser }}>
       {children}
     </AuthContext.Provider>
   );
