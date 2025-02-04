@@ -10,10 +10,14 @@ import {
 import { SearchIcon } from '@chakra-ui/icons';
 import logo from '../../../assets/sp2logodark.png';
 
+import { Link } from 'react-router-dom';
+
 function MobileHeader() {
   return (
     <Flex align='center' justify='space-between' p='15px' gap='5'>
-      <Image src={logo} maxH='30px' alt='Company logo' />
+      <Link to='/'>
+        <Image src={logo} maxH='30px' alt='Company logo' />
+      </Link>
       <InputGroup maxW='400px'>
         <Input
           placeholder='Search listings...'

@@ -5,7 +5,6 @@ import {
   Icon,
   Flex,
   IconButton,
-  Link,
   Drawer,
   DrawerOverlay,
   DrawerContent,
@@ -27,6 +26,8 @@ import { useAuth } from '../../../hooks/useAuth';
 import { handleLogout } from '../../../hooks/authUtils';
 import LoginForm from '../../UI/Forms/LoginForm';
 import RegisterForm from '../../UI/Forms/RegisterForm';
+
+import { Link } from 'react-router-dom';
 
 function MobileNavbar() {
   const { user, setUser } = useAuth();
