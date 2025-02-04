@@ -1,5 +1,4 @@
-import { registerUser } from '../api/authApi';
-import { loginUser } from '../api/authApi';
+import { registerUser, loginUser } from '../api/authApi';
 
 export async function handleRegister(userData) {
   try {
@@ -12,15 +11,26 @@ export async function handleRegister(userData) {
   }
 }
 
-export async function handleLogin(credentials) {
+export async function handleLogin(credentials, setUser) {
   try {
     const response = await loginUser(credentials);
+    const data = response.data;
 
-    localStorage.setItem('token', response.data.accessToken);
-    localStorage.setItem('user', JSON.stringify(response.data));
-    return response;
+    localStorage.setItem('token', data.accessToken);
+    localStorage.setItem('user', JSON.stringify(response));
+
+    setUser(data);
+    return data;
   } catch (error) {
-    console.error('Error logging inn:', error.response?.data || error);
+    console.error('Error logging in:', error.response?.data || error);
     throw error;
   }
+}
+
+export async function handleLogout(setUser) {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+
+  setUser(null);
+  window.location.reload();
 }
