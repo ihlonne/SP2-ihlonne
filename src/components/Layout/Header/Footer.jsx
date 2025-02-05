@@ -30,17 +30,18 @@ function Footer() {
 
   return (
     <Box
-      position='fixed'
+      as='footer'
       display='flex'
       flexDirection={{ base: 'column', md: 'row' }}
       justifyContent='space-between'
       alignItems='center'
       gap={{ base: '20', md: '0' }}
       w='full'
-      bottom={{ base: '80px', md: '0px' }}
-      left='0'
       bg='black'
       p={{ base: '24px 8px', md: '24px 80px' }}
+      mt='auto'
+      position='relative'
+      bottom={{ base: '80px', md: '0' }}
     >
       <Link to='/'>
         <Image src={logo} alt='Company logo' maxH='40px' />

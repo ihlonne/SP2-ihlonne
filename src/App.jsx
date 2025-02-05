@@ -12,6 +12,7 @@ import Auctions from './pages/Auctions';
 import Profile from './pages/Profile';
 import NotFound from './pages/NotFound';
 import Footer from './components/Layout/Header/Footer';
+import AuctionDetails from './pages/AuctionDetails';
 
 function App() {
   const [isLargerThan900] = useMediaQuery('(min-width: 900px)');
@@ -22,6 +23,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/auctions' element={<Auctions />} />
+        <Route path='/auctions/listing/' element={<AuctionDetails />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
