@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
-  SimpleGrid,
+  Grid,
   GridItem,
   Flex,
   IconButton,
@@ -9,34 +9,109 @@ import {
   Icon,
   Button,
   Heading,
+  Stack,
+  useToast,
 } from '@chakra-ui/react';
-import { getAuctions } from '../api/auctionApi';
+import { createAuction, getAuctions } from '../api/auctionApi';
 import AuctionCard from '../components/UI/AuctionCard';
 import { FaListUl } from 'react-icons/fa';
 import { IoGrid } from 'react-icons/io5';
+import { AddIcon } from '@chakra-ui/icons';
+import CustomModal from '../components/UI/Modal';
+import AuctionForm from '../components/UI/Forms/AuctionForm';
+import { useAuth } from '../hooks/useAuth';
+import {
+  filterByCategory,
+  searchListings,
+  sortListings,
+} from '../hooks/auctionUtils';
+import { useLocation } from 'react-router-dom';
 
 const Auctions = () => {
+  const toast = useToast();
+  const { user } = useAuth();
   const [listings, setListings] = useState([]);
-  const [visibleCount, setVisibleCount] = useState(12);
+  const [sortOption, setSortOption] = useState('ending_soon');
+  const [visibleCount, setVisibleCount] = useState(100);
   const [loading, setLoading] = useState(false);
+  /*   const [mediaUrls] = useState([]);
+  const [tags] = useState([]); */
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editAuction, setEditAuction] = useState(null);
+
+  const { search } = useLocation();
+  const params = new URLSearchParams(search);
+  const query = params.get('search');
+  const category = params.get('category');
+
+  const fetchListings = useCallback(async () => {
+    setLoading(true);
+    try {
+      const data = await getAuctions();
+      let processedListings = data.data.filter(
+        (item) =>
+          !item.title.toLowerCase().includes('test') &&
+          !item.title.toLowerCase().includes('yo') &&
+          !item.title.toLowerCase().includes('string')
+      );
+
+      if (query) {
+        processedListings = searchListings(processedListings, query);
+      }
+
+      if (category) {
+        processedListings = filterByCategory(processedListings, category);
+      }
+
+      processedListings = sortListings(processedListings, sortOption);
+
+      setListings(processedListings);
+    } catch (error) {
+      console.error('Failed to fetch listings:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [query, category, sortOption]);
 
   useEffect(() => {
-    async function fetchListings() {
-      try {
-        const data = await getAuctions();
-        const validListings = data.filter(
-          (listing) =>
-            listing.media && listing.media.length > 0 && listing.media[0]?.url
-        );
-        setListings(validListings);
-      } catch (error) {
-        console.error('Failed to fetch listings:', error);
-      } finally {
-        setLoading(false);
-      }
-    }
     fetchListings();
-  }, []);
+  }, [fetchListings]);
+
+  const handleCreateClick = () => {
+    setEditAuction(null);
+    setIsModalOpen(true);
+  };
+
+  const handleFormSubmit = async (formData) => {
+    setLoading(true);
+
+    const formattedData = {
+      ...formData,
+      endsAt: new Date(formData.endsAt).toISOString(),
+    };
+
+    try {
+      await createAuction(formattedData);
+      toast({
+        title: 'Auction Created!',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: 'Failed to create auction.',
+        description:
+          error.response?.data?.errors?.[0]?.message || 'An error occurred.',
+        status: 'error',
+        duration: 4000,
+        isClosable: true,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleLoadMore = () => {
     setVisibleCount((prevCount) => prevCount + 12);
@@ -50,7 +125,8 @@ const Auctions = () => {
       w='100%'
       justify='center'
       align='center'
-      px='8'
+      px={{ base: '8', xl: 0 }}
+      pb={{ base: '12', xl: 0 }}
     >
       <Flex
         direction={{ base: 'column', md: 'row' }}
@@ -79,34 +155,56 @@ const Auctions = () => {
           </IconButton>
           <Text>{listings.length} results</Text>
         </Flex>
-        <Select placeholder='Categories' maxW='250px'>
-          <option value='option1'>Option 1</option>
-          <option value='option2'>Option 2</option>
-          <option value='option3'>Option 3</option>
-        </Select>
+        <Flex gap='4' direction={{ base: 'column', sm: 'row' }}>
+          {user?.accessToken ? (
+            <Stack direction='row' spacing='4'>
+              <Button
+                leftIcon={<AddIcon />}
+                bg='brand.600'
+                color='white'
+                _hover={{ bg: 'brand.700' }}
+                p='4'
+                fontSize='sm'
+                onClick={handleCreateClick}
+              >
+                New Auction
+              </Button>
+            </Stack>
+          ) : null}
+          <Select
+            placeholder='All auctions'
+            onChange={(e) => setSortOption(e.target.value)}
+            value={sortOption}
+          >
+            <option value='ending_soon'>Ending soon</option>
+            <option value='latest_added'>Newly added</option>
+            <option value='highest_bid'>Highest bid</option>
+          </Select>
+        </Flex>
       </Flex>
       <Heading display='flex' alignSelf='flex-start' mt='10' mb='6'>
         Browse Auctions
       </Heading>
-      <SimpleGrid
-        maxW='1200px'
+      <Grid
         w='100%'
-        minChildWidth='280px'
-        spacing='16px'
+        templateColumns='repeat(auto-fill, minmax(230px, 1fr))'
+        gap='5'
+        rowGap='12'
         mt='8'
         mb='24'
-        justifyContent='center'
+        mx='auto'
+        justify='flex-start'
       >
         {listings.length > 0 ? (
           listings.slice(0, visibleCount).map((listing, i) => (
-            <GridItem key={i} w='300px'>
-              <AuctionCard listing={listing} />
+            <GridItem key={i}>
+              <AuctionCard key={listing.id} listing={listing} w='100%' />
             </GridItem>
           ))
         ) : (
           <p>No listings available</p>
         )}
-      </SimpleGrid>
+      </Grid>
       {visibleCount < listings.length && (
         <Button
           bg='brand.100'
@@ -118,6 +216,14 @@ const Auctions = () => {
           Load more
         </Button>
       )}
+
+      <CustomModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title='Create a New Auction'
+      >
+        <AuctionForm onSubmit={handleFormSubmit} auctionData={editAuction} />
+      </CustomModal>
     </Flex>
   );
 };

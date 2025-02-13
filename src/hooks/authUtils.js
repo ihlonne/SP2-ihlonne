@@ -3,7 +3,6 @@ import { registerUser, loginUser } from '../api/authApi';
 export async function handleRegister(userData) {
   try {
     const response = await registerUser(userData);
-    console.log('Registration successful:', response);
     return response;
   } catch (error) {
     console.error('Error registering:', error);

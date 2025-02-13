@@ -27,7 +27,6 @@ const RegisterForm = ({ closeRegister, openLogin }) => {
   const [errorMessage, setErrorMessage] = useState('');
 
   const onSubmit = async (data) => {
-    console.log(data);
     setLoading(true);
     setSuccessMessage('');
     setErrorMessage('');
