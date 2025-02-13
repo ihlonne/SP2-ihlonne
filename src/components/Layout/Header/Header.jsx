@@ -7,12 +7,8 @@ import {
   IconButton,
   Image,
   Icon,
-  Input,
-  InputGroup,
-  InputRightElement,
   useDisclosure,
 } from '@chakra-ui/react';
-import { SearchIcon } from '@chakra-ui/icons';
 import { FiLogOut } from 'react-icons/fi';
 import logo from '../../../assets/sp2logodark.png';
 import CustomModal from '../../UI/Modal';
@@ -21,6 +17,7 @@ import LoginForm from '../../UI/Forms/LoginForm';
 import { handleLogout } from '../../../hooks/authUtils';
 import { useAuth } from '../../../hooks/useAuth';
 import { Link } from 'react-router-dom';
+import SearchBar from '../../UI/SearchBar';
 
 function Header() {
   const { user, setUser } = useAuth(); // ✅ Extract setUser so we can update state
@@ -43,20 +40,7 @@ function Header() {
         <Image src={logo} maxH='30px' alt='Company logo' />
       </Link>
 
-      <InputGroup maxW='400px'>
-        <Input
-          placeholder='Search listings...'
-          bg='brand.100'
-          border='none'
-          id='searchbar'
-          name='searchbar'
-        />
-        <InputRightElement>
-          <IconButton bg='brand.100'>
-            <SearchIcon />
-          </IconButton>
-        </InputRightElement>
-      </InputGroup>
+      <SearchBar />
 
       {user?.accessToken ? (
         <Flex gap='4' align='center'>

@@ -1,17 +1,25 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
+// Chakra UI's media query
 import { useMediaQuery } from '@chakra-ui/react';
 
+//  Swiper CSS styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
+// Components
 import Header from './components/Layout/Header/Header';
 import Navbar from './components/Layout/Header/Navbar';
 import MobileHeader from './components/Layout/Header/MobileHeader';
 import MobileNavbar from './components/Layout/Header/MobileNavbar';
+import Footer from './components/Layout/Footer';
 
+// Pages
 import Home from './pages/Home';
 import Auctions from './pages/Auctions';
 import Profile from './pages/Profile';
 import NotFound from './pages/NotFound';
-import Footer from './components/Layout/Header/Footer';
 import AuctionDetails from './pages/AuctionDetails';
 
 function App() {
@@ -23,7 +31,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/auctions' element={<Auctions />} />
-        <Route path='/auctions/listing/' element={<AuctionDetails />} />
+        <Route path='/auctions/listing/:id' element={<AuctionDetails />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='*' element={<NotFound />} />
       </Routes>

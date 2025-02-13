@@ -72,6 +72,7 @@ function MobileNavbar() {
       p='15px'
       bg='brand.100'
       w='full'
+      zIndex='1000'
     >
       {user?.accessToken ? (
         <Flex

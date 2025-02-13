@@ -11,8 +11,8 @@ import {
   Flex,
   Text,
 } from '@chakra-ui/react';
-import logo from '../../../assets/sp2logolight.png';
-import CustomModal from '../../UI/Modal';
+import logo from '../../assets/sp2logolight.png';
+import CustomModal from '../UI/Modal';
 import { Link } from 'react-router-dom';
 
 function Footer() {
