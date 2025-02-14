@@ -4,22 +4,13 @@ import {
   AlertIcon,
   Avatar,
   Button,
-  CloseButton,
   Flex,
   Grid,
   Heading,
   Image,
   Input,
   InputGroup,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
   Text,
-  Tfoot,
-  Th,
-  Thead,
-  Tr,
 } from '@chakra-ui/react';
 import { Link, useParams } from 'react-router-dom';
 import Carousel from '../components/Layout/Carousel';
@@ -28,6 +19,7 @@ import { useEffect, useState } from 'react';
 import { getAuctions } from '../api/auctionApi';
 import api from '../api/axios';
 import { formatDistanceToNow } from 'date-fns';
+import BiddingTable from '../components/UI/BiddingTable';
 
 const AuctionDetails = () => {
   const { id } = useParams();
@@ -41,8 +33,11 @@ const AuctionDetails = () => {
   useEffect(() => {
     const getListing = async () => {
       try {
-        const response = await api.get(`/auction/listings/${id}`);
+        const response = await api.get(
+          `/auction/listings/${id}?_seller=true&_bids=true`
+        );
         const data = response.data;
+        console.log(data);
         setListing(data);
       } catch (error) {
         console.error('Failed to fetch listing:', error);
@@ -79,7 +74,9 @@ const AuctionDetails = () => {
     addSuffix: true,
   });
 
+  // Convert to a more readable date
   const listingCreatedAt = new Date(listing.data.created);
+  const listingUpdatedAt = new Date(listing.data.updated);
 
   return (
     <Flex direction='column' justify='center' align='center' mb='16' w='full'>
@@ -87,7 +84,7 @@ const AuctionDetails = () => {
         templateColumns={{ base: '1fr', md: 'repeat(2, 50%)' }}
         gap='16'
         maxW='1290px'
-        w='100%'
+        w={{ base: '80%', md: '100%' }}
         mt='24'
       >
         <Image
@@ -104,7 +101,7 @@ const AuctionDetails = () => {
           objectFit='cover'
         />
 
-        <Flex direction='column'>
+        <Flex direction='column' w={{ base: '80%', md: '100%' }}>
           <Text fontSize='s' fontWeight='400'>
             Current Bid
           </Text>
@@ -112,19 +109,23 @@ const AuctionDetails = () => {
             {listing.data._count.bids} Credits
           </Heading>
           <Text>Auction ends {timeRemaining}</Text>
-          <Text fontSize='xs' fontWeight='400'>
-            Created at:{' '}
-            {`${listingCreatedAt.getDate()}/${
-              listingCreatedAt.getMonth() + 1
-            }/${listingCreatedAt.getFullYear()}`}
-          </Text>
+          <Flex justify='space-between' maxW='400px' w='100%'>
+            <Text fontSize='xs' fontWeight='400'>
+              Created at:{' '}
+              {`${listingCreatedAt.getDate()}/${
+                listingCreatedAt.getMonth() + 1
+              }/${listingCreatedAt.getFullYear()}`}
+            </Text>
+            <Text fontSize='xs' fontWeight='400'>
+              Last updated:{' '}
+              {`${listingUpdatedAt.getDate()}/${
+                listingUpdatedAt.getMonth() + 1
+              }/${listingUpdatedAt.getFullYear()}`}
+            </Text>
+          </Flex>
           <Flex direction='column' as='form' mt='8'>
             <InputGroup maxW='400px' w='100%'>
-              <Input
-                placeholder='Search listings...'
-                bg='brand.100'
-                border='none'
-              />
+              <Input placeholder='0' bg='brand.100' border='none' />
               <Button
                 bg='brand.900'
                 color='white'
@@ -150,20 +151,19 @@ const AuctionDetails = () => {
               <AlertDescription>
                 Please sign in to place a bid.
               </AlertDescription>
-              <CloseButton />
             </Alert>
           </Flex>
         </Flex>
       </Grid>
 
       <Grid
-        templateColumns={{ base: '1fr', md: 'repeat(2, 50%)' }}
+        templateColumns={{ base: '1fr', md: '1fr', lg: 'repeat(2, 1fr)' }} // 1 column on mobile, 2 on larger screens
         gap='16'
         maxW='1290px'
         w='100%'
         mt='16'
       >
-        <Flex direction='column'>
+        <Flex direction='column' w={{ base: '80%', md: '100%' }}>
           <Heading as='h1'>{listing.data.title}</Heading>
           <Text my='12'>{listing.data.description}</Text>
           <Flex gap='4' align='center'>
@@ -172,12 +172,12 @@ const AuctionDetails = () => {
               <Link to='/profile'>
                 <Avatar
                   size='sm'
-                  name={listing.data.name}
-                  src={listing.data.avatar?.url}
+                  name={listing.data.seller.name}
+                  src={listing.data.seller.avatar?.url}
                 />
               </Link>
               <Link to='/profile'>
-                <Text>linnie</Text>
+                <Text>{listing.data.seller.name}</Text>
               </Link>
             </Flex>
           </Flex>
@@ -188,41 +188,7 @@ const AuctionDetails = () => {
             Bidding history
           </Heading>
           {listing.data?._count?.bids > 0 ? (
-            <TableContainer>
-              <Table variant='simple'>
-                <Thead>
-                  <Tr>
-                    <Th>To convert</Th>
-                    <Th>into</Th>
-                    <Th isNumeric>multiply by</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  <Tr>
-                    <Td>inches</Td>
-                    <Td>millimetres (mm)</Td>
-                    <Td isNumeric>25.4</Td>
-                  </Tr>
-                  <Tr>
-                    <Td>feet</Td>
-                    <Td>centimetres (cm)</Td>
-                    <Td isNumeric>30.48</Td>
-                  </Tr>
-                  <Tr>
-                    <Td>yards</Td>
-                    <Td>metres (m)</Td>
-                    <Td isNumeric>0.91444</Td>
-                  </Tr>
-                </Tbody>
-                <Tfoot>
-                  <Tr>
-                    <Th>To convert</Th>
-                    <Th>into</Th>
-                    <Th isNumeric>multiply by</Th>
-                  </Tr>
-                </Tfoot>
-              </Table>
-            </TableContainer>
+            <BiddingTable bids={listing.data.bids} />
           ) : (
             <Text>No bids yet. Be the first one!</Text>
           )}

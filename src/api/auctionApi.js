@@ -1,10 +1,10 @@
 import api from './axios';
 
 // Get all auctions
-export const getAuctions = async () => {
+export const getAuctions = async (page = 1) => {
   try {
     const response = await api.get(
-      '/auction/listings?_active=true&_sort=created&_order=desc'
+      `/auction/listings?_bids=true&_seller=true&_active=true&sort=created&order=desc&_page=${page}`
     );
     return response.data;
   } catch (error) {

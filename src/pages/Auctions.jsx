@@ -32,7 +32,11 @@ const Auctions = () => {
   const { user } = useAuth();
   const [listings, setListings] = useState([]);
   const [sortOption, setSortOption] = useState('ending_soon');
-  const [visibleCount, setVisibleCount] = useState(100);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [visibleCount, setVisibleCount] = useState(16);
+
+  const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
   /*   const [mediaUrls] = useState([]);
   const [tags] = useState([]); */
@@ -45,34 +49,45 @@ const Auctions = () => {
   const query = params.get('search');
   const category = params.get('category');
 
-  const fetchListings = useCallback(async () => {
-    setLoading(true);
-    try {
-      const data = await getAuctions();
-      let processedListings = data.data.filter(
-        (item) =>
-          !item.title.toLowerCase().includes('test') &&
-          !item.title.toLowerCase().includes('yo') &&
-          !item.title.toLowerCase().includes('string')
-      );
+  const fetchListings = useCallback(
+    async (page = 1) => {
+      setLoading(true);
+      try {
+        const data = await getAuctions(page);
+        let processedListings = data.data.filter(
+          (item) =>
+            !item.title.toLowerCase().includes('test') &&
+            !item.title.toLowerCase().includes('yo') &&
+            !item.title.toLowerCase().includes('string')
+        );
 
-      if (query) {
-        processedListings = searchListings(processedListings, query);
+        const uniqueListings = Array.from(
+          new Map(processedListings.map((item) => [item.id, item])).values()
+        );
+
+        if (query) {
+          processedListings = searchListings(uniqueListings, query);
+        }
+
+        if (category) {
+          processedListings = filterByCategory(uniqueListings, category);
+        }
+
+        processedListings = sortListings(uniqueListings, sortOption);
+        setListings(processedListings);
+
+        // Check if there are more pages to fetch
+        if (data.meta.isLastPage) {
+          setHasMore(false);
+        }
+      } catch (error) {
+        console.error('Failed to fetch listings:', error);
+      } finally {
+        setLoading(false);
       }
-
-      if (category) {
-        processedListings = filterByCategory(processedListings, category);
-      }
-
-      processedListings = sortListings(processedListings, sortOption);
-
-      setListings(processedListings);
-    } catch (error) {
-      console.error('Failed to fetch listings:', error);
-    } finally {
-      setLoading(false);
-    }
-  }, [query, category, sortOption]);
+    },
+    [query, category, sortOption]
+  );
 
   useEffect(() => {
     fetchListings();
@@ -114,7 +129,11 @@ const Auctions = () => {
   };
 
   const handleLoadMore = () => {
-    setVisibleCount((prevCount) => prevCount + 12);
+    if (hasMore && !loading) {
+      setVisibleCount((prevCount) => prevCount + 12);
+      setCurrentPage((prevPage) => prevPage + 1);
+      fetchListings(currentPage + 1);
+    }
   };
 
   return (
@@ -196,16 +215,16 @@ const Auctions = () => {
         justify='flex-start'
       >
         {listings.length > 0 ? (
-          listings.slice(0, visibleCount).map((listing, i) => (
-            <GridItem key={i}>
-              <AuctionCard key={listing.id} listing={listing} w='100%' />
+          listings.slice(0, visibleCount).map((listing) => (
+            <GridItem key={listing.id}>
+              <AuctionCard listing={listing} w='100%' />
             </GridItem>
           ))
         ) : (
           <p>No listings available</p>
         )}
       </Grid>
-      {visibleCount < listings.length && (
+      {hasMore && (
         <Button
           bg='brand.100'
           w='150px'
