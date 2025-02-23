@@ -78,6 +78,8 @@ const AuctionDetails = () => {
   const listingCreatedAt = new Date(listing.data.created);
   const listingUpdatedAt = new Date(listing.data.updated);
 
+  console.log(listing.data);
+
   return (
     <Flex direction='column' justify='center' align='center' mb='16' w='full'>
       <Grid
@@ -176,7 +178,7 @@ const AuctionDetails = () => {
                   src={listing.data.seller.avatar?.url}
                 />
               </Link>
-              <Link to='/profile'>
+              <Link to={`/profile/${listing.data.seller.name}`}>
                 <Text>{listing.data.seller.name}</Text>
               </Link>
             </Flex>

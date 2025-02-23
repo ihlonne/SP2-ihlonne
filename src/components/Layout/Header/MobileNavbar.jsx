@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import {
   Avatar,
   Image,
@@ -26,11 +27,27 @@ import { useAuth } from '../../../hooks/useAuth';
 import { handleLogout } from '../../../hooks/authUtils';
 import LoginForm from '../../UI/Forms/LoginForm';
 import RegisterForm from '../../UI/Forms/RegisterForm';
+import { getProfile } from '../../../api/profileApi';
 
 import { Link } from 'react-router-dom';
 
 function MobileNavbar() {
   const { user, setUser } = useAuth();
+  const [credits, setCredits] = useState(0);
+
+  useEffect(() => {
+    const getUserCredits = async () => {
+      if (user?.name) {
+        try {
+          const profileData = await getProfile(user.name);
+          setCredits(profileData.data);
+        } catch (error) {
+          console.error('Failed to fetch credits:', error);
+        }
+      }
+    };
+    getUserCredits();
+  }, [user]);
 
   // Manage drawer state
   const {
@@ -92,8 +109,10 @@ function MobileNavbar() {
             <Text fontSize='xs'>Categories</Text>
           </Flex>
           <Flex gap='4' align='center'>
-            <Text>1000 credits</Text>
-            <Avatar size='sm' name={user?.name} src={user?.avatar?.url} />
+            <Text>{credits} Cr</Text>
+            <Link to={`/profile/${user.name}`}>
+              <Avatar size='sm' name={user?.name} src={user?.avatar?.url} />
+            </Link>
 
             <IconButton
               bg='transparent'
