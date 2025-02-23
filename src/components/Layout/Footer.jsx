@@ -74,9 +74,14 @@ function Footer() {
           Privacy & Policy
         </Link>
       </HStack>
-      <Link href='https://github.com/ihlonne' color='white'>
+      <a
+        href='https://github.com/ihlonne'
+        target='_blank'
+        rel='noopener noreferrer'
+        style={{ color: 'white' }}
+      >
         © ihlonne
-      </Link>
+      </a>
 
       <CustomModal
         isOpen={isLoginOpen}

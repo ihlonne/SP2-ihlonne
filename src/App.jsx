@@ -18,7 +18,7 @@ import Footer from './components/Layout/Footer';
 // Pages
 import Home from './pages/Home';
 import Auctions from './pages/Auctions';
-import Profile from './pages/Profile';
+import ProfilePage from './pages/ProfilePAge';
 import NotFound from './pages/NotFound';
 import AuctionDetails from './pages/AuctionDetails';
 
@@ -32,7 +32,7 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/auctions' element={<Auctions />} />
         <Route path='/auctions/listing/:id' element={<AuctionDetails />} />
-        <Route path='/profile' element={<Profile />} />
+        <Route path='/profile/:name' element={<ProfilePage />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
       <Footer />
