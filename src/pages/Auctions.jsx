@@ -114,6 +114,9 @@ const Auctions = () => {
         duration: 3000,
         isClosable: true,
       });
+
+      fetchListings();
+      setIsModalOpen(false);
     } catch (error) {
       toast({
         title: 'Failed to create auction.',

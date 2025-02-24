@@ -65,7 +65,25 @@ const AuctionForm = ({ onSubmit, auctionData }) => {
   }, [auctionData, setValue, reset]);
 
   return (
-    <Box as='form' onSubmit={handleSubmit(onSubmit)} p='4'>
+    <Box
+      as='form'
+      onSubmit={handleSubmit((formData) => {
+        // Ensure media is correctly formatted as an array of objects
+        const formattedMedia = mediaUrls.map((url) => ({
+          url,
+          alt: formData.title || 'Auction image',
+        }));
+
+        const formattedData = {
+          ...formData,
+          media: formattedMedia,
+          tags,
+        };
+
+        onSubmit(formattedData);
+      })}
+      p='4'
+    >
       {/* Title */}
       <FormControl isInvalid={errors.title}>
         <FormLabel>Title</FormLabel>
