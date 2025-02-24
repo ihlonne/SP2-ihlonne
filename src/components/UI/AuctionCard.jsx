@@ -1,12 +1,11 @@
 import { PropTypes } from 'prop-types';
 import { Box, Image, Text, Link, IconButton } from '@chakra-ui/react';
 import { formatDistanceToNow, isPast } from 'date-fns';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { EditIcon } from '@chakra-ui/icons';
 import { useAuth } from '../../hooks/useAuth';
 
-const AuctionCard = ({ listing }) => {
-  const { name } = useParams();
+const AuctionCard = ({ listing, isProfilePage, sellerName }) => {
   const { user } = useAuth();
 
   // Convert listing end time to Date object
@@ -43,7 +42,7 @@ const AuctionCard = ({ listing }) => {
           rounded='md'
           mb='2'
         />
-        {user?.name === name ? (
+        {isProfilePage && user?.name === sellerName ? (
           <IconButton
             icon={<EditIcon />}
             size='sm'
@@ -79,6 +78,8 @@ const AuctionCard = ({ listing }) => {
 
 AuctionCard.propTypes = {
   listing: PropTypes.object.isRequired,
+  isProfilePage: PropTypes.boolean.isRequired,
+  sellerName: PropTypes.string.isRequired,
 };
 
 export default AuctionCard;

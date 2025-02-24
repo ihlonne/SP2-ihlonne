@@ -15,6 +15,8 @@ import { FaCamera } from 'react-icons/fa';
 import AuctionCard from '../components/UI/AuctionCard';
 import CustomModal from '../components/UI/Modal';
 import EditProfileForm from '../components/UI/Forms/EditProfileForm';
+import LoginForm from '../components/UI/Forms/LoginForm';
+import RegisterForm from '../components/UI/Forms/RegisterForm';
 import { useAuth } from '../hooks/useAuth';
 import { getListings, getProfile, getWins } from '../api/profileApi';
 
@@ -25,11 +27,13 @@ function ProfilePage() {
   const [profile, setProfile] = useState(null);
   const [listings, setListings] = useState([]);
   const [wins, setWins] = useState([]);
-
   const [loading, setLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState('active');
 
+  const toast = useToast();
   const now = new Date();
 
   const activeListings = listings.filter(
@@ -37,10 +41,13 @@ function ProfilePage() {
   );
   const allListings = listings;
 
-  const toast = useToast();
-
   useEffect(() => {
     const loadData = async () => {
+      if (!user) {
+        setIsLoginModalOpen(true);
+        return;
+      }
+
       try {
         setLoading(true);
         const profileData = await getProfile(name);
@@ -49,12 +56,11 @@ function ProfilePage() {
         setProfile(profileData);
         setListings(listingsData);
 
-        // Only fetch wins if the logged-in user is viewing their own profile
         if (user.name === name) {
           const winsData = await getWins(name);
           setWins(winsData);
         } else {
-          setWins([]); // Clear wins for other users
+          setWins([]);
         }
       } catch (error) {
         console.error('Error loading profile data:', error);
@@ -64,17 +70,53 @@ function ProfilePage() {
     };
 
     loadData();
-  }, [name, user.name]);
+  }, [name, user]);
+
+  if (!user) {
+    return (
+      <>
+        {/* Login Modal */}
+        <CustomModal
+          isOpen={isLoginModalOpen}
+          onClose={() => setIsLoginModalOpen(false)}
+          title='Login Required'
+        >
+          <LoginForm
+            closeLogin={() => setIsLoginModalOpen(false)}
+            openRegister={() => {
+              setIsLoginModalOpen(false);
+              setIsRegisterModalOpen(true);
+            }}
+          />
+        </CustomModal>
+
+        {/* Register Modal */}
+        <CustomModal
+          isOpen={isRegisterModalOpen}
+          onClose={() => setIsRegisterModalOpen(false)}
+          title='Create an Account'
+        >
+          <RegisterForm
+            closeRegister={() => setIsRegisterModalOpen(false)}
+            openLogin={() => {
+              setIsRegisterModalOpen(false);
+              setIsLoginModalOpen(true);
+            }}
+          />
+        </CustomModal>
+      </>
+    );
+  }
 
   if (loading) return <Text>Loading profile...</Text>;
   if (!profile) return <Text>Error: Profile not found.</Text>;
 
-  // Update profile after editing
   const handleProfileUpdate = async () => {
-    await getProfile();
+    await getProfile(name);
     toast({ title: 'Profile updated successfully!', status: 'success' });
-    setIsModalOpen(false);
+    setIsProfileModalOpen(false);
   };
+
   return (
     <Flex
       direction='column'
@@ -86,8 +128,7 @@ function ProfilePage() {
       mx='auto'
     >
       <Flex
-        m={{ base: 0, md: 'auto' }}
-        direction={{ base: 'column', md: ' row' }}
+        direction={{ base: 'column', md: 'row' }}
         justify={{ base: 'center', md: 'flex-start' }}
         align={{ base: 'center', md: 'flex-start' }}
         w='100%'
@@ -104,21 +145,14 @@ function ProfilePage() {
               position='absolute'
               bottom='-22px'
               right='-22px'
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => setIsProfileModalOpen(true)}
               aria-label='Change avatar'
               borderRadius='full'
             />
           ) : null}
         </Box>
 
-        <Flex
-          direction='column'
-          justify='flex-start'
-          align='flex-start'
-          ml={{ base: 0, md: '16' }}
-          mt={{ base: '8', md: 0 }}
-          textAlign={{ base: 'center', md: 'left' }}
-        >
+        <Flex direction='column' align='flex-start' ml={{ base: 0, md: '16' }}>
           <Heading as='h2' mt='4'>
             {profile.name}
           </Heading>
@@ -170,33 +204,32 @@ function ProfilePage() {
         mt='8'
         mb='24'
         mx='auto'
-        justify='flex-start'
       >
         {selectedTab === 'all' &&
           (listings.length > 0 ? (
             listings.map((listing) => (
               <GridItem key={listing.id}>
-                <AuctionCard listing={listing} w='100%' />
+                <AuctionCard listing={listing} w='100%' profile={profile} />
               </GridItem>
             ))
           ) : (
             <Text>No listings available.</Text>
           ))}
-        {/* Active Listings (User's listings that haven't ended) */}
         {selectedTab === 'active' &&
-          (listings.filter((listing) => new Date(listing.endsAt) > new Date())
-            .length > 0 ? (
-            listings
-              .filter((listing) => new Date(listing.endsAt) > new Date()) // Active listings
-              .map((listing) => (
-                <GridItem key={listing.id}>
-                  <AuctionCard listing={listing} w='100%' />
-                </GridItem>
-              ))
+          (activeListings.length > 0 ? (
+            activeListings.map((listing) => (
+              <GridItem key={listing.id}>
+                <AuctionCard
+                  listing={listing}
+                  isProfilePage={true}
+                  sellerName={profile?.name}
+                  w='100%'
+                />
+              </GridItem>
+            ))
           ) : (
             <Text>No active listings available.</Text>
           ))}
-        {/* Won Auctions */}
         {user.name === name &&
           selectedTab === 'wins' &&
           (wins.length > 0 ? (
@@ -211,8 +244,8 @@ function ProfilePage() {
       </Grid>
 
       <CustomModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isProfileModalOpen}
+        onClose={() => setIsProfileModalOpen(false)}
         title='Edit Profile'
       >
         <EditProfileForm
