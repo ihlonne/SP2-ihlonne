@@ -78,7 +78,7 @@ const AuctionCard = ({ listing, isProfilePage, sellerName }) => {
 
 AuctionCard.propTypes = {
   listing: PropTypes.object.isRequired,
-  isProfilePage: PropTypes.boolean.isRequired,
+  isProfilePage: PropTypes.bool.isRequired,
   sellerName: PropTypes.string.isRequired,
 };
 
