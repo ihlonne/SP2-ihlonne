@@ -209,7 +209,7 @@ function ProfilePage() {
           (listings.length > 0 ? (
             listings.map((listing) => (
               <GridItem key={listing.id}>
-                <AuctionCard listing={listing} w='100%' />
+                <AuctionCard listing={listing} w='100%' profile={profile} />
               </GridItem>
             ))
           ) : (
@@ -219,7 +219,12 @@ function ProfilePage() {
           (activeListings.length > 0 ? (
             activeListings.map((listing) => (
               <GridItem key={listing.id}>
-                <AuctionCard listing={listing} w='100%' />
+                <AuctionCard
+                  listing={listing}
+                  isProfilePage={true}
+                  sellerName={profile?.name}
+                  w='100%'
+                />
               </GridItem>
             ))
           ) : (
