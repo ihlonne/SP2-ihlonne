@@ -37,7 +37,6 @@ const AuctionDetails = () => {
           `/auction/listings/${id}?_seller=true&_bids=true`
         );
         const data = response.data;
-        console.log(data);
         setListing(data);
       } catch (error) {
         console.error('Failed to fetch listing:', error);
@@ -77,8 +76,6 @@ const AuctionDetails = () => {
   // Convert to a more readable date
   const listingCreatedAt = new Date(listing.data.created);
   const listingUpdatedAt = new Date(listing.data.updated);
-
-  console.log(listing.data);
 
   return (
     <Flex direction='column' justify='center' align='center' mb='16' w='full'>

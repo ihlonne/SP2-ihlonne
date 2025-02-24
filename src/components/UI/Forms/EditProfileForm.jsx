@@ -44,8 +44,6 @@ const EditProfileForm = ({ profile, onProfileUpdate, setUser }) => {
         payload
       );
 
-      console.log('API Response:', response.data); // ✅ Check API response
-
       const updatedProfile = response.data.data;
 
       setUser((prevUser) => ({
