@@ -16,7 +16,7 @@ import { PropTypes } from 'prop-types';
 import { useForm } from 'react-hook-form';
 import { FiPlusCircle } from 'react-icons/fi';
 
-const AuctionForm = ({ onSubmit, auctionData }) => {
+const AuctionForm = ({ onSubmit, auctionData, onDelete }) => {
   const {
     register,
     handleSubmit,
@@ -57,8 +57,12 @@ const AuctionForm = ({ onSubmit, auctionData }) => {
     if (auctionData) {
       setValue('title', auctionData.title);
       setValue('description', auctionData.description);
-      setMediaUrls(auctionData.media || []);
-      setValue('endsAt', auctionData.endsAt);
+      setMediaUrls(auctionData.media?.map((item) => item.url) || []);
+
+      const formattedEndsAt = auctionData.endsAt
+        ? new Date(auctionData.endsAt).toISOString().slice(0, 16)
+        : '';
+      setValue('endsAt', formattedEndsAt);
     } else {
       reset();
     }
@@ -74,13 +78,14 @@ const AuctionForm = ({ onSubmit, auctionData }) => {
           alt: formData.title || 'Auction image',
         }));
 
-        const formattedData = {
-          ...formData,
+        onSubmit({
+          id: auctionData?.id || null,
+          title: formData.title,
+          description: formData.description,
           media: formattedMedia,
           tags,
-        };
-
-        onSubmit(formattedData);
+          endsAt: formData.endsAt,
+        });
       })}
       p='4'
     >
@@ -168,6 +173,11 @@ const AuctionForm = ({ onSubmit, auctionData }) => {
       <Button type='submit' bg='brand.600' color='white' mt='4' w='full'>
         {auctionData ? 'Update Auction' : 'Create Auction'}
       </Button>
+      {auctionData ? (
+        <Button w='full' mt='2' onClick={async () => onDelete()}>
+          Delete
+        </Button>
+      ) : null}
     </Box>
   );
 };
@@ -175,6 +185,7 @@ const AuctionForm = ({ onSubmit, auctionData }) => {
 AuctionForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   auctionData: PropTypes.object,
+  onDelete: PropTypes.func,
 };
 
 export default AuctionForm;

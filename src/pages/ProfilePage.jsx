@@ -19,6 +19,8 @@ import LoginForm from '../components/UI/Forms/LoginForm';
 import RegisterForm from '../components/UI/Forms/RegisterForm';
 import { useAuth } from '../hooks/useAuth';
 import { getListings, getProfile, getWins } from '../api/profileApi';
+import { deleteAuction, updateAuction } from '../api/auctionApi';
+import AuctionForm from '../components/UI/Forms/AuctionForm';
 
 function ProfilePage() {
   const { name } = useParams();
@@ -28,10 +30,14 @@ function ProfilePage() {
   const [listings, setListings] = useState([]);
   const [wins, setWins] = useState([]);
   const [loading, setLoading] = useState(true);
+
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState('active');
+
+  const [editAuction, setEditAuction] = useState(null);
+  const [isAuctionModalOpen, setIsAuctionModalOpen] = useState(false);
 
   const toast = useToast();
   const now = new Date();
@@ -40,6 +46,15 @@ function ProfilePage() {
     (listing) => new Date(listing.endsAt) > now
   );
   const allListings = listings;
+
+  const fetchListings = async () => {
+    try {
+      const listingsData = await getListings(name);
+      setListings(listingsData);
+    } catch (error) {
+      console.error('Error fetching listings:', error);
+    }
+  };
 
   useEffect(() => {
     const loadData = async () => {
@@ -115,6 +130,78 @@ function ProfilePage() {
     await getProfile(name);
     toast({ title: 'Profile updated successfully!', status: 'success' });
     setIsProfileModalOpen(false);
+  };
+
+  const handleEditAuction = (auction) => {
+    setEditAuction(auction);
+    setIsAuctionModalOpen(true);
+  };
+
+  const handleAuctionUpdate = async (formData) => {
+    setLoading(true);
+
+    const formattedData = {
+      ...formData,
+      endsAt: new Date(formData.endsAt).toISOString(),
+    };
+
+    try {
+      setLoading(true);
+      await updateAuction(editAuction.id, formattedData);
+      toast({
+        title: 'Auction Updated!',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
+
+      setTimeout(() => {
+        fetchListings();
+        setIsAuctionModalOpen(false);
+        setEditAuction(null);
+      }, 3000);
+    } catch (error) {
+      toast({
+        title: 'Failed to update auction.',
+        description:
+          error.response?.data?.errors?.[0]?.message || 'An error occurred.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAuctionDelete = async () => {
+    try {
+      await deleteAuction(editAuction.id);
+
+      toast({
+        title: 'Auction deleted',
+        description: 'Your auction has been successfully deleted.',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
+      setTimeout(() => {
+        fetchListings();
+        setIsAuctionModalOpen(false);
+        setEditAuction(null);
+      }, 3000);
+    } catch (error) {
+      toast({
+        title: 'Failed to delete auction',
+        description:
+          error.response?.data?.errors?.[0]?.message || 'An error occurred.',
+        status: 'error',
+        duration: 4000,
+        isClosable: true,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -223,6 +310,7 @@ function ProfilePage() {
                   listing={listing}
                   isProfilePage={true}
                   sellerName={profile?.name}
+                  onEdit={handleEditAuction}
                   w='100%'
                 />
               </GridItem>
@@ -252,6 +340,18 @@ function ProfilePage() {
           profile={profile}
           onProfileUpdate={handleProfileUpdate}
           setUser={setUser}
+        />
+      </CustomModal>
+
+      <CustomModal
+        isOpen={isAuctionModalOpen}
+        onClose={() => setIsAuctionModalOpen(false)}
+        title='Edit Auction'
+      >
+        <AuctionForm
+          onSubmit={handleAuctionUpdate}
+          auctionData={editAuction}
+          onDelete={handleAuctionDelete}
         />
       </CustomModal>
     </Flex>

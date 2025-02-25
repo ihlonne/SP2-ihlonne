@@ -14,13 +14,28 @@ export const getAuctions = async (page = 1) => {
 };
 
 export const createAuction = async (auctionData) => {
-  const response = await api.post('/auction/listings', auctionData);
-  return response.data;
+  try {
+    const response = await api.post('/auction/listings', auctionData);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to create auction:', error.response?.data || error);
+  }
 };
 
 export const updateAuction = async (id, auctionData) => {
-  const response = await api.put(`/auctions/listings/${id}`, auctionData);
-  const data = response.data;
+  try {
+    const response = await api.put(`/auction/listings/${id}`, auctionData);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to update auction:', error.response?.data || error);
+  }
+};
 
-  return data;
+export const deleteAuction = async (id) => {
+  try {
+    const response = await api.delete(`/auction/listings/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to delete auction:', error);
+  }
 };
