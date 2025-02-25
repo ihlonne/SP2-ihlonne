@@ -29,6 +29,8 @@ export const sortListings = (listings, sortOption) => {
 };
 
 export const filterByCategory = (listings, category) => {
+  if (!category) return listings;
+
   return listings.filter((listing) =>
     listing.tags?.some((tag) => tag.toLowerCase() === category.toLowerCase())
   );
@@ -38,6 +40,6 @@ export const searchListings = (listings, query) => {
   if (!query) return listings;
 
   return listings.filter((item) => {
-    return item.title.toLowerCase().includes(query.toLowerCase());
+    return item.title?.toLowerCase().includes(query.toLowerCase());
   });
 };

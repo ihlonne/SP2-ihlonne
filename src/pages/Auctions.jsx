@@ -46,8 +46,8 @@ const Auctions = () => {
 
   const { search } = useLocation();
   const params = new URLSearchParams(search);
-  const query = params.get('search');
-  const category = params.get('category');
+  const query = params.get('search') || '';
+  const category = params.get('category') || '';
 
   const fetchListings = useCallback(
     async (page = 1) => {
@@ -70,16 +70,18 @@ const Auctions = () => {
         }
 
         if (category) {
-          processedListings = filterByCategory(uniqueListings, category);
+          processedListings = filterByCategory(processedListings, category);
         }
 
-        processedListings = sortListings(uniqueListings, sortOption);
+        processedListings = sortListings(processedListings, sortOption);
         setListings(processedListings);
 
         // Check if there are more pages to fetch
         if (data.meta.isLastPage) {
           setHasMore(false);
         }
+        console.log(uniqueListings);
+        console.log(processedListings);
       } catch (error) {
         console.error('Failed to fetch listings:', error);
       } finally {

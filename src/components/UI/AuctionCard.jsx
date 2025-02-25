@@ -55,7 +55,6 @@ const AuctionCard = ({ listing, isProfilePage, sellerName, onEdit }) => {
             aria-label='Change avatar'
             borderRadius='full'
             onClick={() => {
-              console.log(listing);
               onEdit(listing);
             }}
           />
@@ -82,9 +81,9 @@ const AuctionCard = ({ listing, isProfilePage, sellerName, onEdit }) => {
 
 AuctionCard.propTypes = {
   listing: PropTypes.object.isRequired,
-  isProfilePage: PropTypes.bool.isRequired,
-  sellerName: PropTypes.string.isRequired,
-  onEdit: PropTypes.func.isRequired,
+  isProfilePage: PropTypes.bool,
+  sellerName: PropTypes.string,
+  onEdit: PropTypes.func,
 };
 
 export default AuctionCard;
