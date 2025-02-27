@@ -19,6 +19,7 @@ export const createAuction = async (auctionData) => {
     return response.data;
   } catch (error) {
     console.error('Failed to create auction:', error.response?.data || error);
+    throw error;
   }
 };
 
@@ -28,6 +29,7 @@ export const updateAuction = async (id, auctionData) => {
     return response.data;
   } catch (error) {
     console.error('Failed to update auction:', error.response?.data || error);
+    throw error;
   }
 };
 
@@ -37,5 +39,6 @@ export const deleteAuction = async (id) => {
     return response.data;
   } catch (error) {
     console.error('Failed to delete auction:', error);
+    throw error;
   }
 };

@@ -11,6 +11,7 @@ import {
   Input,
   InputGroup,
   Text,
+  useToast,
 } from '@chakra-ui/react';
 import { Link, useParams } from 'react-router-dom';
 import Carousel from '../components/Layout/Carousel';
@@ -20,16 +21,23 @@ import { getAuctions } from '../api/auctionApi';
 import api from '../api/axios';
 import { formatDistanceToNow } from 'date-fns';
 import BiddingTable from '../components/UI/BiddingTable';
+import { useAuth } from '../hooks/useAuth';
+import { bidAuction } from '../api/biddingApi';
+import { useCredits } from '../context/CreditContext';
+
+import { getProfile } from '../api/profileApi';
 
 const AuctionDetails = () => {
   const { id } = useParams();
+  const { user } = useAuth();
+  const { credits, setCredits } = useCredits();
+
   const [auctions, setAuctions] = useState([]);
   const [listing, setListing] = useState(null);
+  const [bidAmount, setBidAmount] = useState('');
 
-  /*   const [infoMessage, setInfoMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
- */
+  const toast = useToast();
+
   useEffect(() => {
     const getListing = async () => {
       try {
@@ -77,6 +85,105 @@ const AuctionDetails = () => {
   const listingCreatedAt = new Date(listing.data.created);
   const listingUpdatedAt = new Date(listing.data.updated);
 
+  const handleBidSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!user) {
+      toast({
+        title: 'Sign in required',
+        description: 'You must be signed in to place a bid.',
+        status: 'info',
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    const bidValue = Number(bidAmount);
+
+    if (isNaN(bidValue) || bidValue <= 0) {
+      toast({
+        title: 'Invalid bid',
+        description: 'Please enter a valid bid amount',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    const highestBid = listing?.data?.bids?.length
+      ? Math.max(...listing.data.bids.map((bid) => bid.amount))
+      : 0;
+
+    const lastBidder = listing.data?.bids.length
+      ? listing.data.bids[listing.data.bids.length - 1].bidder.name
+      : null;
+
+    if (lastBidder === user.name) {
+      toast({
+        title: 'Cannot bid twice in a row',
+        description: 'You cannot outbid yourself. Please wait for another bid.',
+        status: 'warning',
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    if (bidValue <= highestBid) {
+      toast({
+        title: 'Bid is too low',
+        description: `Your bid must be higher than ${highestBid} credits.`,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    if (bidValue > credits) {
+      toast({
+        title: 'Not enough credits',
+        description: `You only have ${credits} credits.`,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    try {
+      await bidAuction(id, bidValue);
+      toast({
+        title: 'Bid placed!',
+        description: `Your bid of ${bidValue} credits has been placed successfully.`,
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
+
+      setBidAmount('');
+
+      const profileData = await getProfile(user.name);
+      setCredits(profileData.credits);
+
+      const response = await api.get(
+        `/auction/listings/${id}?_seller=true&_bids=true`
+      );
+      setListing(response.data);
+    } catch (error) {
+      toast({
+        title: 'Failed to place a bid',
+        description:
+          error.response?.data?.errors?.[0]?.message || 'An error occurred.',
+        status: 'error',
+        duration: 4000,
+        isClosable: true,
+      });
+    }
+  };
+
   return (
     <Flex direction='column' justify='center' align='center' mb='16' w='full'>
       <Grid
@@ -105,7 +212,10 @@ const AuctionDetails = () => {
             Current Bid
           </Text>
           <Heading as='h2' mb='8'>
-            {listing.data._count.bids} Credits
+            {listing.data.bids?.length > 0
+              ? Math.max(...listing.data.bids.map((bid) => bid.amount))
+              : 0}{' '}
+            Credits
           </Heading>
           <Text>Auction ends {timeRemaining}</Text>
           <Flex justify='space-between' maxW='400px' w='100%'>
@@ -122,35 +232,47 @@ const AuctionDetails = () => {
               }/${listingUpdatedAt.getFullYear()}`}
             </Text>
           </Flex>
-          <Flex direction='column' as='form' mt='8'>
+          <Flex direction='column' as='form' mt='8' onSubmit={handleBidSubmit}>
             <InputGroup maxW='400px' w='100%'>
-              <Input placeholder='0' bg='brand.100' border='none' />
+              <Input
+                type='number'
+                placeholder='Enter your bid'
+                value={bidAmount}
+                bg='brand.100'
+                border='none'
+                roundedRight='0'
+                onChange={(e) => setBidAmount(e.target.value)}
+              />
               <Button
+                type='submit'
                 bg='brand.900'
                 color='white'
                 roundedLeft='0'
                 roundedRight='md'
                 px='8'
+                isDisabled={!user}
               >
                 Submit a bid
               </Button>
             </InputGroup>
 
-            <Alert
-              status='info'
-              mt='4'
-              bg='brand.200'
-              border='1px'
-              borderColor='purple'
-              rounded='md'
-              maxW='400px'
-              w='100%'
-            >
-              <AlertIcon color='purple' />
-              <AlertDescription>
-                Please sign in to place a bid.
-              </AlertDescription>
-            </Alert>
+            {!user && (
+              <Alert
+                status='info'
+                mt='4'
+                bg='brand.200'
+                border='1px'
+                borderColor='purple'
+                rounded='md'
+                maxW='400px'
+                w='100%'
+              >
+                <AlertIcon color='purple' />
+                <AlertDescription>
+                  Please sign in to place a bid.
+                </AlertDescription>
+              </Alert>
+            )}
           </Flex>
         </Flex>
       </Grid>

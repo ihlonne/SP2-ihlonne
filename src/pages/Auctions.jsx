@@ -80,8 +80,6 @@ const Auctions = () => {
         if (data.meta.isLastPage) {
           setHasMore(false);
         }
-        console.log(uniqueListings);
-        console.log(processedListings);
       } catch (error) {
         console.error('Failed to fetch listings:', error);
       } finally {
