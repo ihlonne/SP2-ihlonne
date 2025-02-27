@@ -49,7 +49,7 @@ const Carousel = ({ title, listings }) => {
       >
         {listings.map((listing) => (
           <SwiperSlide key={listing.id}>
-            <AuctionCard listing={listing} />
+            <AuctionCard listing={listing} sellerName={listing.seller?.name} />
           </SwiperSlide>
         ))}
       </Swiper>

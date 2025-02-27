@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react';
 import { createAuction, getAuctions } from '../api/auctionApi';
 import AuctionCard from '../components/UI/AuctionCard';
+import AuctionList from '../components/UI/AuctionList';
 import { FaListUl } from 'react-icons/fa';
 import { IoGrid } from 'react-icons/io5';
 import { AddIcon } from '@chakra-ui/icons';
@@ -34,15 +35,14 @@ const Auctions = () => {
   const [sortOption, setSortOption] = useState('ending_soon');
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [visibleCount, setVisibleCount] = useState(16);
+  const [visibleCount, setVisibleCount] = useState(8);
 
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
-  /*   const [mediaUrls] = useState([]);
-  const [tags] = useState([]); */
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editAuction, setEditAuction] = useState(null);
+  const [isGridView, setIsGridView] = useState(true);
 
   const { search } = useLocation();
   const params = new URLSearchParams(search);
@@ -76,17 +76,14 @@ const Auctions = () => {
         processedListings = sortListings(processedListings, sortOption);
         setListings(processedListings);
 
-        // Check if there are more pages to fetch
-        if (data.meta.isLastPage) {
-          setHasMore(false);
-        }
+        setHasMore(processedListings.length > visibleCount);
       } catch (error) {
         console.error('Failed to fetch listings:', error);
       } finally {
         setLoading(false);
       }
     },
-    [query, category, sortOption]
+    [query, category, sortOption, visibleCount]
   );
 
   useEffect(() => {
@@ -160,21 +157,25 @@ const Auctions = () => {
       >
         <Flex gap='2' align='center'>
           <IconButton
-            bg='transparent'
+            bg={isGridView ? 'brand.600' : 'transparent'}
+            color={isGridView ? 'white' : 'black'}
             border='1px'
             rounded='lg'
             borderColor='brand.100'
-          >
-            <Icon as={FaListUl} />
-          </IconButton>
+            onClick={() => setIsGridView(true)}
+            aria-label='Grid View'
+            icon={<Icon as={IoGrid} />}
+          />
           <IconButton
-            bg='transparent'
+            bg={!isGridView ? 'brand.600' : 'transparent'}
+            color={!isGridView ? 'white' : 'black'}
             border='1px'
             rounded='lg'
             borderColor='brand.100'
-          >
-            <Icon as={IoGrid} />
-          </IconButton>
+            onClick={() => setIsGridView(false)}
+            aria-label='List View'
+            icon={<Icon as={FaListUl} />}
+          />
           <Text>{listings.length} results</Text>
         </Flex>
         <Flex gap='4' direction={{ base: 'column', sm: 'row' }}>
@@ -207,26 +208,58 @@ const Auctions = () => {
       <Heading display='flex' alignSelf='flex-start' mt='10' mb='6'>
         Browse Auctions
       </Heading>
-      <Grid
-        w='100%'
-        templateColumns='repeat(auto-fill, minmax(230px, 1fr))'
-        gap='5'
-        rowGap='12'
-        mt='8'
-        mb='24'
-        mx='auto'
-        justify='flex-start'
-      >
-        {listings.length > 0 ? (
-          listings.slice(0, visibleCount).map((listing) => (
-            <GridItem key={listing.id}>
-              <AuctionCard listing={listing} w='100%' />
-            </GridItem>
-          ))
-        ) : (
-          <p>No listings available</p>
-        )}
-      </Grid>
+      {isGridView ? (
+        <Grid
+          w='100%'
+          templateColumns='repeat(auto-fill, minmax(230px, 1fr))'
+          gap='5'
+          rowGap='12'
+          mt='8'
+          mb='24'
+          mx='auto'
+          justify='flex-start'
+        >
+          {listings.length > 0 ? (
+            listings.slice(0, visibleCount).map((listing) => (
+              <GridItem key={listing.id}>
+                <AuctionCard
+                  listing={listing}
+                  w='100%'
+                  sellerName={listing.seller?.name}
+                />
+              </GridItem>
+            ))
+          ) : (
+            <p>No listings available</p>
+          )}
+        </Grid>
+      ) : (
+        <Grid
+          w='100%'
+          templateColumns='1fr'
+          gap='5'
+          rowGap='12'
+          mt='8'
+          mb='24'
+          mx='auto'
+          justify='flex-start'
+        >
+          {listings.length > 0 ? (
+            listings.slice(0, visibleCount).map((listing) => (
+              <GridItem key={listing.id}>
+                <AuctionList
+                  listing={listing}
+                  w='100%'
+                  sellerName={listing.seller?.name}
+                />
+              </GridItem>
+            ))
+          ) : (
+            <p>No listings available</p>
+          )}
+        </Grid>
+      )}
+
       {hasMore && (
         <Button
           bg='brand.100'

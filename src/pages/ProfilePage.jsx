@@ -11,7 +11,6 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { FaCamera } from 'react-icons/fa';
 import AuctionCard from '../components/UI/AuctionCard';
 import CustomModal from '../components/UI/Modal';
 import EditProfileForm from '../components/UI/Forms/EditProfileForm';
@@ -21,6 +20,8 @@ import { useAuth } from '../hooks/useAuth';
 import { getListings, getProfile, getWins } from '../api/profileApi';
 import { deleteAuction, updateAuction } from '../api/auctionApi';
 import AuctionForm from '../components/UI/Forms/AuctionForm';
+import { EditIcon } from '@chakra-ui/icons';
+import api from '../api/axios';
 
 function ProfilePage() {
   const { name } = useParams();
@@ -73,7 +74,26 @@ function ProfilePage() {
 
         if (user.name === name) {
           const winsData = await getWins(name);
-          setWins(winsData);
+
+          // Fetch seller info for each won auction
+          const winsWithSellers = await Promise.all(
+            winsData.map(async (win) => {
+              try {
+                const response = await api.get(
+                  `/auction/listings/${win.id}?_seller=true`
+                );
+                return response.data?.data || win;
+              } catch (error) {
+                console.error(
+                  `Error fetching seller for listing ${win.id}:`,
+                  error
+                );
+                return win;
+              }
+            })
+          );
+
+          setWins(winsWithSellers);
         } else {
           setWins([]);
         }
@@ -86,6 +106,8 @@ function ProfilePage() {
 
     loadData();
   }, [name, user]);
+
+  console.log(wins);
 
   if (!user) {
     return (
@@ -214,17 +236,25 @@ function ProfilePage() {
       w={{ base: '90%', xl: '100%' }}
       mx='auto'
     >
-      <Flex
-        direction={{ base: 'column', md: 'row' }}
-        justify={{ base: 'center', md: 'flex-start' }}
-        align={{ base: 'center', md: 'flex-start' }}
+      <Box
+        bgImage={profile.banner.url}
+        bgRepeat='no-repeat'
+        bgPosition='center'
+        bgSize='cover'
         w='100%'
-      >
-        <Box position='relative' w='100px' h='100px'>
-          <Avatar size='2xl' name={profile.name} src={profile.avatar?.url} />
+        h='260px'
+      ></Box>
+      <Flex direction='column' justify='center' align='center' w='100%'>
+        <Box position='relative' w='100px' h='100px' mt='-20'>
+          <Avatar
+            size='2xl'
+            name={profile.name}
+            src={profile.avatar?.url}
+            border='8px solid white'
+          />
           {user.name === name ? (
             <IconButton
-              icon={<FaCamera />}
+              icon={<EditIcon />}
               size='sm'
               bg='black'
               color='white'
@@ -239,14 +269,13 @@ function ProfilePage() {
           ) : null}
         </Box>
 
-        <Flex direction='column' align='flex-start' ml={{ base: 0, md: '16' }}>
+        <Flex direction='column' align='center' mt='8'>
           <Heading as='h2' mt='4'>
             {profile.name}
           </Heading>
-          <Heading as='h3' size='xs' mt='4'>
-            Bio
-          </Heading>
-          <Text fontSize='xs'>{profile.bio || 'No bio available.'}</Text>
+          <Text fontSize='xs' mt='4'>
+            {profile.bio || 'No bio available.'}
+          </Text>
         </Flex>
       </Flex>
 
@@ -296,7 +325,12 @@ function ProfilePage() {
           (listings.length > 0 ? (
             listings.map((listing) => (
               <GridItem key={listing.id}>
-                <AuctionCard listing={listing} w='100%' profile={profile} />
+                <AuctionCard
+                  listing={listing}
+                  w='100%'
+                  profile={profile}
+                  sellerName={profile?.name}
+                />
               </GridItem>
             ))
           ) : (
@@ -323,7 +357,11 @@ function ProfilePage() {
           (wins.length > 0 ? (
             wins.map((win) => (
               <GridItem key={win.id}>
-                <AuctionCard listing={win} w='100%' />
+                <AuctionCard
+                  listing={win}
+                  w='100%'
+                  sellerName={win.seller?.name || 'Unknown Seller'}
+                />
               </GridItem>
             ))
           ) : (
