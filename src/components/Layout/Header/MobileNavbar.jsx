@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import {
   Avatar,
   Image,
@@ -27,27 +26,13 @@ import { useAuth } from '../../../hooks/useAuth';
 import { handleLogout } from '../../../hooks/authUtils';
 import LoginForm from '../../UI/Forms/LoginForm';
 import RegisterForm from '../../UI/Forms/RegisterForm';
-import { getProfile } from '../../../api/profileApi';
 
 import { Link } from 'react-router-dom';
+import { useCredits } from '../../../context/CreditContext';
 
 function MobileNavbar() {
   const { user, setUser } = useAuth();
-  const [credits, setCredits] = useState(0);
-
-  useEffect(() => {
-    const getUserCredits = async () => {
-      if (user?.name) {
-        try {
-          const profileData = await getProfile(user.name);
-          setCredits(profileData.data);
-        } catch (error) {
-          console.error('Failed to fetch credits:', error);
-        }
-      }
-    };
-    getUserCredits();
-  }, [user]);
+  const { credits } = useCredits();
 
   // Manage drawer state
   const {

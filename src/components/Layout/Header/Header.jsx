@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import {
   Avatar,
   Flex,
@@ -19,28 +18,11 @@ import { handleLogout } from '../../../hooks/authUtils';
 import { useAuth } from '../../../hooks/useAuth';
 import { Link } from 'react-router-dom';
 import SearchBar from '../../UI/SearchBar';
-import { getProfile } from '../../../api/profileApi';
+import { useCredits } from '../../../context/CreditContext';
 
 function Header() {
   const { user, setUser } = useAuth();
-  const [credits, setCredits] = useState(0);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const getUserCredits = async () => {
-      if (user?.name) {
-        try {
-          const profileData = await getProfile(user.name);
-          setCredits(profileData.credits);
-        } catch (error) {
-          console.error('Failed to fetch credits:', error);
-        } finally {
-          setLoading(false);
-        }
-      }
-    };
-    getUserCredits();
-  }, [user]);
+  const { credits } = useCredits();
 
   const {
     isOpen: isRegisterOpen,
@@ -64,7 +46,7 @@ function Header() {
 
       {user?.accessToken ? (
         <Flex gap='4' align='center'>
-          {!loading && <Text>{credits} credits</Text>}
+          <Text>{credits} credits</Text>
           <Link to={`/profile/${user.name}`}>
             <Avatar size='sm' name={user?.name} src={user?.avatar?.url} />
           </Link>

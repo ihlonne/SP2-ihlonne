@@ -21,22 +21,25 @@ import Auctions from './pages/Auctions';
 import ProfilePage from './pages/ProfilePAge';
 import NotFound from './pages/NotFound';
 import AuctionDetails from './pages/AuctionDetails';
+import { CreditsProvider } from './context/CreditProvider';
 
 function App() {
   const [isLargerThan900] = useMediaQuery('(min-width: 900px)');
   return (
-    <Router>
-      {isLargerThan900 ? <Header /> : <MobileHeader />}
-      {isLargerThan900 ? <Navbar /> : <MobileNavbar />}
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/auctions' element={<Auctions />} />
-        <Route path='/auctions/listing/:id' element={<AuctionDetails />} />
-        <Route path='/profile/:name' element={<ProfilePage />} />
-        <Route path='*' element={<NotFound />} />
-      </Routes>
-      <Footer />
-    </Router>
+    <CreditsProvider>
+      <Router>
+        {isLargerThan900 ? <Header /> : <MobileHeader />}
+        {isLargerThan900 ? <Navbar /> : <MobileNavbar />}
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/auctions' element={<Auctions />} />
+          <Route path='/auctions/listing/:id' element={<AuctionDetails />} />
+          <Route path='/profile/:name' element={<ProfilePage />} />
+          <Route path='*' element={<NotFound />} />
+        </Routes>
+        <Footer />
+      </Router>
+    </CreditsProvider>
   );
 }
 
