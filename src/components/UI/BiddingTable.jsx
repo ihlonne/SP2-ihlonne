@@ -33,15 +33,9 @@ const BiddingTable = ({ bids = [] }) => {
       <Table variant='striped' w='100%' style={{ tableLayout: 'auto' }}>
         <Thead>
           <Tr>
-            <Th minW='120px' textAlign='left'>
-              Bidder
-            </Th>
-            <Th minW='180px' textAlign='left'>
-              Date
-            </Th>
-            <Th minW='100px' textAlign='right'>
-              Bid
-            </Th>
+            <Th textAlign='left'>Bidder</Th>
+            <Th textAlign='left'>Date</Th>
+            <Th textAlign='right'>Bid</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -49,13 +43,7 @@ const BiddingTable = ({ bids = [] }) => {
             sortedBids.slice(0, visibleCount).map((bid, index) => (
               <Tr key={bid.id || index}>
                 <Td>
-                  <Text
-                    whiteSpace='nowrap'
-                    overflow='hidden'
-                    textOverflow='ellipsis'
-                  >
-                    {anonymiseName(bid.bidder?.name)}
-                  </Text>
+                  <Text>{anonymiseName(bid.bidder?.name)}</Text>
                 </Td>
                 <Td>
                   {new Date(
