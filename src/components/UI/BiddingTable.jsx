@@ -29,12 +29,11 @@ const BiddingTable = ({ bids = [] }) => {
   };
 
   return (
-    <TableContainer w='100%'>
-      <Table variant='striped' w='100%' style={{ tableLayout: 'auto' }}>
+    <TableContainer>
+      <Table variant='striped' style={{ tableLayout: 'auto' }}>
         <Thead>
           <Tr>
             <Th textAlign='left'>Bidder</Th>
-            <Th textAlign='left'>Date</Th>
             <Th textAlign='right'>Bid</Th>
           </Tr>
         </Thead>
@@ -45,11 +44,7 @@ const BiddingTable = ({ bids = [] }) => {
                 <Td>
                   <Text>{anonymiseName(bid.bidder?.name)}</Text>
                 </Td>
-                <Td>
-                  {new Date(
-                    bid.created || bid.updated || Date.now()
-                  ).toLocaleString()}
-                </Td>
+
                 <Td fontWeight='bold' textAlign='right'>
                   {bid.amount} Credits
                 </Td>

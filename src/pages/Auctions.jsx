@@ -142,7 +142,8 @@ const Auctions = () => {
       mx='auto'
       maxW='1200px'
       w='100%'
-      justify='center'
+      minH='100lvh'
+      justify='flex-start'
       align='center'
       px={{ base: '8', xl: 0 }}
       pb={{ base: '12', xl: 0 }}
