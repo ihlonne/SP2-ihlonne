@@ -50,7 +50,6 @@ const AuctionCard = ({ listing, isProfilePage, sellerName, onEdit }) => {
   const clickToProfile = () => {
     navigate(`/profile/${listing.seller.name}`);
   };
-
   return (
     <Box>
       <Box position='relative'>
@@ -94,7 +93,7 @@ const AuctionCard = ({ listing, isProfilePage, sellerName, onEdit }) => {
           fontSize='xs'
           onClick={() => clickToProfile()}
         >
-          {listing.seller?.name || 'Unknown Seller'}
+          {sellerName || 'Unknown Seller'}
         </Link>
       </Flex>
       <Flex align='center' gap='2' mt='3'>
