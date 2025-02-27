@@ -193,10 +193,10 @@ const AuctionDetails = () => {
   return (
     <Flex direction='column' justify='center' align='center' mb='16' w='full'>
       <Grid
-        templateColumns={{ base: '1fr', lg: 'repeat(2, 50%)' }}
+        templateColumns={{ base: '1fr', lg: 'repeat(2, 1fr)' }}
         gap='16'
         maxW='1290px'
-        w={{ base: '90%', md: '90%', lg: '100% ' }}
+        w={{ base: '90%', md: '90%', lg: '90% ', xl: '100%' }}
         mt='24'
       >
         <Flex direction='column'>
@@ -235,12 +235,12 @@ const AuctionDetails = () => {
           )}
         </Flex>
 
-        <Flex direction='column' gap='12'>
-          <Flex direction='column' w={{ base: '80%', md: '100%' }}>
-            <Heading as='h1' size='xl'>
+        <Flex direction='column' gap='12' w='100%'>
+          <Flex direction='column' w={{ base: '90%', md: '100%' }}>
+            <Heading as='h1' size={{ base: 'md', md: 'xl' }}>
               {listing.data.title}
             </Heading>
-            <Flex gap='2' align='center' mt='4'>
+            <Flex gap='2' align='center' mt='4' wrap='wrap'>
               <Text>Auction held by</Text>
               <Flex gap='2' align='center'>
                 <Link to='/profile'>
@@ -255,10 +255,12 @@ const AuctionDetails = () => {
                 </Link>
               </Flex>
             </Flex>
-            <Text my='12'>{listing.data.description}</Text>
+            <Text my='12' fontSize={{ base: 'sm', md: 'md' }}>
+              {listing.data.description}
+            </Text>
           </Flex>
 
-          <Flex direction='column' w={{ base: '80%', md: '100%' }}>
+          <Flex direction='column' w={{ base: '90%', md: '100%' }}>
             <Text fontSize='s' fontWeight='400'>
               Current Bid
             </Text>
@@ -296,7 +298,7 @@ const AuctionDetails = () => {
                   value={bidAmount}
                   bg='brand.100'
                   border='none'
-                  roundedRight='0'
+                  roundedRight='md'
                   onChange={(e) => setBidAmount(e.target.value)}
                 />
                 <Button

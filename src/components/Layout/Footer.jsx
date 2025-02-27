@@ -40,8 +40,8 @@ function Footer() {
       bg='black'
       p={{ base: '24px 8px', md: '24px 80px' }}
       mt='auto'
-      position='relative'
-      bottom={{ base: '80px', md: '0' }}
+      position={{ base: 'relative', md: 'unset' }}
+      bottom={{ base: '80px', md: '0', lg: '0' }}
     >
       <Link to='/'>
         <Image src={logo} alt='Company logo' maxH='40px' />

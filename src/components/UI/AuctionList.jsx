@@ -208,8 +208,10 @@ const AuctionList = ({ listing, sellerName }) => {
             </Link>
           </Flex>
 
-          <Text fontSize='xs' maxW='450px'>
-            {listing.description}
+          <Text fontSize='xs' maxW='450px' my={{ base: '4', md: '0' }}>
+            {listing.description.length > 200
+              ? `${listing.description.slice(0, 200)}...`
+              : listing.description}
           </Text>
 
           <Flex direction='column'>
