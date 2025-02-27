@@ -18,7 +18,7 @@ import Footer from './components/Layout/Footer';
 // Pages
 import Home from './pages/Home';
 import Auctions from './pages/Auctions';
-import ProfilePage from './pages/ProfilePAge';
+import ProfilePage from './pages/ProfilePage';
 import NotFound from './pages/NotFound';
 import AuctionDetails from './pages/AuctionDetails';
 import { CreditsProvider } from './context/CreditProvider';
