@@ -29,7 +29,7 @@ import { getProfile } from '../api/profileApi';
 
 const AuctionDetails = () => {
   const { id } = useParams();
-  const { user } = useAuth();
+  const { user } = useAuth() || {};
   const { credits, setCredits } = useCredits();
 
   const [auctions, setAuctions] = useState([]);
@@ -42,7 +42,6 @@ const AuctionDetails = () => {
     : null;
   const now = new Date();
 
-  // If auctionEndDate is invalid, prevent errors
   const timeRemaining =
     auctionEndDate && !isNaN(auctionEndDate.getTime())
       ? auctionEndDate > now
@@ -134,8 +133,9 @@ const AuctionDetails = () => {
       ? Math.max(...listing.data.bids.map((bid) => bid.amount))
       : 0;
 
-    const lastBidder = listing.data?.bids.length
-      ? listing.data.bids[listing.data.bids.length - 1].bidder.name
+    const lastBidder = listing?.data?.bids?.length
+      ? listing?.data?.bids[listing.data.bids.length - 1]?.bidder?.name ||
+        'No Bidders'
       : null;
 
     if (lastBidder === user.name) {
@@ -259,15 +259,15 @@ const AuctionDetails = () => {
             <Flex gap='2' align='center' mt='4' wrap='wrap'>
               <Text>Auction held by</Text>
               <Flex gap='2' align='center'>
-                <Link to={`/profile/${user.name}`}>
+                <Link to={user?.name ? `/profile/${user.name}` : '#'}>
                   <Avatar
                     size='xs'
                     name={listing.data.seller.name}
                     src={listing.data.seller.avatar?.url}
                   />
                 </Link>
-                <Link to={`/profile/${listing.data.seller.name}`}>
-                  <Text>{listing.data.seller.name}</Text>
+                <Link to={`/profile/${listing?.data?.seller?.name || '#'}`}>
+                  <Text>{listing?.data?.seller?.name || 'Unknown Seller'}</Text>
                 </Link>
               </Flex>
             </Flex>
@@ -316,6 +316,7 @@ const AuctionDetails = () => {
                   border='none'
                   roundedRight='md'
                   onChange={(e) => setBidAmount(e.target.value)}
+                  disabled={!user}
                 />
                 <Button
                   type='submit'
