@@ -13,6 +13,7 @@ export const getAuctions = async (page = 1) => {
   }
 };
 
+// Create auction
 export const createAuction = async (auctionData) => {
   try {
     const response = await api.post('/auction/listings', auctionData);
@@ -23,6 +24,7 @@ export const createAuction = async (auctionData) => {
   }
 };
 
+// Update auction
 export const updateAuction = async (id, auctionData) => {
   try {
     const response = await api.put(`/auction/listings/${id}`, auctionData);
@@ -33,6 +35,7 @@ export const updateAuction = async (id, auctionData) => {
   }
 };
 
+// Delete auction
 export const deleteAuction = async (id) => {
   try {
     const response = await api.delete(`/auction/listings/${id}`);

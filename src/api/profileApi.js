@@ -1,5 +1,6 @@
 import api from './axios';
 
+// Get profile
 export const getProfile = async (name) => {
   try {
     const response = await api.get(`/auction/profiles/${name}`);
@@ -10,6 +11,7 @@ export const getProfile = async (name) => {
   }
 };
 
+// Get user's listings
 export const getListings = async (name) => {
   try {
     const response = await api.get(`/auction/profiles/${name}/listings`);
@@ -20,6 +22,7 @@ export const getListings = async (name) => {
   }
 };
 
+// Get user's wins
 export const getWins = async (name) => {
   try {
     const response = await api.get(`/auction/profiles/${name}/wins`);

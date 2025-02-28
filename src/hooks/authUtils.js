@@ -1,5 +1,6 @@
 import { registerUser, loginUser } from '../api/authApi';
 
+// User register
 export async function handleRegister(userData) {
   try {
     const response = await registerUser(userData);
@@ -10,6 +11,7 @@ export async function handleRegister(userData) {
   }
 }
 
+// User login
 export async function handleLogin(credentials, setUser) {
   try {
     const response = await loginUser(credentials);
@@ -26,6 +28,7 @@ export async function handleLogin(credentials, setUser) {
   }
 }
 
+// User logout
 export async function handleLogout(setUser) {
   localStorage.removeItem('token');
   localStorage.removeItem('user');
