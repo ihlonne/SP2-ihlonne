@@ -167,10 +167,10 @@ function MobileNavbar() {
                     align='center'
                     gap='1'
                     cursor='pointer'
-                    onClick={() => handleNavigation(`/favourites`)}
+                    onClick={() => handleNavigation(`/favorites`)}
                   >
                     <Icon as={FaRegHeart} />
-                    <Text>My Favourites</Text>
+                    <Text>My Favorites</Text>
                   </Flex>
                 </Stack>
                 <Divider my='2' />

@@ -8,6 +8,10 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
+// Providers
+import { FavoritesProvider } from './context/FavoritesProvider';
+import { CreditsProvider } from './context/CreditProvider';
+
 // Components
 import Header from './components/Layout/Header/Header';
 import Navbar from './components/Layout/Header/Navbar';
@@ -21,25 +25,28 @@ import Auctions from './pages/Auctions';
 import ProfilePage from './pages/ProfilePage';
 import NotFound from './pages/NotFound';
 import AuctionDetails from './pages/AuctionDetails';
-import { CreditsProvider } from './context/CreditProvider';
+import Favorites from './pages/Favorites';
 
 function App() {
   const [isLargerThan900] = useMediaQuery('(min-width: 900px)');
   return (
-    <CreditsProvider>
-      <Router>
-        {isLargerThan900 ? <Header /> : <MobileHeader />}
-        {isLargerThan900 ? <Navbar /> : <MobileNavbar />}
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/auctions' element={<Auctions />} />
-          <Route path='/auctions/listing/:id' element={<AuctionDetails />} />
-          <Route path='/profile/:name' element={<ProfilePage />} />
-          <Route path='*' element={<NotFound />} />
-        </Routes>
-        <Footer />
-      </Router>
-    </CreditsProvider>
+    <FavoritesProvider>
+      <CreditsProvider>
+        <Router>
+          {isLargerThan900 ? <Header /> : <MobileHeader />}
+          {isLargerThan900 ? <Navbar /> : <MobileNavbar />}
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/auctions' element={<Auctions />} />
+            <Route path='/auctions/listing/:id' element={<AuctionDetails />} />
+            <Route path='/profile/:name' element={<ProfilePage />} />
+            <Route path='/favorites' element={<Favorites />} />
+            <Route path='*' element={<NotFound />} />
+          </Routes>
+          <Footer />
+        </Router>
+      </CreditsProvider>
+    </FavoritesProvider>
   );
 }
 
