@@ -36,6 +36,23 @@ const AuctionDetails = () => {
   const [listing, setListing] = useState(null);
   const [bidAmount, setBidAmount] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
+  const auctionEnded = new Date(listing?.data?.endsAt) < new Date();
+  const auctionEndDate = listing?.data?.endsAt
+    ? new Date(listing.data.endsAt)
+    : null;
+  const now = new Date();
+
+  // If auctionEndDate is invalid, prevent errors
+  const timeRemaining =
+    auctionEndDate && !isNaN(auctionEndDate.getTime())
+      ? auctionEndDate > now
+        ? `Auction ends ${formatDistanceToNow(auctionEndDate, {
+            addSuffix: true,
+          })}`
+        : `Auction ended ${formatDistanceToNow(auctionEndDate, {
+            addSuffix: true,
+          })}`
+      : 'Auction date unavailable';
 
   const toast = useToast();
 
@@ -81,11 +98,6 @@ const AuctionDetails = () => {
   if (!listing) {
     return <div>Loading...</div>;
   }
-
-  // Convert to a more readable time
-  const timeRemaining = formatDistanceToNow(new Date(listing.data.endsAt), {
-    addSuffix: true,
-  });
 
   // Convert to a more readable date
   const listingCreatedAt = new Date(listing.data.created);
@@ -190,6 +202,10 @@ const AuctionDetails = () => {
     }
   };
 
+  if (!listing) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <Flex direction='column' justify='center' align='center' mb='16' w='full'>
       <Grid
@@ -243,7 +259,7 @@ const AuctionDetails = () => {
             <Flex gap='2' align='center' mt='4' wrap='wrap'>
               <Text>Auction held by</Text>
               <Flex gap='2' align='center'>
-                <Link to='/profile'>
+                <Link to={`/profile/${user.name}`}>
                   <Avatar
                     size='xs'
                     name={listing.data.seller.name}
@@ -270,7 +286,7 @@ const AuctionDetails = () => {
                 : 0}{' '}
               Credits
             </Heading>
-            <Text>Auction ends {timeRemaining}</Text>
+            <Text>{timeRemaining}</Text>
             <Flex justify='space-between' maxW='400px' w='100%'>
               <Text fontSize='xs' fontWeight='400'>
                 Created at:{' '}
@@ -308,7 +324,7 @@ const AuctionDetails = () => {
                   roundedLeft='0'
                   roundedRight='md'
                   px='8'
-                  isDisabled={!user}
+                  isDisabled={!user || auctionEnded}
                 >
                   Submit a bid
                 </Button>
@@ -329,6 +345,21 @@ const AuctionDetails = () => {
                   <AlertDescription>
                     Please sign in to place a bid.
                   </AlertDescription>
+                </Alert>
+              )}
+              {auctionEnded && (
+                <Alert
+                  status='error'
+                  mt='4'
+                  bg='brand.200'
+                  border='1px'
+                  borderColor='purple'
+                  rounded='md'
+                  maxW='400px'
+                  w='100%'
+                >
+                  <AlertIcon color='purple' />
+                  <AlertDescription>The auction has ended.</AlertDescription>
                 </Alert>
               )}
             </Flex>
