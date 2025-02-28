@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { FavoritesContext } from './FavoritesContext';
 import PropTypes from 'prop-types';
 
+// Ensure that favorites is stored properly
 export const FavoritesProvider = ({ children }) => {
   const [favorites, setFavorites] = useState(() => {
     const storedFavorites = localStorage.getItem('favorites');

@@ -3,6 +3,8 @@ import { getProfile } from '../api/profileApi';
 import { useAuth } from '../hooks/useAuth';
 import PropTypes from 'prop-types';
 import { CreditsContext } from './CreditContext';
+
+// Ensure that credits gets updated everywhere
 export const CreditsProvider = ({ children }) => {
   const { user } = useAuth();
   const [credits, setCredits] = useState(0);
