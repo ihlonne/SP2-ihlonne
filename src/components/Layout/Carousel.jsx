@@ -57,7 +57,8 @@ const Carousel = ({ title, listings }) => {
         ref={prevRef}
         icon={<ChevronLeftIcon />}
         position='absolute'
-        top='45%'
+        top='
+        40%'
         left='-20px'
         transform='translateY(-50%)'
         bg='white'
@@ -70,7 +71,8 @@ const Carousel = ({ title, listings }) => {
         ref={nextRef}
         icon={<ChevronRightIcon />}
         position='absolute'
-        top='45%'
+        top='
+        40%'
         right='-20px'
         transform='translateY(-50%)'
         bg='white'

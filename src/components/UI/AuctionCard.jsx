@@ -105,7 +105,7 @@ const AuctionCard = ({ listing, isProfilePage, sellerName, onEdit }) => {
           _hover={{ bg: 'brand.600', color: 'white' }}
           position='absolute'
           top='2'
-          right='2' // Adjusted to prevent overlap with favorite button
+          right='2'
           aria-label='Edit listing'
           borderRadius='full'
           onClick={() => onEdit(listing)}
