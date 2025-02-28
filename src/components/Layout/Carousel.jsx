@@ -47,11 +47,18 @@ const Carousel = ({ title, listings }) => {
           1024: { slidesPerView: 4 },
         }}
       >
-        {listings.map((listing) => (
-          <SwiperSlide key={listing.id}>
-            <AuctionCard listing={listing} sellerName={listing.seller?.name} />
-          </SwiperSlide>
-        ))}
+        {listings?.length > 0 ? (
+          listings.map((listing) => (
+            <SwiperSlide key={listing?.id || Math.random()}>
+              <AuctionCard
+                listing={listing}
+                sellerName={listing?.seller?.name || 'Unknown'}
+              />
+            </SwiperSlide>
+          ))
+        ) : (
+          <p>No listings available</p>
+        )}
       </Swiper>
       <IconButton
         ref={prevRef}
