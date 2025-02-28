@@ -1,3 +1,10 @@
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+
+import api from '../api/axios';
+import { getListings, getProfile, getWins } from '../api/profileApi';
+import { deleteAuction, updateAuction } from '../api/auctionApi';
+
 import {
   Avatar,
   Box,
@@ -9,23 +16,21 @@ import {
   Text,
   useToast,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
+
 import AuctionCard from '../components/UI/AuctionCard';
 import CustomModal from '../components/UI/Modal';
 import EditProfileForm from '../components/UI/Forms/EditProfileForm';
 import LoginForm from '../components/UI/Forms/LoginForm';
 import RegisterForm from '../components/UI/Forms/RegisterForm';
-import { useAuth } from '../hooks/useAuth';
-import { getListings, getProfile, getWins } from '../api/profileApi';
-import { deleteAuction, updateAuction } from '../api/auctionApi';
 import AuctionForm from '../components/UI/Forms/AuctionForm';
+
 import { EditIcon } from '@chakra-ui/icons';
-import api from '../api/axios';
 
 function ProfilePage() {
   const { name } = useParams();
   const { user, setUser } = useAuth();
+  const navigate = useNavigate();
 
   const [profile, setProfile] = useState(null);
   const [listings, setListings] = useState([]);
@@ -107,15 +112,16 @@ function ProfilePage() {
     loadData();
   }, [name, user]);
 
-  console.log(wins);
-
   if (!user) {
     return (
       <>
         {/* Login Modal */}
         <CustomModal
           isOpen={isLoginModalOpen}
-          onClose={() => setIsLoginModalOpen(false)}
+          onClose={() => {
+            navigate('/');
+            setIsLoginModalOpen(false);
+          }}
           title='Login Required'
         >
           <LoginForm
@@ -130,7 +136,10 @@ function ProfilePage() {
         {/* Register Modal */}
         <CustomModal
           isOpen={isRegisterModalOpen}
-          onClose={() => setIsRegisterModalOpen(false)}
+          onClose={() => {
+            navigate('/');
+            setIsRegisterModalOpen(false);
+          }}
           title='Create an Account'
         >
           <RegisterForm
@@ -158,6 +167,8 @@ function ProfilePage() {
     setEditAuction(auction);
     setIsAuctionModalOpen(true);
   };
+
+  // Update auction
 
   const handleAuctionUpdate = async (formData) => {
     setLoading(true);
@@ -195,6 +206,8 @@ function ProfilePage() {
       setLoading(false);
     }
   };
+
+  // Delete auction
 
   const handleAuctionDelete = async () => {
     try {

@@ -26,10 +26,10 @@ const CustomModal = ({ isOpen, onClose, title, children }) => {
 };
 
 CustomModal.propTypes = {
-  isOpen: PropTypes.bool.isRequired, // Must be a boolean
-  onClose: PropTypes.func.isRequired, // Must be a function
-  title: PropTypes.string.isRequired, // Must be a string
-  children: PropTypes.node.isRequired, // Can be any valid React node
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 export default CustomModal;

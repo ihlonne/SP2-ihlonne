@@ -1,4 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
+import { createAuction, getAuctions } from '../api/auctionApi';
+
+import { useAuth } from '../hooks/useAuth';
+import { useLocation } from 'react-router-dom';
+
 import {
   Grid,
   GridItem,
@@ -12,21 +17,20 @@ import {
   Stack,
   useToast,
 } from '@chakra-ui/react';
-import { createAuction, getAuctions } from '../api/auctionApi';
 import AuctionCard from '../components/UI/AuctionCard';
 import AuctionList from '../components/UI/AuctionList';
-import { FaListUl } from 'react-icons/fa';
-import { IoGrid } from 'react-icons/io5';
-import { AddIcon } from '@chakra-ui/icons';
 import CustomModal from '../components/UI/Modal';
 import AuctionForm from '../components/UI/Forms/AuctionForm';
-import { useAuth } from '../hooks/useAuth';
+
 import {
   filterByCategory,
   searchListings,
   sortListings,
 } from '../hooks/auctionUtils';
-import { useLocation } from 'react-router-dom';
+
+import { FaListUl } from 'react-icons/fa';
+import { IoGrid } from 'react-icons/io5';
+import { AddIcon } from '@chakra-ui/icons';
 
 const Auctions = () => {
   const toast = useToast();

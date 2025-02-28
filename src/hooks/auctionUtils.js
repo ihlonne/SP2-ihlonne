@@ -1,3 +1,4 @@
+// Sort by select option on all auctions
 export const sortListings = (listings, sortOption) => {
   let sortedListings = [...listings];
 
@@ -28,6 +29,7 @@ export const sortListings = (listings, sortOption) => {
   return sortedListings;
 };
 
+// Filter auctions by categories in navigation
 export const filterByCategory = (listings, category) => {
   if (!category) return listings;
 
@@ -36,6 +38,7 @@ export const filterByCategory = (listings, category) => {
   );
 };
 
+// Search through listings by title
 export const searchListings = (listings, query) => {
   if (!query) return listings;
 

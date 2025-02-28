@@ -15,7 +15,6 @@ import PropTypes from 'prop-types';
 const BiddingTable = ({ bids = [] }) => {
   const [visibleCount, setVisibleCount] = useState(3);
 
-  // ✅ Sort bids by created date in ascending order (oldest first)
   const sortedBids = [...bids].sort(
     (a, b) => new Date(b.created) - new Date(a.created)
   );
