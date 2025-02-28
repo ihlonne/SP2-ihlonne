@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Avatar,
   Image,
@@ -15,24 +17,29 @@ import {
   Divider,
   useDisclosure,
 } from '@chakra-ui/react';
-import { HamburgerIcon } from '@chakra-ui/icons';
-import { FaSignInAlt } from 'react-icons/fa';
-import { TiUserAdd } from 'react-icons/ti';
-
-import { FiLogOut } from 'react-icons/fi';
-import logo from '../../../assets/sp2logodark.png';
-import CustomModal from '../../UI/Modal';
+import { useCredits } from '../../../context/CreditContext';
 import { useAuth } from '../../../hooks/useAuth';
-import { handleLogout } from '../../../hooks/authUtils';
+import CustomModal from '../../UI/Modal';
 import LoginForm from '../../UI/Forms/LoginForm';
 import RegisterForm from '../../UI/Forms/RegisterForm';
 
-import { Link } from 'react-router-dom';
-import { useCredits } from '../../../context/CreditContext';
+import logo from '../../../assets/sp2logodark.png';
+import { handleLogout } from '../../../hooks/authUtils';
+
+import { HamburgerIcon } from '@chakra-ui/icons';
+import { FiLogOut } from 'react-icons/fi';
+import { CgProfile } from 'react-icons/cg';
+import { FaRegHeart, FaSignInAlt } from 'react-icons/fa';
+import { TiUserAdd } from 'react-icons/ti';
 
 function MobileNavbar() {
   const { user, setUser } = useAuth();
   const { credits } = useCredits();
+  const navigate = useNavigate();
+  const [isProfileNavOpen, setIsProfileNavOpen] = useState(false);
+  const menuRef = useRef(null);
+
+  const avatarRef = useRef(null);
 
   // Manage drawer state
   const {
@@ -64,6 +71,26 @@ function MobileNavbar() {
     'Collectibles',
   ];
 
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target) &&
+        avatarRef.current !== event.target
+      ) {
+        setTimeout(() => setIsProfileNavOpen(false), 100);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Navigate and close profile menu
+  const handleNavigation = (path) => {
+    setIsProfileNavOpen(false);
+    navigate(path);
+  };
+
   return (
     <Flex
       position='fixed'
@@ -94,20 +121,74 @@ function MobileNavbar() {
             <Text fontSize='xs'>Categories</Text>
           </Flex>
           <Flex gap='4' align='center'>
-            <Text>{credits} Cr</Text>
-            <Link to={`/profile/${user.name}`}>
-              <Avatar size='sm' name={user?.name} src={user?.avatar?.url} />
-            </Link>
+            <Flex direction='column' align='flex-end'>
+              <Link to={`/profile/${user.name}`}>
+                <Text fontWeight='600'>{user.name}</Text>
+              </Link>
+              <Text fontSize='xs'>{credits} Credits</Text>
+            </Flex>
+            <Avatar
+              id='profile-avatar'
+              size='md'
+              name={user?.name}
+              src={user?.avatar?.url}
+              onClick={() => setIsProfileNavOpen((prev) => !prev)}
+              cursor='pointer'
+              aria-label='Profile menu'
+            />
 
-            <IconButton
-              bg='transparent'
-              color='black'
-              onClick={() => {
-                handleLogout(setUser);
-              }} // ✅ Call function on click
-            >
-              <Icon as={FiLogOut} boxSize='8' />
-            </IconButton>
+            {/* Profile Navigation Menu */}
+            {isProfileNavOpen && (
+              <Flex
+                ref={menuRef}
+                position='absolute'
+                bg='white'
+                border='1px solid #eee'
+                rounded='md'
+                right='35px'
+                bottom='75px'
+                w='200px'
+                direction='column'
+                p='1rem'
+                zIndex='1000'
+                gap='2'
+              >
+                <Stack spacing='2'>
+                  <Flex
+                    align='center'
+                    gap='1'
+                    cursor='pointer'
+                    onClick={() => handleNavigation(`/profile/${user.name}`)}
+                  >
+                    <Icon as={CgProfile} />
+                    <Text>My Profile</Text>
+                  </Flex>
+                  <Flex
+                    align='center'
+                    gap='1'
+                    cursor='pointer'
+                    onClick={() => handleNavigation(`/favourites`)}
+                  >
+                    <Icon as={FaRegHeart} />
+                    <Text>My Favourites</Text>
+                  </Flex>
+                </Stack>
+                <Divider my='2' />
+                <Flex
+                  align='center'
+                  gap='1'
+                  cursor='pointer'
+                  onClick={() => {
+                    handleNavigation('/');
+                    handleLogout(setUser);
+                    setIsProfileNavOpen(false);
+                  }}
+                >
+                  <Icon as={FiLogOut} />
+                  <Text>Logout</Text>
+                </Flex>
+              </Flex>
+            )}
           </Flex>
         </Flex>
       ) : (
