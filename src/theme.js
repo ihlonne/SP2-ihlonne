@@ -19,6 +19,7 @@ const theme = extendTheme({
       red: '#F93232', // Bright red - error
       green: '#439f6E', // Deep green - success
       purple: '#7C79EF', // Soft purple - info
+      like: '#DC143C', // Deep red - like
     },
     white: '#FFFFFF',
     black: '#222222',

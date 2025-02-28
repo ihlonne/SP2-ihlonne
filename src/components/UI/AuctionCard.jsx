@@ -1,25 +1,41 @@
 import { PropTypes } from 'prop-types';
-import { Box, Image, Text, Link, IconButton, Flex } from '@chakra-ui/react';
+import {
+  Box,
+  Image,
+  Text,
+  Link,
+  IconButton,
+  Flex,
+  useTheme,
+} from '@chakra-ui/react';
 import { formatDistanceToNow, isPast } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import { EditIcon } from '@chakra-ui/icons';
 import { useAuth } from '../../hooks/useAuth';
 import { useEffect, useState } from 'react';
 import api from '../../api/axios';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import { useFavorites } from '../../context/FavoritesContext';
 
 const AuctionCard = ({ listing, isProfilePage, sellerName, onEdit }) => {
   const { user } = useAuth();
+  const theme = useTheme();
+  const heartColor = theme.colors.accent.like;
   const navigate = useNavigate();
   const [highestBid, setHighestBid] = useState(null);
+  const { favorites, toggleFavorite } = useFavorites();
+  const isFavorite = favorites.includes(listing.id);
 
-  // Convert listing end time to Date object
-  const auctionEndTime = new Date(listing?.endsAt);
-  const hasEnded = isPast(auctionEndTime);
-  const timeRemaining = hasEnded
-    ? 'Auction has ended'
-    : `Ends ${formatDistanceToNow(auctionEndTime, { addSuffix: true })}`;
+  // Ensure `endsAt` exists before formatting
+  const auctionEndTime = listing?.endsAt ? new Date(listing.endsAt) : null;
+  const hasEnded = auctionEndTime ? isPast(auctionEndTime) : false;
+  const timeRemaining = auctionEndTime
+    ? hasEnded
+      ? 'Auction has ended'
+      : `Ends ${formatDistanceToNow(auctionEndTime, { addSuffix: true })}`
+    : 'No end time available';
 
-  // Fetch full listing details to get bids
+  // Fetch highest bid
   useEffect(() => {
     const fetchListingDetails = async () => {
       try {
@@ -29,90 +45,114 @@ const AuctionCard = ({ listing, isProfilePage, sellerName, onEdit }) => {
         const bids = response.data?.data?.bids || [];
 
         if (bids.length > 0) {
-          const highest = Math.max(...bids.map((bid) => bid.amount));
-          setHighestBid(highest);
+          setHighestBid(Math.max(...bids.map((bid) => bid.amount)));
         } else {
-          setHighestBid(0); // No bids yet
+          setHighestBid(0);
         }
       } catch (error) {
-        console.error('Failed to fetch full listing details:', error);
-        setHighestBid(0); // Fallback in case of an error
+        console.error('Failed to fetch bids:', error);
+        setHighestBid(0);
       }
     };
 
     fetchListingDetails();
   }, [listing.id]);
 
-  const clickToListing = () => {
-    navigate(`/auctions/listing/${listing.id}`);
-  };
-
-  const clickToProfile = () => {
-    navigate(`/profile/${listing.seller.name}`);
-  };
   return (
-    <Box>
-      <Box position='relative'>
-        <Image
-          src={
-            listing.media?.length > 0
-              ? listing.media[0].url
-              : 'https://images.pexels.com/photos/28216688/pexels-photo-28216688/free-photo-of-autumn-camping.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
-          }
-          alt={listing.title || 'Auction Image'}
-          w='100%'
-          h='175px'
-          objectFit='cover'
-          rounded='md'
-          mb='2'
-        />
-        {isProfilePage && user?.name === sellerName && onEdit && (
-          <IconButton
-            icon={<EditIcon />}
-            size='sm'
-            bg='black'
-            color='white'
-            _hover={{ bg: 'brand.600', color: 'white' }}
-            position='absolute'
-            top='2'
-            right='2'
-            aria-label='Edit listing'
-            borderRadius='full'
-            onClick={() => onEdit(listing)}
-          />
-        )}
-      </Box>
-      <Link fontWeight='bold' onClick={() => clickToListing()}>
-        {listing.title}
-      </Link>
-      <Flex align='center' gap='1'>
-        <Text fontSize='xs'>Auction by: </Text>
+    <Box position='relative' borderRadius='md' overflow='hidden'>
+      {/* Auction Image */}
+      <Image
+        src={
+          listing.media?.length > 0
+            ? listing.media[0].url
+            : 'https://images.pexels.com/photos/28216688/pexels-photo-28216688/free-photo-of-autumn-camping.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+        }
+        alt={listing.title || 'Auction Image'}
+        w='100%'
+        h='175px'
+        objectFit='cover'
+        rounded='md'
+        opacity={hasEnded ? 0.6 : 1}
+      />
 
+      {/* Favorite Button */}
+      {user?.name !== sellerName && (
+        <IconButton
+          size='sm'
+          icon={
+            isFavorite ? (
+              <FaHeart color={heartColor} />
+            ) : (
+              <FaRegHeart color='gray' />
+            )
+          }
+          position='absolute'
+          top='2'
+          right='2'
+          aria-label='Toggle Favorite'
+          borderRadius='full'
+          onClick={() => toggleFavorite(listing.id)}
+        />
+      )}
+
+      {/* Edit Button (Only if user is seller) */}
+      {isProfilePage && user?.name === sellerName && onEdit && (
+        <IconButton
+          icon={<EditIcon />}
+          size='sm'
+          bg='black'
+          color='white'
+          _hover={{ bg: 'brand.600', color: 'white' }}
+          position='absolute'
+          top='2'
+          right='2' // Adjusted to prevent overlap with favorite button
+          aria-label='Edit listing'
+          borderRadius='full'
+          onClick={() => onEdit(listing)}
+        />
+      )}
+
+      {/* Auction Details */}
+      <Box p='4'>
         <Link
-          textDecoration='underline'
-          fontSize='xs'
-          onClick={() => clickToProfile()}
+          fontWeight='bold'
+          onClick={() => navigate(`/auctions/listing/${listing.id}`)}
         >
-          {sellerName || 'Unknown Seller'}
+          {listing.title}
         </Link>
-      </Flex>
-      <Flex align='center' gap='2' mt='3'>
-        <Text color='black'>Current bid: </Text>
-        {highestBid !== null ? (
-          <Text fontWeight='600'>{highestBid} Credits</Text>
-        ) : (
-          'Loading...'
-        )}
-      </Flex>
-      <Text fontSize='sm'>({listing._count?.bids || 0} Bids)</Text>
-      <Text
-        fontSize='xs'
-        mt='2'
-        fontWeight={hasEnded ? 'bold' : 'normal'}
-        color={hasEnded ? 'red.500' : 'black'}
-      >
-        {timeRemaining}
-      </Text>
+
+        {/* Seller Info */}
+        <Flex align='center' gap='1'>
+          <Text fontSize='xs'>Auction by: </Text>
+          <Link
+            textDecoration='underline'
+            fontSize='xs'
+            onClick={() => navigate(`/profile/${listing.seller.name}`)}
+          >
+            {sellerName || 'Unknown Seller'}
+          </Link>
+        </Flex>
+
+        {/* Bid Information */}
+        <Flex align='center' gap='2' mt='3'>
+          <Text color='black'>Current bid: </Text>
+          <Text fontWeight='600'>
+            {highestBid !== null ? `${highestBid} Credits` : 'No Bids Yet'}
+          </Text>
+        </Flex>
+
+        <Text fontSize='sm'>({listing._count?.bids || 0} Bids)</Text>
+
+        {/* Auction End Status */}
+        <Text
+          fontSize='xs'
+          mt='2'
+          fontWeight='bold'
+          color={hasEnded ? 'red.500' : 'black'}
+        >
+          {timeRemaining}
+        </Text>
+      </Box>
     </Box>
   );
 };
