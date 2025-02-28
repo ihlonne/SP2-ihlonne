@@ -133,8 +133,9 @@ const AuctionDetails = () => {
       ? Math.max(...listing.data.bids.map((bid) => bid.amount))
       : 0;
 
-    const lastBidder = listing.data?.bids.length
-      ? listing.data.bids[listing.data.bids.length - 1].bidder.name
+    const lastBidder = listing?.data?.bids?.length
+      ? listing?.data?.bids[listing.data.bids.length - 1]?.bidder?.name ||
+        'No Bidders'
       : null;
 
     if (lastBidder === user.name) {
@@ -265,14 +266,8 @@ const AuctionDetails = () => {
                     src={listing.data.seller.avatar?.url}
                   />
                 </Link>
-                <Link
-                  to={
-                    listing?.data?.seller?.name
-                      ? `/profile/${listing.data.seller.name}`
-                      : '#'
-                  }
-                >
-                  <Text>{listing.data.seller.name}</Text>
+                <Link to={`/profile/${listing?.data?.seller?.name || '#'}`}>
+                  <Text>{listing?.data?.seller?.name || 'Unknown Seller'}</Text>
                 </Link>
               </Flex>
             </Flex>

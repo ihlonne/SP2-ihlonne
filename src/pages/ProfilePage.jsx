@@ -284,7 +284,7 @@ function ProfilePage() {
 
         <Flex direction='column' align='center' mt='8'>
           <Heading as='h2' mt='4'>
-            {profile.name}
+            {profile?.name || 'Unknown'}
           </Heading>
           <Text fontSize='xs' mt='4'>
             {profile.bio || 'No bio available.'}
