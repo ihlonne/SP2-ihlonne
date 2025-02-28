@@ -76,24 +76,26 @@ const AuctionCard = ({ listing, isProfilePage, sellerName, onEdit }) => {
       />
 
       {/* Favorite Button */}
-      {user?.name !== sellerName && (
-        <IconButton
-          size='sm'
-          icon={
-            isFavorite ? (
-              <FaHeart color={heartColor} />
-            ) : (
-              <FaRegHeart color='gray' />
-            )
-          }
-          position='absolute'
-          top='2'
-          right='2'
-          aria-label='Toggle Favorite'
-          borderRadius='full'
-          onClick={() => toggleFavorite(listing.id)}
-        />
-      )}
+      {user
+        ? user?.name !== sellerName && (
+            <IconButton
+              size='sm'
+              icon={
+                isFavorite ? (
+                  <FaHeart color={heartColor} />
+                ) : (
+                  <FaRegHeart color='gray' />
+                )
+              }
+              position='absolute'
+              top='2'
+              right='2'
+              aria-label='Toggle Favorite'
+              borderRadius='full'
+              onClick={() => toggleFavorite(listing.id)}
+            />
+          )
+        : null}
 
       {/* Edit Button (Only if user is seller) */}
       {isProfilePage && user?.name === sellerName && onEdit && (
