@@ -27,6 +27,7 @@ import AuctionDetails from './pages/AuctionDetails';
 import Favorites from './pages/Favorites';
 import NotFound from './pages/NotFound';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import About from './pages/About';
 
 function App() {
   const [isLargerThan900] = useMediaQuery('(min-width: 900px)');
@@ -43,6 +44,7 @@ function App() {
             <Route path='/profile/:name' element={<ProfilePage />} />
             <Route path='/favorites' element={<Favorites />} />
             <Route path='/privacy-policy' element={<PrivacyPolicy />} />
+            <Route path='/about' element={<About />} />
             <Route path='/*' element={<NotFound />} />
           </Routes>
           <Footer />
