@@ -42,6 +42,25 @@ const theme = extendTheme({
           color: 'brand',
         },
       },
+      '.chakra-swiper .swiper-button-prev, .chakra-swiper .swiper-button-next':
+        {
+          bg: 'white',
+          color: 'black',
+          borderRadius: 'full',
+          width: '35px',
+          height: '35px',
+        },
+      '.chakra-swiper .swiper-button-prev': {
+        left: '-8px',
+      },
+      '.chakra-swiper .swiper-button-next': {
+        right: '-8px',
+      },
+      '.chakra-swiper .swiper-button-prev::after, .chakra-swiper .swiper-button-next::after':
+        {
+          fontSize: '18px',
+          fontWeight: 'bold',
+        },
     },
   },
 });

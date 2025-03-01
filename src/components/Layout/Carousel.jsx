@@ -1,15 +1,13 @@
-import { useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import AuctionCard from '../UI/AuctionCard';
 import PropTypes from 'prop-types';
-import { Box, Heading, IconButton } from '@chakra-ui/react';
-import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import { Box, Heading } from '@chakra-ui/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 const Carousel = ({ title, listings }) => {
-  const prevRef = useRef(null);
-  const nextRef = useRef(null);
-
   return (
     <Box w='100%' maxW='1290px' mx='auto' py='4' position='relative'>
       <Heading
@@ -29,23 +27,14 @@ const Carousel = ({ title, listings }) => {
         modules={[Navigation, Pagination]}
         spaceBetween={20}
         slidesPerView={4}
-        navigation={{
-          prevEl: prevRef.current,
-          nextEl: nextRef.current,
-        }}
-        onInit={(swiper) => {
-          // Fix for Swiper not recognizing refs immediately
-          swiper.params.navigation.prevEl = prevRef.current;
-          swiper.params.navigation.nextEl = nextRef.current;
-          swiper.navigation.init();
-          swiper.navigation.update();
-        }}
+        navigation
         breakpoints={{
           320: { slidesPerView: 1 },
           450: { slidesPerView: 2 },
           900: { slidesPerView: 3 },
           1024: { slidesPerView: 4 },
         }}
+        className='chakra-swiper'
       >
         {listings?.length > 0 ? (
           listings.map((listing) => (
@@ -60,34 +49,6 @@ const Carousel = ({ title, listings }) => {
           <p>No listings available</p>
         )}
       </Swiper>
-      <IconButton
-        ref={prevRef}
-        icon={<ChevronLeftIcon />}
-        position='absolute'
-        top='
-        40%'
-        left='-20px'
-        transform='translateY(-50%)'
-        bg='white'
-        borderRadius='full'
-        boxShadow='md'
-        _hover={{ bg: 'whiteAlpha.900' }}
-        zIndex='10'
-      />
-      <IconButton
-        ref={nextRef}
-        icon={<ChevronRightIcon />}
-        position='absolute'
-        top='
-        40%'
-        right='-20px'
-        transform='translateY(-50%)'
-        bg='white'
-        borderRadius='full'
-        boxShadow='md'
-        _hover={{ bg: 'whiteAlpha.900' }}
-        zIndex='10'
-      />
     </Box>
   );
 };
