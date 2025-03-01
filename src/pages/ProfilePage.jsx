@@ -13,6 +13,8 @@ import {
   GridItem,
   Heading,
   IconButton,
+  Skeleton,
+  SkeletonCircle,
   Text,
   useToast,
 } from '@chakra-ui/react';
@@ -154,7 +156,6 @@ function ProfilePage() {
     );
   }
 
-  if (loading) return <Text>Loading profile...</Text>;
   if (!profile) return <Text>Error: Profile not found.</Text>;
 
   const handleProfileUpdate = async () => {
@@ -240,172 +241,225 @@ function ProfilePage() {
   };
 
   return (
-    <Flex
-      direction='column'
-      justify='center'
-      align='center'
-      my={{ base: '12', md: '24' }}
-      maxW='1290px'
-      w={{ base: '90%', xl: '100%' }}
-      mx='auto'
-    >
-      <Box
-        bgImage={profile.banner.url}
-        bgRepeat='no-repeat'
-        bgPosition='center'
-        bgSize='cover'
-        w='100%'
-        h='260px'
-      ></Box>
-      <Flex direction='column' justify='center' align='center' w='100%'>
-        <Box position='relative' w='100px' h='100px' mt='-20'>
-          <Avatar
-            size='2xl'
-            name={profile.name}
-            src={profile.avatar?.url}
-            border='8px solid white'
-          />
-          {user.name === name ? (
-            <IconButton
-              icon={<EditIcon />}
-              size='sm'
-              bg='black'
-              color='white'
-              _hover={{ bg: 'brand.600', color: 'white' }}
-              position='absolute'
-              bottom='-22px'
-              right='-22px'
-              onClick={() => setIsProfileModalOpen(true)}
-              aria-label='Change avatar'
-              borderRadius='full'
-            />
-          ) : null}
-        </Box>
+    <>
+      {loading ? (
+        // ✅ LOADING STATE
+        <Flex
+          direction='column'
+          justify='center'
+          align='center'
+          my={{ base: '12', md: '24' }}
+          maxW='1290px'
+          w={{ base: '90%', xl: '100%' }}
+          mx='auto'
+        >
+          {/* 🔹 Banner Skeleton */}
+          <Skeleton height='260px' width='100%' />
 
-        <Flex direction='column' align='center' mt='8'>
-          <Heading as='h2' mt='4'>
-            {profile?.name || 'Unknown'}
-          </Heading>
-          <Text fontSize='xs' mt='4'>
-            {profile.bio || 'No bio available.'}
-          </Text>
+          {/* 🔹 Avatar & User Info Skeleton */}
+          <Flex direction='column' justify='center' align='center' w='100%'>
+            <Box position='relative' w='100px' h='100px' mt='-20'>
+              <SkeletonCircle size='24' />
+            </Box>
+            <Flex direction='column' align='center' mt='8'>
+              <Skeleton height='30px' width='150px' mb='2' />
+              <Skeleton height='15px' width='250px' />
+            </Flex>
+          </Flex>
+
+          {/* 🔹 Tabs Skeleton */}
+          <Flex gap='6' borderBottom='1px solid #ccc' w='100%' mt='24'>
+            {['all', 'active', 'wins'].map((tab) => (
+              <Skeleton key={tab} height='30px' width='80px' />
+            ))}
+          </Flex>
+
+          {/* 🔹 Auction Listings Grid Skeleton */}
+          <Grid
+            w='100%'
+            templateColumns='repeat(auto-fill, minmax(230px, 1fr))'
+            gap='5'
+            rowGap='12'
+            mt='8'
+            mb='24'
+            mx='auto'
+          >
+            {Array(6)
+              .fill('')
+              .map((_, index) => (
+                <Skeleton key={index} height='250px' rounded='md' />
+              ))}
+          </Grid>
         </Flex>
-      </Flex>
+      ) : (
+        <Flex
+          direction='column'
+          justify='center'
+          align='center'
+          my={{ base: '12', md: '24' }}
+          maxW='1290px'
+          w={{ base: '90%', xl: '100%' }}
+          mx='auto'
+        >
+          <Box
+            bgImage={profile.banner.url}
+            bgRepeat='no-repeat'
+            bgPosition='center'
+            bgSize='cover'
+            w='100%'
+            h='260px'
+          ></Box>
+          <Flex direction='column' justify='center' align='center' w='100%'>
+            <Box position='relative' w='100px' h='100px' mt='-20'>
+              <Avatar
+                size='2xl'
+                name={profile.name}
+                src={profile.avatar?.url}
+                border='8px solid white'
+              />
+              {user.name === name ? (
+                <IconButton
+                  icon={<EditIcon />}
+                  size='sm'
+                  bg='black'
+                  color='white'
+                  _hover={{ bg: 'brand.600', color: 'white' }}
+                  position='absolute'
+                  bottom='-22px'
+                  right='-22px'
+                  onClick={() => setIsProfileModalOpen(true)}
+                  aria-label='Change avatar'
+                  borderRadius='full'
+                />
+              ) : null}
+            </Box>
 
-      <Flex gap='6' borderBottom='1px solid #ccc' w='100%' mt='24'>
-        {['all', 'active', ...(user.name === name ? ['wins'] : [])].map(
-          (tab) => (
-            <Text
-              key={tab}
-              cursor='pointer'
-              fontWeight={selectedTab === tab ? 'bold' : 'normal'}
-              position='relative'
-              pb='4'
-              _after={{
-                content: '""',
-                position: 'absolute',
-                bottom: '-1px',
-                left: '-1px',
-                width: selectedTab === tab ? '100%' : '0',
-                height: '4px',
-                bg: selectedTab === tab ? 'brand.500' : 'transparent',
-                transition: 'width 0.3s ease-in-out',
-              }}
-              onClick={() => setSelectedTab(tab)}
-            >
-              {tab.charAt(0).toUpperCase() + tab.slice(1)} (
-              {tab === 'active'
-                ? activeListings.length
-                : tab === 'wins'
-                ? wins.length
-                : allListings.length}
+            <Flex direction='column' align='center' mt='8'>
+              <Heading as='h2' mt='4'>
+                {profile?.name || 'Unknown'}
+              </Heading>
+              <Text fontSize='xs' mt='4'>
+                {profile.bio || 'No bio available.'}
+              </Text>
+            </Flex>
+          </Flex>
+
+          <Flex gap='6' borderBottom='1px solid #ccc' w='100%' mt='24'>
+            {['all', 'active', ...(user.name === name ? ['wins'] : [])].map(
+              (tab) => (
+                <Text
+                  key={tab}
+                  cursor='pointer'
+                  fontWeight={selectedTab === tab ? 'bold' : 'normal'}
+                  position='relative'
+                  pb='4'
+                  _after={{
+                    content: '""',
+                    position: 'absolute',
+                    bottom: '-1px',
+                    left: '-1px',
+                    width: selectedTab === tab ? '100%' : '0',
+                    height: '4px',
+                    bg: selectedTab === tab ? 'brand.500' : 'transparent',
+                    transition: 'width 0.3s ease-in-out',
+                  }}
+                  onClick={() => setSelectedTab(tab)}
+                >
+                  {tab.charAt(0).toUpperCase() + tab.slice(1)} (
+                  {tab === 'active'
+                    ? activeListings.length
+                    : tab === 'wins'
+                    ? wins.length
+                    : allListings.length}
+                  )
+                </Text>
               )
-            </Text>
-          )
-        )}
-      </Flex>
+            )}
+          </Flex>
 
-      <Grid
-        w='100%'
-        templateColumns='repeat(auto-fill, minmax(230px, 1fr))'
-        gap='5'
-        rowGap='12'
-        mt='8'
-        mb='24'
-        mx='auto'
-      >
-        {selectedTab === 'all' &&
-          (listings.length > 0 ? (
-            listings.map((listing) => (
-              <GridItem key={listing.id}>
-                <AuctionCard
-                  listing={listing}
-                  w='100%'
-                  profile={profile}
-                  sellerName={profile?.name}
-                />
-              </GridItem>
-            ))
-          ) : (
-            <Text>No listings available.</Text>
-          ))}
-        {selectedTab === 'active' &&
-          (activeListings.length > 0 ? (
-            activeListings.map((listing) => (
-              <GridItem key={listing.id}>
-                <AuctionCard
-                  listing={listing}
-                  isProfilePage={true}
-                  sellerName={profile?.name}
-                  onEdit={handleEditAuction}
-                  w='100%'
-                />
-              </GridItem>
-            ))
-          ) : (
-            <Text>No active listings available.</Text>
-          ))}
-        {user.name === name &&
-          selectedTab === 'wins' &&
-          (wins.length > 0 ? (
-            wins.map((win) => (
-              <GridItem key={win.id}>
-                <AuctionCard
-                  listing={win}
-                  w='100%'
-                  sellerName={win.seller?.name || 'Unknown Seller'}
-                />
-              </GridItem>
-            ))
-          ) : (
-            <Text>No wins yet.</Text>
-          ))}
-      </Grid>
+          <Grid
+            w='100%'
+            templateColumns='repeat(auto-fill, minmax(230px, 1fr))'
+            gap='5'
+            rowGap='12'
+            mt='8'
+            mb='24'
+            mx='auto'
+          >
+            {selectedTab === 'all' &&
+              (listings.length > 0 ? (
+                listings.map((listing) => (
+                  <GridItem key={listing.id}>
+                    <AuctionCard
+                      listing={listing}
+                      w='100%'
+                      profile={profile}
+                      sellerName={profile?.name}
+                    />
+                  </GridItem>
+                ))
+              ) : (
+                <Text>No listings available.</Text>
+              ))}
+            {selectedTab === 'active' &&
+              (activeListings.length > 0 ? (
+                activeListings.map((listing) => (
+                  <GridItem key={listing.id}>
+                    <AuctionCard
+                      listing={listing}
+                      isProfilePage={true}
+                      sellerName={profile?.name}
+                      onEdit={handleEditAuction}
+                      w='100%'
+                    />
+                  </GridItem>
+                ))
+              ) : (
+                <Text>No active listings available.</Text>
+              ))}
+            {user.name === name &&
+              selectedTab === 'wins' &&
+              (wins.length > 0 ? (
+                wins.map((win) => (
+                  <GridItem key={win.id}>
+                    <AuctionCard
+                      listing={win}
+                      w='100%'
+                      sellerName={win.seller?.name || 'Unknown Seller'}
+                    />
+                  </GridItem>
+                ))
+              ) : (
+                <Text>No wins yet.</Text>
+              ))}
+          </Grid>
 
-      <CustomModal
-        isOpen={isProfileModalOpen}
-        onClose={() => setIsProfileModalOpen(false)}
-        title='Edit Profile'
-      >
-        <EditProfileForm
-          profile={profile}
-          onProfileUpdate={handleProfileUpdate}
-          setUser={setUser}
-        />
-      </CustomModal>
+          <CustomModal
+            isOpen={isProfileModalOpen}
+            onClose={() => setIsProfileModalOpen(false)}
+            title='Edit Profile'
+          >
+            <EditProfileForm
+              profile={profile}
+              onProfileUpdate={handleProfileUpdate}
+              setUser={setUser}
+            />
+          </CustomModal>
 
-      <CustomModal
-        isOpen={isAuctionModalOpen}
-        onClose={() => setIsAuctionModalOpen(false)}
-        title='Edit Auction'
-      >
-        <AuctionForm
-          onSubmit={handleAuctionUpdate}
-          auctionData={editAuction}
-          onDelete={handleAuctionDelete}
-        />
-      </CustomModal>
-    </Flex>
+          <CustomModal
+            isOpen={isAuctionModalOpen}
+            onClose={() => setIsAuctionModalOpen(false)}
+            title='Edit Auction'
+          >
+            <AuctionForm
+              onSubmit={handleAuctionUpdate}
+              auctionData={editAuction}
+              onDelete={handleAuctionDelete}
+            />
+          </CustomModal>
+        </Flex>
+      )}
+    </>
   );
 }
 
