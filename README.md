@@ -10,12 +10,7 @@ A Modern auction platform where users can bid, sell, and browse items.
 - [Setup & Installation](#setup--installation)
 - [Environment Variables](#environment-variables)
 - [Usage](#usage)
-- [API Endpoints](#api-endpoints)
-- [Deployment](#deployment)
-- [Optimizations](#optimizations)
 - [Known Issues](#known-issues)
-- [Contributing](#contributing)
-- [License](#license)
 - [Contact](#contact)
 
 ## Overview
@@ -83,36 +78,58 @@ Visit `http:/localhost:5173/` in your browser.
 
 ## Environment Variables
 
-| Variable          | Description              |
-| ----------------- | ------------------------ |
-| **VITE_API_KEYt** | API authentication token |
+| Variable         | Description              |
+| ---------------- | ------------------------ |
+| **VITE_API_KEY** | API authentication token |
 
 ## Usage
 
 #### Sign Up & Login
 
--Users can create an account and log in.
--Upon registration, users receive 1,000 credits.
+- Users can create an account and log in.<br>
+- Upon registration, users receive 1,000 credits.
+
+#### Profile
+
+- Users can change their own avatar, profile banner and bio description.
 
 #### Browse Auctions
 
--View auctions from different categories.
--Use the search bar to find specific items.
+- View auctions from different categories.<br>
+- Use the search bar to find specific items.<br>
+- Sort listings by all auctions, ending soon, latest added and highest bid
 
 #### Place a Bid
 
--Click on an auction to view details.
--Enter your bid amount and submit (requires authentication).
+- Click on an auction to view details.<br>
+- Enter your bid amount and submit (requires authentication).<br>
+- View bidding history
 
 #### Create an Auction
 
--Authenticated users can create their own listings.
--Upload images, set a starting bid, and choose an end time.
+- Authenticated users can create their own listings.<br>
+- Upload images, set a starting bid, and choose an end time.<br>
+- May change the details of a published listing.<br>
+- May delete a published listing.
 
 #### Favorite Auctions
 
--Click the heart ❤️ icon to save an auction.
--View all saved auctions under the Favorites section.
+- Click the heart ❤️ icon to save an auction.<br>
+- View all saved auctions under the Favorites section.<br>
+- Click the heart ❤️ icon again to remove an auction from favorites.
+
+## Known issues
+
+What is listed below are things I'm aware of, but will have to consider at a later point.
+
+⚠️ Too many API requests (429 error)<br>
+📌 Solution: Add debouncing or cache data to avoid excessive API calls.
+
+⚠️ Favorites don't persist on different browsers/devices<br>
+📌 Solution: The API doesn't support favorites so I have used localStorage. I'm not sure if I can do anything about this, but I may look into it at a later point.
+
+⚠️ Messy code<br>
+📌 Solution: Break the code into smaller and modular blocks of code.
 
 ## Contact
 
@@ -120,7 +137,4 @@ For questions or feedback, feel free to contact:
 
 - 👩🏽 **Ingelinn Helene Lønne**
 - 📨 ingelinn92@gmail.com
-
-- 🐈‍⬛ GitHub: @ihlonne
-- 🔗 LinkedIn
-- 🛜 Deployed App: [NexBid on Netlify](https://sp2-ihlonne.netlify.app/)
+- 🔗 LinkedIn: [ingelinnhelenelonne](https://www.linkedin.com/in/ingelinnhelenelonne/)
