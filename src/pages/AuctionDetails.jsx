@@ -10,6 +10,7 @@ import {
   Image,
   Input,
   InputGroup,
+  Skeleton,
   Text,
   useToast,
 } from '@chakra-ui/react';
@@ -203,7 +204,14 @@ const AuctionDetails = () => {
   };
 
   if (!listing) {
-    return <div>Loading...</div>;
+    return (
+      <Flex direction='column' align='center' justify='center'>
+        <Skeleton height='400px' width='80%' mb='4' />
+        <Skeleton height='30px' width='50%' mb='2' />
+        <Skeleton height='20px' width='30%' mb='2' />
+        <Skeleton height='150px' width='70%' />
+      </Flex>
+    );
   }
 
   return (

@@ -5,6 +5,8 @@ import {
   Image,
   Text,
   useDisclosure,
+  Skeleton,
+  SkeletonText,
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 
@@ -32,17 +34,26 @@ function Home() {
   } = useDisclosure();
 
   const [auctions, setAuctions] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function fetchListings() {
-      const data = await getAuctions();
-      let processedListings = data.data.filter(
-        (item) =>
-          !item.title.toLowerCase().includes('test') &&
-          !item.title.toLowerCase().includes('yo')
-      );
-      setAuctions(processedListings);
+      setLoading(true);
+      try {
+        const data = await getAuctions();
+        let processedListings = data.data.filter(
+          (item) =>
+            !item.title.toLowerCase().includes('test') &&
+            !item.title.toLowerCase().includes('yo')
+        );
+        setAuctions(processedListings);
+      } catch (error) {
+        console.error('Failed to fetch listings:', error);
+      } finally {
+        setLoading(false);
+      }
     }
+    setLoading(false);
     fetchListings();
   }, []);
 
@@ -67,7 +78,17 @@ function Home() {
             px='12'
             py={{ base: '12', lg: 0 }}
           >
-            {user ? (
+            {loading ? (
+              <Flex direction='column' gap='4'>
+                {/* ✅ Skeleton for Welcome Message */}
+                <Skeleton height='30px' width='80%' />
+                <SkeletonText mt='4' noOfLines={3} spacing='4' />
+                <Flex gap='2' mt='4'>
+                  <Skeleton height='40px' width='120px' />
+                  <Skeleton height='40px' width='150px' />
+                </Flex>
+              </Flex>
+            ) : user ? (
               <Flex direction='column' gap='4' textAlign='center'>
                 <Heading
                   as='h1'
@@ -82,7 +103,6 @@ function Home() {
                   Find new auctions that match your interests and place your
                   bids before time runs out. The next great deal could be yours!
                 </Text>
-
                 <Flex gap='2' alignSelf='flex-start' mt='4'>
                   <Button
                     as={Link}
@@ -121,7 +141,6 @@ function Home() {
                   something for everyone. Start bidding today and find your next
                   great deal!
                 </Text>
-
                 <Flex gap='2' alignSelf='flex-start' mt='4'>
                   <Button
                     onClick={openRegister}
@@ -145,17 +164,25 @@ function Home() {
             )}
           </Flex>
         </Flex>
-        <Image
-          src='https://images.pexels.com/photos/10361481/pexels-photo-10361481.jpeg'
-          alt='Watch'
-          w={{ base: '100%', lg: '60%' }}
-          h={{ base: '300px', lg: '600px' }}
-          objectFit='cover'
-        />
+        {loading ? (
+          <Skeleton height='600px' w='60%' />
+        ) : (
+          <Image
+            src='https://images.pexels.com/photos/10361481/pexels-photo-10361481.jpeg'
+            alt='Watch'
+            w={{ base: '100%', lg: '60%' }}
+            h={{ base: '300px', lg: '600px' }}
+            objectFit='cover'
+          />
+        )}
       </Flex>
 
       <Flex mt='24' w={{ base: '80%', xl: '100%' }} justify='flex-start'>
-        <Carousel title='Last chance' listings={lastChance} />
+        {loading ? (
+          <Skeleton height='200px' width='100%' rounded='md' />
+        ) : (
+          <Carousel title='Last chance' listings={lastChance} />
+        )}
       </Flex>
 
       <Flex
@@ -164,7 +191,11 @@ function Home() {
         justify='flex-start'
         mb={{ base: '12', md: 0 }}
       >
-        <Carousel title='Newly added' listings={newlyAdded} />
+        {loading ? (
+          <Skeleton height='200px' width='100%' rounded='md' />
+        ) : (
+          <Carousel title='Newly added' listings={newlyAdded} />
+        )}
       </Flex>
 
       {/* Login Modal */}
