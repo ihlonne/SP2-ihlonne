@@ -1,6 +1,6 @@
 import axios from 'axios';
+import { API_BASE_URL } from '../config/constants';
 
-const API_BASE_URL = 'https://v2.api.noroff.dev';
 const API_KEY = import.meta.env.VITE_API_KEY;
 
 const api = axios.create({
