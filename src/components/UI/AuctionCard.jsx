@@ -59,7 +59,13 @@ const AuctionCard = ({ listing, isProfilePage, sellerName, onEdit }) => {
   }, [listing.id]);
 
   return (
-    <Box position="relative" borderRadius="md" overflow="hidden">
+    <Box
+      position="relative"
+      borderRadius="md"
+      overflow="hidden"
+      onClick={() => navigate(`/auctions/listing/${listing.id}`)}
+      cursor="pointer"
+    >
       {/* Auction Image */}
       <Image
         src={
@@ -92,7 +98,10 @@ const AuctionCard = ({ listing, isProfilePage, sellerName, onEdit }) => {
               right="2"
               aria-label="Toggle Favorite"
               borderRadius="full"
-              onClick={() => toggleFavorite(listing.id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleFavorite(listing.id);
+              }}
             />
           )
         : null}
@@ -110,18 +119,16 @@ const AuctionCard = ({ listing, isProfilePage, sellerName, onEdit }) => {
           right="2"
           aria-label="Edit listing"
           borderRadius="full"
-          onClick={() => onEdit(listing)}
+          onClick={(e) => {
+            e.stopPropagation();
+            onEdit(listing);
+          }}
         />
       )}
 
       {/* Auction Details */}
       <Box p="4">
-        <Link
-          fontWeight="bold"
-          onClick={() => navigate(`/auctions/listing/${listing.id}`)}
-        >
-          {listing.title}
-        </Link>
+        <Link fontWeight="bold">{listing.title}</Link>
 
         {/* Seller Info */}
         <Flex align="center" gap="1">
