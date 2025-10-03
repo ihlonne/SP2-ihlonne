@@ -126,7 +126,7 @@ const AuctionForm = ({ onSubmit, auctionData, onDelete }) => {
       </FormControl>
       <Flex wrap="wrap" mt="2">
         {mediaUrls.map((url, index) => (
-          <Tag key={index} mr="2" mt="2">
+          <Tag key={url} mr="2" mt="2">
             <TagLabel>{url}</TagLabel>
             <TagCloseButton
               onClick={() =>
@@ -160,7 +160,7 @@ const AuctionForm = ({ onSubmit, auctionData, onDelete }) => {
       </FormControl>
       <Flex wrap="wrap" mt="2">
         {tags.map((tag, index) => (
-          <Tag key={index} mr="2" mt="2">
+          <Tag key={tag} mr="2" mt="2">
             <TagLabel>{tag}</TagLabel>
             <TagCloseButton
               onClick={() => setTags(tags.filter((_, i) => i !== index))}

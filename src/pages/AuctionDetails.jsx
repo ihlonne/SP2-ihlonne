@@ -238,9 +238,9 @@ const AuctionDetails = () => {
           {/* Thumbnails - Only show if there are extra images */}
           {listing.data.media.length > 1 && (
             <Flex gap="2" justify="center">
-              {listing.data.media.map((img, index) => (
+              {listing.data.media.map((img) => (
                 <Image
-                  key={index}
+                  key={img}
                   src={img.url}
                   alt={listing.data.title}
                   w="60px"
