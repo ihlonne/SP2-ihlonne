@@ -29,11 +29,11 @@ const BiddingTable = ({ bids = [] }) => {
 
   return (
     <TableContainer>
-      <Table variant='striped' style={{ tableLayout: 'auto' }}>
+      <Table variant="striped" style={{ tableLayout: 'auto' }}>
         <Thead>
           <Tr>
-            <Th textAlign='left'>Bidder</Th>
-            <Th textAlign='right'>Bid</Th>
+            <Th textAlign="left">Bidder</Th>
+            <Th textAlign="right">Bid</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -44,14 +44,14 @@ const BiddingTable = ({ bids = [] }) => {
                   <Text>{anonymiseName(bid.bidder?.name)}</Text>
                 </Td>
 
-                <Td fontWeight='bold' textAlign='right'>
+                <Td fontWeight="bold" textAlign="right">
                   {bid.amount} Credits
                 </Td>
               </Tr>
             ))
           ) : (
             <Tr>
-              <Td colSpan={3} textAlign='center'>
+              <Td colSpan={3} textAlign="center">
                 No bids available
               </Td>
             </Tr>
@@ -60,10 +60,10 @@ const BiddingTable = ({ bids = [] }) => {
         {visibleCount < sortedBids.length && (
           <Tfoot>
             <Tr>
-              <Th colSpan={3} textAlign='center'>
+              <Th colSpan={3} textAlign="center">
                 <Text
-                  color='gray.500'
-                  cursor='pointer'
+                  color="gray.500"
+                  cursor="pointer"
                   onClick={handleLoadMore}
                 >
                   View more bids

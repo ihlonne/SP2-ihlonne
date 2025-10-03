@@ -21,17 +21,17 @@ const SearchBar = () => {
   };
 
   return (
-    <Flex as='form' onSubmit={handleSearch}>
-      <InputGroup maxW='400px'>
+    <Flex as="form" onSubmit={handleSearch}>
+      <InputGroup maxW="400px">
         <Input
           value={query}
-          placeholder='Search listings...'
+          placeholder="Search listings..."
           onChange={(e) => setQuery(e.target.value)}
-          bg='brand.100'
-          border='none'
+          bg="brand.100"
+          border="none"
         />
         <InputRightElement>
-          <IconButton bg='brand.100' onClick={handleSearch}>
+          <IconButton bg="brand.100" onClick={handleSearch}>
             <SearchIcon />
           </IconButton>
         </InputRightElement>

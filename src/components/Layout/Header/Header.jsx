@@ -66,68 +66,68 @@ const Header = () => {
   };
 
   return (
-    <Flex align='center' justify='space-between' p='20px 100px' gap='5'>
-      <Link to='/'>
-        <Image src={logo} maxH='30px' alt='Company logo' />
+    <Flex align="center" justify="space-between" p="20px 100px" gap="5">
+      <Link to="/">
+        <Image src={logo} maxH="30px" alt="Company logo" />
       </Link>
 
       <SearchBar />
 
       {user?.accessToken ? (
-        <Flex gap='4' align='center'>
+        <Flex gap="4" align="center">
           <Text>{credits} credits</Text>
 
           <Avatar
             ref={avatarRef}
-            size='md'
+            size="md"
             name={user?.name}
             src={user?.avatar?.url}
             onClick={() => setIsProfileNavOpen((prev) => !prev)}
-            cursor='pointer'
-            aria-label='Profile menu'
+            cursor="pointer"
+            aria-label="Profile menu"
           />
 
           {/* Profile Navigation Menu */}
           {isProfileNavOpen && (
             <Flex
               ref={menuRef}
-              position='absolute'
-              bg='white'
-              border='1px solid #eee'
-              rounded='md'
-              right='115px'
-              top='75px'
-              w='200px'
-              direction='column'
-              p='1rem'
-              zIndex='1000'
-              gap='2'
+              position="absolute"
+              bg="white"
+              border="1px solid #eee"
+              rounded="md"
+              right="115px"
+              top="75px"
+              w="200px"
+              direction="column"
+              p="1rem"
+              zIndex="1000"
+              gap="2"
             >
-              <Stack spacing='2'>
+              <Stack spacing="2">
                 <Flex
-                  align='center'
-                  gap='1'
-                  cursor='pointer'
+                  align="center"
+                  gap="1"
+                  cursor="pointer"
                   onClick={() => handleNavigation(`/profile/${user.name}`)}
                 >
                   <Icon as={CgProfile} />
                   <Text>My Profile</Text>
                 </Flex>
                 <Flex
-                  align='center'
-                  gap='1'
-                  cursor='pointer'
+                  align="center"
+                  gap="1"
+                  cursor="pointer"
                   onClick={() => handleNavigation(`/favorites`)}
                 >
                   <Icon as={FaRegHeart} />
                   <Text>My Favorites</Text>
                 </Flex>
               </Stack>
-              <Divider my='2' />
+              <Divider my="2" />
               <Flex
-                align='center'
-                gap='1'
-                cursor='pointer'
+                align="center"
+                gap="1"
+                cursor="pointer"
                 onClick={() => {
                   handleNavigation('/');
                   handleLogout(setUser);
@@ -141,13 +141,13 @@ const Header = () => {
           )}
         </Flex>
       ) : (
-        <Box gap='2'>
-          <Button bg='white' onClick={openLogin}>
+        <Box gap="2">
+          <Button bg="white" onClick={openLogin}>
             Sign in
           </Button>
           <Button
-            bg='brand.600'
-            color='white'
+            bg="brand.600"
+            color="white"
             _hover={{ bg: 'brand.700 ' }}
             onClick={openRegister}
           >
@@ -160,7 +160,7 @@ const Header = () => {
       <CustomModal
         isOpen={isLoginOpen}
         onClose={closeLogin}
-        title='Login to Your Account'
+        title="Login to Your Account"
       >
         <LoginForm closeLogin={closeLogin} openRegister={openRegister} />
       </CustomModal>
@@ -169,7 +169,7 @@ const Header = () => {
       <CustomModal
         isOpen={isRegisterOpen}
         onClose={closeRegister}
-        title='Create a New Account'
+        title="Create a New Account"
       >
         <RegisterForm closeRegister={closeRegister} openLogin={openLogin} />
       </CustomModal>

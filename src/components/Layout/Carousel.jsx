@@ -9,17 +9,17 @@ import 'swiper/css/pagination';
 
 const Carousel = ({ title, listings }) => {
   return (
-    <Box w='100%' maxW='1290px' mx='auto' py='4' position='relative'>
+    <Box w="100%" maxW="1290px" mx="auto" py="4" position="relative">
       <Heading
-        display='inline-block'
-        w='auto'
-        as='h2'
-        size='lg'
-        fontWeight='500'
-        borderBottom='1px'
-        borderBottomWidth='3px'
-        borderColor='brand.500'
-        mb='8'
+        display="inline-block"
+        w="auto"
+        as="h2"
+        size="lg"
+        fontWeight="500"
+        borderBottom="1px"
+        borderBottomWidth="3px"
+        borderColor="brand.500"
+        mb="8"
       >
         {title}
       </Heading>
@@ -34,7 +34,7 @@ const Carousel = ({ title, listings }) => {
           900: { slidesPerView: 3 },
           1024: { slidesPerView: 4 },
         }}
-        className='chakra-swiper'
+        className="chakra-swiper"
       >
         {listings?.length > 0 ? (
           listings.map((listing) => (

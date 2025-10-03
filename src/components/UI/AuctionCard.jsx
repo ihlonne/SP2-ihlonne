@@ -59,7 +59,7 @@ const AuctionCard = ({ listing, isProfilePage, sellerName, onEdit }) => {
   }, [listing.id]);
 
   return (
-    <Box position='relative' borderRadius='md' overflow='hidden'>
+    <Box position="relative" borderRadius="md" overflow="hidden">
       {/* Auction Image */}
       <Image
         src={
@@ -68,10 +68,10 @@ const AuctionCard = ({ listing, isProfilePage, sellerName, onEdit }) => {
             : 'https://images.pexels.com/photos/28216688/pexels-photo-28216688/free-photo-of-autumn-camping.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
         }
         alt={listing.title || 'Auction Image'}
-        w='100%'
-        h='175px'
-        objectFit='cover'
-        rounded='md'
+        w="100%"
+        h="175px"
+        objectFit="cover"
+        rounded="md"
         opacity={hasEnded ? 0.6 : 1}
       />
 
@@ -79,19 +79,19 @@ const AuctionCard = ({ listing, isProfilePage, sellerName, onEdit }) => {
       {user
         ? user?.name !== sellerName && (
             <IconButton
-              size='sm'
+              size="sm"
               icon={
                 isFavorite ? (
                   <FaHeart color={heartColor} />
                 ) : (
-                  <FaRegHeart color='gray' />
+                  <FaRegHeart color="gray" />
                 )
               }
-              position='absolute'
-              top='2'
-              right='2'
-              aria-label='Toggle Favorite'
-              borderRadius='full'
+              position="absolute"
+              top="2"
+              right="2"
+              aria-label="Toggle Favorite"
+              borderRadius="full"
               onClick={() => toggleFavorite(listing.id)}
             />
           )
@@ -101,34 +101,34 @@ const AuctionCard = ({ listing, isProfilePage, sellerName, onEdit }) => {
       {isProfilePage && user?.name === sellerName && onEdit && (
         <IconButton
           icon={<EditIcon />}
-          size='sm'
-          bg='black'
-          color='white'
+          size="sm"
+          bg="black"
+          color="white"
           _hover={{ bg: 'brand.600', color: 'white' }}
-          position='absolute'
-          top='2'
-          right='2'
-          aria-label='Edit listing'
-          borderRadius='full'
+          position="absolute"
+          top="2"
+          right="2"
+          aria-label="Edit listing"
+          borderRadius="full"
           onClick={() => onEdit(listing)}
         />
       )}
 
       {/* Auction Details */}
-      <Box p='4'>
+      <Box p="4">
         <Link
-          fontWeight='bold'
+          fontWeight="bold"
           onClick={() => navigate(`/auctions/listing/${listing.id}`)}
         >
           {listing.title}
         </Link>
 
         {/* Seller Info */}
-        <Flex align='center' gap='1'>
-          <Text fontSize='xs'>Auction by: </Text>
+        <Flex align="center" gap="1">
+          <Text fontSize="xs">Auction by: </Text>
           <Link
-            textDecoration='underline'
-            fontSize='xs'
+            textDecoration="underline"
+            fontSize="xs"
             onClick={() => navigate(`/profile/${listing.seller.name}`)}
           >
             {sellerName || 'Unknown Seller'}
@@ -136,20 +136,20 @@ const AuctionCard = ({ listing, isProfilePage, sellerName, onEdit }) => {
         </Flex>
 
         {/* Bid Information */}
-        <Flex align='center' gap='2' mt='3'>
-          <Text color='black'>Current bid: </Text>
-          <Text fontWeight='600'>
+        <Flex align="center" gap="2" mt="3">
+          <Text color="black">Current bid: </Text>
+          <Text fontWeight="600">
             {highestBid !== null ? `${highestBid} Credits` : 'No Bids Yet'}
           </Text>
         </Flex>
 
-        <Text fontSize='sm'>({listing._count?.bids || 0} Bids)</Text>
+        <Text fontSize="sm">({listing._count?.bids || 0} Bids)</Text>
 
         {/* Auction End Status */}
         <Text
-          fontSize='xs'
-          mt='2'
-          fontWeight='bold'
+          fontSize="xs"
+          mt="2"
+          fontWeight="bold"
           color={hasEnded ? 'red.500' : 'black'}
         >
           {timeRemaining}

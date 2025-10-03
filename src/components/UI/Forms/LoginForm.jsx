@@ -47,12 +47,12 @@ const LoginForm = ({ closeLogin, openRegister }) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       {errorMessage && (
         <Alert
-          status='error'
-          mb='4'
-          bg='brand.300'
-          border='1px'
-          borderColor='accent.red'
-          rounded='md'
+          status="error"
+          mb="4"
+          bg="brand.300"
+          border="1px"
+          borderColor="accent.red"
+          rounded="md"
         >
           <AlertIcon />
           {errorMessage}
@@ -63,12 +63,12 @@ const LoginForm = ({ closeLogin, openRegister }) => {
       <FormControl isInvalid={errors.email}>
         <FormLabel>E-mail</FormLabel>
         <Input
-          type='text'
-          placeholder='name@stud.noroff.no'
+          type="text"
+          placeholder="name@stud.noroff.no"
           {...register('email', { required: 'Email is required' })}
         />
         {errors.email && (
-          <Text color='red.500' fontSize='sm'>
+          <Text color="red.500" fontSize="sm">
             {errors.email?.message}
           </Text>
         )}
@@ -78,37 +78,37 @@ const LoginForm = ({ closeLogin, openRegister }) => {
       <FormControl isInvalid={errors.password}>
         <FormLabel>Password</FormLabel>
         <Input
-          type='password'
-          placeholder='********'
+          type="password"
+          placeholder="********"
           {...register('password', {
             required: 'Password is required',
           })}
         />
         {errors.password && (
-          <Text color='red.500' fontSize='sm'>
+          <Text color="red.500" fontSize="sm">
             {errors.password?.message}
           </Text>
         )}
       </FormControl>
       <Button
-        type='submit'
-        bg='brand.600'
-        color='white'
+        type="submit"
+        bg="brand.600"
+        color="white"
         _hover={{ bg: 'brand.700' }}
-        w='full'
-        mt='4'
+        w="full"
+        mt="4"
         isDisabled={loading}
       >
-        {loading ? <Spinner size='sm' /> : 'Login'}
+        {loading ? <Spinner size="sm" /> : 'Login'}
       </Button>
-      <Divider mt='8' />
-      <Flex align='center' gap='2' mt='4'>
-        <Text fontSize='xs'>Don&apos;t have an account?</Text>{' '}
+      <Divider mt="8" />
+      <Flex align="center" gap="2" mt="4">
+        <Text fontSize="xs">Don&apos;t have an account?</Text>{' '}
         <Button
-          bg='transparent'
-          m='0'
-          p='0'
-          fontSize='xs'
+          bg="transparent"
+          m="0"
+          p="0"
+          fontSize="xs"
           onClick={() => {
             closeLogin();
             openRegister();

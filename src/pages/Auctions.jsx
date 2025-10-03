@@ -146,114 +146,114 @@ const Auctions = () => {
     <>
       {loading ? (
         <Flex
-          direction='column'
-          mx='auto'
-          maxW='1200px'
-          w='100%'
-          minH='100vh'
-          justify='flex-start'
-          align='center'
+          direction="column"
+          mx="auto"
+          maxW="1200px"
+          w="100%"
+          minH="100vh"
+          justify="flex-start"
+          align="center"
           px={{ base: '8', xl: 0 }}
           pb={{ base: '12', xl: 0 }}
         >
           {/* 🔹 Filter & Sorting Skeleton */}
           <Flex
             direction={{ base: 'column', md: 'row' }}
-            justify='space-between'
+            justify="space-between"
             align={{ base: 'flex-start', md: 'center' }}
             gap={{ base: '4', md: '0' }}
-            mt='16'
-            w='full'
+            mt="16"
+            w="full"
           >
-            <Flex gap='2' align='center'>
-              <SkeletonCircle size='10' />
-              <SkeletonCircle size='10' />
-              <Skeleton height='20px' width='100px' />
+            <Flex gap="2" align="center">
+              <SkeletonCircle size="10" />
+              <SkeletonCircle size="10" />
+              <Skeleton height="20px" width="100px" />
             </Flex>
-            <Flex gap='4' direction={{ base: 'column', sm: 'row' }}>
-              <Skeleton height='40px' width='150px' />
-              <Skeleton height='40px' width='120px' />
+            <Flex gap="4" direction={{ base: 'column', sm: 'row' }}>
+              <Skeleton height="40px" width="150px" />
+              <Skeleton height="40px" width="120px" />
             </Flex>
           </Flex>
 
-          <Heading display='flex' alignSelf='flex-start' mt='10' mb='6'>
+          <Heading display="flex" alignSelf="flex-start" mt="10" mb="6">
             Browse Auctions
           </Heading>
 
           {/* 🔹 Skeleton Grid for Auctions */}
           <Grid
-            w='100%'
-            templateColumns='repeat(auto-fill, minmax(230px, 1fr))'
-            gap='5'
-            rowGap='12'
-            mt='8'
-            mb='24'
-            mx='auto'
-            justify='flex-start'
+            w="100%"
+            templateColumns="repeat(auto-fill, minmax(230px, 1fr))"
+            gap="5"
+            rowGap="12"
+            mt="8"
+            mb="24"
+            mx="auto"
+            justify="flex-start"
           >
             {Array(8)
               .fill('')
               .map((_, index) => (
-                <Skeleton key={index} height='250px' rounded='md' />
+                <Skeleton key={index} height="250px" rounded="md" />
               ))}
           </Grid>
 
           {/* 🔹 Load More Button Skeleton */}
-          <Skeleton height='40px' width='150px' mb='16' />
+          <Skeleton height="40px" width="150px" mb="16" />
         </Flex>
       ) : (
         <Flex
-          direction='column'
-          mx='auto'
-          maxW='1200px'
-          w='100%'
-          minH='100lvh'
-          justify='flex-start'
-          align='center'
+          direction="column"
+          mx="auto"
+          maxW="1200px"
+          w="100%"
+          minH="100lvh"
+          justify="flex-start"
+          align="center"
           px={{ base: '8', xl: 0 }}
           pb={{ base: '12', xl: 0 }}
         >
           <Flex
             direction={{ base: 'column', md: 'row' }}
-            justify='space-between'
+            justify="space-between"
             align={{ base: 'flex-start', md: 'center' }}
             gap={{ base: '4', md: '0' }}
-            mt='16'
-            w='full'
+            mt="16"
+            w="full"
           >
-            <Flex gap='2' align='center'>
+            <Flex gap="2" align="center">
               <IconButton
                 bg={isGridView ? 'brand.600' : 'transparent'}
                 color={isGridView ? 'white' : 'black'}
-                border='1px'
-                rounded='lg'
-                borderColor='brand.100'
+                border="1px"
+                rounded="lg"
+                borderColor="brand.100"
                 onClick={() => setIsGridView(true)}
-                aria-label='Grid View'
+                aria-label="Grid View"
                 icon={<Icon as={IoGrid} />}
               />
               <IconButton
                 bg={!isGridView ? 'brand.600' : 'transparent'}
                 color={!isGridView ? 'white' : 'black'}
-                border='1px'
-                rounded='lg'
-                borderColor='brand.100'
+                border="1px"
+                rounded="lg"
+                borderColor="brand.100"
                 onClick={() => setIsGridView(false)}
-                aria-label='List View'
+                aria-label="List View"
                 icon={<Icon as={FaListUl} />}
               />
               <Text>{listings.length} results</Text>
             </Flex>
-            <Flex gap='4' direction={{ base: 'column', sm: 'row' }}>
+            <Flex gap="4" direction={{ base: 'column', sm: 'row' }}>
               {user?.accessToken ? (
-                <Stack direction='row' spacing='4'>
+                <Stack direction="row" spacing="4">
                   <Button
                     leftIcon={<AddIcon />}
-                    bg='brand.600'
-                    color='white'
+                    bg="brand.600"
+                    color="white"
                     _hover={{ bg: 'brand.700' }}
-                    p='4'
-                    fontSize='sm'
+                    p="4"
+                    fontSize="sm"
                     onClick={handleCreateClick}
                   >
                     New Auction
@@ -261,36 +261,36 @@ const Auctions = () => {
                 </Stack>
               ) : null}
               <Select
-                placeholder='All auctions'
+                placeholder="All auctions"
                 onChange={(e) => setSortOption(e.target.value)}
                 value={sortOption}
               >
-                <option value='ending_soon'>Ending soon</option>
-                <option value='latest_added'>Newly added</option>
-                <option value='highest_bid'>Highest bid</option>
+                <option value="ending_soon">Ending soon</option>
+                <option value="latest_added">Newly added</option>
+                <option value="highest_bid">Highest bid</option>
               </Select>
             </Flex>
           </Flex>
-          <Heading display='flex' alignSelf='flex-start' mt='10' mb='6'>
+          <Heading display="flex" alignSelf="flex-start" mt="10" mb="6">
             Browse Auctions
           </Heading>
           {isGridView ? (
             <Grid
-              w='100%'
-              templateColumns='repeat(auto-fill, minmax(230px, 1fr))'
-              gap='5'
-              rowGap='12'
-              mt='8'
-              mb='24'
-              mx='auto'
-              justify='flex-start'
+              w="100%"
+              templateColumns="repeat(auto-fill, minmax(230px, 1fr))"
+              gap="5"
+              rowGap="12"
+              mt="8"
+              mb="24"
+              mx="auto"
+              justify="flex-start"
             >
               {listings.length > 0 ? (
                 listings.slice(0, visibleCount).map((listing) => (
                   <GridItem key={listing.id}>
                     <AuctionCard
                       listing={listing}
-                      w='100%'
+                      w="100%"
                       sellerName={listing.seller?.name}
                     />
                   </GridItem>
@@ -301,21 +301,21 @@ const Auctions = () => {
             </Grid>
           ) : (
             <Grid
-              w='100%'
-              templateColumns='1fr'
-              gap='5'
-              rowGap='12'
-              mt='8'
-              mb='24'
-              mx='auto'
-              justify='flex-start'
+              w="100%"
+              templateColumns="1fr"
+              gap="5"
+              rowGap="12"
+              mt="8"
+              mb="24"
+              mx="auto"
+              justify="flex-start"
             >
               {listings.length > 0 ? (
                 listings.slice(0, visibleCount).map((listing) => (
                   <GridItem key={listing.id}>
                     <AuctionList
                       listing={listing}
-                      w='100%'
+                      w="100%"
                       sellerName={listing.seller?.name}
                     />
                   </GridItem>
@@ -328,9 +328,9 @@ const Auctions = () => {
 
           {hasMore && (
             <Button
-              bg='brand.100'
-              w='150px'
-              mb='16'
+              bg="brand.100"
+              w="150px"
+              mb="16"
               onClick={handleLoadMore}
               isLoading={loading}
             >
@@ -341,7 +341,7 @@ const Auctions = () => {
           <CustomModal
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
-            title='Create a New Auction'
+            title="Create a New Auction"
           >
             <AuctionForm
               onSubmit={handleFormSubmit}

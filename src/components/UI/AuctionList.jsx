@@ -156,23 +156,23 @@ const AuctionList = ({ listing, sellerName }) => {
   return (
     <Flex
       direction={{ base: 'column', md: 'row' }}
-      justify='space-between'
-      align='stretch'
-      gap='6'
-      h='auto'
-      border='1px solid #eee'
-      rounded='md'
-      p='4'
-      boxShadow='rgba(0, 0, 0, 0.1) 0px 4px 12px'
-      w='full'
+      justify="space-between"
+      align="stretch"
+      gap="6"
+      h="auto"
+      border="1px solid #eee"
+      rounded="md"
+      p="4"
+      boxShadow="rgba(0, 0, 0, 0.1) 0px 4px 12px"
+      w="full"
     >
       <Flex
-        gap='4'
+        gap="4"
         direction={{ base: 'column', md: 'row' }}
-        flex='1'
-        wrap='wrap'
+        flex="1"
+        wrap="wrap"
       >
-        <Box w={{ base: '100%', md: '350px' }} h='200px' overflow='hidden'>
+        <Box w={{ base: '100%', md: '350px' }} h="200px" overflow="hidden">
           <Image
             src={
               listing.media?.length > 0
@@ -180,53 +180,53 @@ const AuctionList = ({ listing, sellerName }) => {
                 : 'https://images.pexels.com/photos/28216688/pexels-photo-28216688/free-photo-of-autumn-camping.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
             }
             alt={listing.title || 'Auction Image'}
-            w='100%'
-            h='100%'
-            objectFit='cover'
-            rounded='md'
-            mb='2'
+            w="100%"
+            h="100%"
+            objectFit="cover"
+            rounded="md"
+            mb="2"
           />
         </Box>
 
-        <Flex direction='column' justify='space-between' flex='1'>
+        <Flex direction="column" justify="space-between" flex="1">
           <Link
-            fontWeight='bold'
+            fontWeight="bold"
             onClick={clickToListing}
             fontSize={{ base: 'md', md: 'lg' }}
           >
             {listing.title}
           </Link>
 
-          <Flex align='center' gap='1'>
-            <Text fontSize='xs'>Auction by: </Text>
+          <Flex align="center" gap="1">
+            <Text fontSize="xs">Auction by: </Text>
             <Link
-              textDecoration='underline'
-              fontSize='xs'
+              textDecoration="underline"
+              fontSize="xs"
               onClick={clickToProfile}
             >
               {sellerName || 'Unknown Seller'}
             </Link>
           </Flex>
 
-          <Text fontSize='xs' maxW='450px' my={{ base: '4', md: '0' }}>
+          <Text fontSize="xs" maxW="450px" my={{ base: '4', md: '0' }}>
             {listing.description.length > 200
               ? `${listing.description.slice(0, 200)}...`
               : listing.description}
           </Text>
 
-          <Flex direction='column'>
-            <Flex align='center' gap='2'>
-              <Text color='black'>Current bid: </Text>
-              <Text fontWeight='600'>
+          <Flex direction="column">
+            <Flex align="center" gap="2">
+              <Text color="black">Current bid: </Text>
+              <Text fontWeight="600">
                 {highestBid !== null ? `${highestBid} Credits` : 'Loading...'}
               </Text>
             </Flex>
-            <Text fontSize='sm'>({listing._count?.bids || 0} Bids)</Text>
+            <Text fontSize="sm">({listing._count?.bids || 0} Bids)</Text>
           </Flex>
 
           <Text
-            fontSize='xs'
-            mt='2'
+            fontSize="xs"
+            mt="2"
             fontWeight={hasEnded ? 'bold' : 'normal'}
             color={hasEnded ? 'red.500' : 'black'}
           >
@@ -236,48 +236,48 @@ const AuctionList = ({ listing, sellerName }) => {
       </Flex>
 
       <Flex
-        direction='column'
-        justify='flex-end'
-        align='flex-start'
+        direction="column"
+        justify="flex-end"
+        align="flex-start"
         w={{ base: '100%', md: '200px' }}
       >
-        <Flex as='form' direction='column' w='100%' onSubmit={handleBidSubmit}>
+        <Flex as="form" direction="column" w="100%" onSubmit={handleBidSubmit}>
           <Input
-            type='number'
-            placeholder='Enter your bid'
-            bg='brand.100'
-            border='none'
-            roundedBottom='0'
+            type="number"
+            placeholder="Enter your bid"
+            bg="brand.100"
+            border="none"
+            roundedBottom="0"
             value={bidAmount}
             onChange={(e) => setBidAmount(e.target.value)}
-            minW='100px'
+            minW="100px"
           />
           <Button
-            type='submit'
-            bg='brand.900'
+            type="submit"
+            bg="brand.900"
             _hover={{ bg: 'brand.700' }}
-            color='white'
-            roundedTop='0'
-            px='8'
+            color="white"
+            roundedTop="0"
+            px="8"
             isLoading={loading}
-            w='full'
+            w="full"
           >
             Submit a bid
           </Button>
 
           {!user && (
             <Alert
-              status='info'
-              mt='4'
-              bg='brand.200'
-              border='1px'
-              borderColor='purple'
-              rounded='md'
-              maxW='400px'
-              w='100%'
+              status="info"
+              mt="4"
+              bg="brand.200"
+              border="1px"
+              borderColor="purple"
+              rounded="md"
+              maxW="400px"
+              w="100%"
             >
-              <AlertIcon color='purple' />
-              <AlertDescription fontSize='xs'>
+              <AlertIcon color="purple" />
+              <AlertDescription fontSize="xs">
                 Please sign in to place a bid.
               </AlertDescription>
             </Alert>

@@ -55,12 +55,12 @@ const RegisterForm = ({ closeRegister, openLogin }) => {
       {/* Success & Error Messages */}
       {successMessage && (
         <Alert
-          status='success'
-          mb='4'
-          bg='brand.400'
-          border='1px'
-          borderColor='accent.green'
-          rounded='md'
+          status="success"
+          mb="4"
+          bg="brand.400"
+          border="1px"
+          borderColor="accent.green"
+          rounded="md"
         >
           <AlertIcon />
           {successMessage}
@@ -68,12 +68,12 @@ const RegisterForm = ({ closeRegister, openLogin }) => {
       )}
       {errorMessage && (
         <Alert
-          status='error'
-          mb='4'
-          bg='brand.300'
-          border='1px'
-          borderColor='accent.red'
-          rounded='md'
+          status="error"
+          mb="4"
+          bg="brand.300"
+          border="1px"
+          borderColor="accent.red"
+          rounded="md"
         >
           <AlertIcon />
           {errorMessage}
@@ -84,15 +84,15 @@ const RegisterForm = ({ closeRegister, openLogin }) => {
       <FormControl isInvalid={errors.name}>
         <FormLabel>Name</FormLabel>
         <Input
-          type='text'
-          placeholder='Enter your name'
+          type="text"
+          placeholder="Enter your name"
           {...register('name', {
             required: 'Name is required',
             minLength: { value: 3, message: 'Must be at least 3 characters' },
           })}
         />
         {errors.name && (
-          <Text color='red.500' fontSize='sm'>
+          <Text color="red.500" fontSize="sm">
             {errors.name?.message}
           </Text>
         )}
@@ -102,8 +102,8 @@ const RegisterForm = ({ closeRegister, openLogin }) => {
       <FormControl isInvalid={errors.email}>
         <FormLabel>Email</FormLabel>
         <Input
-          type='email'
-          placeholder='name@stud.noroff.no'
+          type="email"
+          placeholder="name@stud.noroff.no"
           {...register('email', {
             required: 'Email is required',
             pattern: {
@@ -113,7 +113,7 @@ const RegisterForm = ({ closeRegister, openLogin }) => {
           })}
         />
         {errors.email && (
-          <Text color='red.500' fontSize='sm'>
+          <Text color="red.500" fontSize="sm">
             {errors.email?.message}
           </Text>
         )}
@@ -123,8 +123,8 @@ const RegisterForm = ({ closeRegister, openLogin }) => {
       <FormControl isInvalid={errors.password}>
         <FormLabel>Password</FormLabel>
         <Input
-          type='password'
-          placeholder='********'
+          type="password"
+          placeholder="********"
           {...register('password', {
             required: 'Password is required',
             minLength: {
@@ -134,7 +134,7 @@ const RegisterForm = ({ closeRegister, openLogin }) => {
           })}
         />
         {errors.password && (
-          <Text color='red.500' fontSize='sm'>
+          <Text color="red.500" fontSize="sm">
             {errors.password?.message}
           </Text>
         )}
@@ -142,26 +142,26 @@ const RegisterForm = ({ closeRegister, openLogin }) => {
 
       {/* Register Button */}
       <Button
-        type='submit'
-        bg='brand.600'
-        color='white'
+        type="submit"
+        bg="brand.600"
+        color="white"
         _hover={{ bg: 'brand.700' }}
-        w='full'
-        mt='4'
+        w="full"
+        mt="4"
         isDisabled={loading}
       >
-        {loading ? <Spinner size='sm' /> : 'Register'}
+        {loading ? <Spinner size="sm" /> : 'Register'}
       </Button>
 
       {/* Divider & Link to Login */}
-      <Divider mt='8' />
-      <Flex align='center' gap='2' mt='4'>
-        <Text fontSize='xs'>Already have an account?</Text>
+      <Divider mt="8" />
+      <Flex align="center" gap="2" mt="4">
+        <Text fontSize="xs">Already have an account?</Text>
         <Button
-          bg='transparent'
-          m='0'
-          p='0'
-          fontSize='xs'
+          bg="transparent"
+          m="0"
+          p="0"
+          fontSize="xs"
           onClick={() => {
             closeRegister();
             openLogin();

@@ -124,7 +124,7 @@ function ProfilePage() {
             navigate('/');
             setIsLoginModalOpen(false);
           }}
-          title='Login Required'
+          title="Login Required"
         >
           <LoginForm
             closeLogin={() => setIsLoginModalOpen(false)}
@@ -142,7 +142,7 @@ function ProfilePage() {
             navigate('/');
             setIsRegisterModalOpen(false);
           }}
-          title='Create an Account'
+          title="Create an Account"
         >
           <RegisterForm
             closeRegister={() => setIsRegisterModalOpen(false)}
@@ -245,114 +245,114 @@ function ProfilePage() {
       {loading ? (
         // ✅ LOADING STATE
         <Flex
-          direction='column'
-          justify='center'
-          align='center'
+          direction="column"
+          justify="center"
+          align="center"
           my={{ base: '12', md: '24' }}
-          maxW='1290px'
+          maxW="1290px"
           w={{ base: '90%', xl: '100%' }}
-          mx='auto'
+          mx="auto"
         >
           {/* 🔹 Banner Skeleton */}
-          <Skeleton height='260px' width='100%' />
+          <Skeleton height="260px" width="100%" />
 
           {/* 🔹 Avatar & User Info Skeleton */}
-          <Flex direction='column' justify='center' align='center' w='100%'>
-            <Box position='relative' w='100px' h='100px' mt='-20'>
-              <SkeletonCircle size='24' />
+          <Flex direction="column" justify="center" align="center" w="100%">
+            <Box position="relative" w="100px" h="100px" mt="-20">
+              <SkeletonCircle size="24" />
             </Box>
-            <Flex direction='column' align='center' mt='8'>
-              <Skeleton height='30px' width='150px' mb='2' />
-              <Skeleton height='15px' width='250px' />
+            <Flex direction="column" align="center" mt="8">
+              <Skeleton height="30px" width="150px" mb="2" />
+              <Skeleton height="15px" width="250px" />
             </Flex>
           </Flex>
 
           {/* 🔹 Tabs Skeleton */}
-          <Flex gap='6' borderBottom='1px solid #ccc' w='100%' mt='24'>
+          <Flex gap="6" borderBottom="1px solid #ccc" w="100%" mt="24">
             {['all', 'active', 'wins'].map((tab) => (
-              <Skeleton key={tab} height='30px' width='80px' />
+              <Skeleton key={tab} height="30px" width="80px" />
             ))}
           </Flex>
 
           {/* 🔹 Auction Listings Grid Skeleton */}
           <Grid
-            w='100%'
-            templateColumns='repeat(auto-fill, minmax(230px, 1fr))'
-            gap='5'
-            rowGap='12'
-            mt='8'
-            mb='24'
-            mx='auto'
+            w="100%"
+            templateColumns="repeat(auto-fill, minmax(230px, 1fr))"
+            gap="5"
+            rowGap="12"
+            mt="8"
+            mb="24"
+            mx="auto"
           >
             {Array(6)
               .fill('')
               .map((_, index) => (
-                <Skeleton key={index} height='250px' rounded='md' />
+                <Skeleton key={index} height="250px" rounded="md" />
               ))}
           </Grid>
         </Flex>
       ) : (
         <Flex
-          direction='column'
-          justify='center'
-          align='center'
+          direction="column"
+          justify="center"
+          align="center"
           my={{ base: '12', md: '24' }}
-          maxW='1290px'
+          maxW="1290px"
           w={{ base: '90%', xl: '100%' }}
-          mx='auto'
+          mx="auto"
         >
           <Box
             bgImage={profile.banner.url}
-            bgRepeat='no-repeat'
-            bgPosition='center'
-            bgSize='cover'
-            w='100%'
-            h='260px'
+            bgRepeat="no-repeat"
+            bgPosition="center"
+            bgSize="cover"
+            w="100%"
+            h="260px"
           ></Box>
-          <Flex direction='column' justify='center' align='center' w='100%'>
-            <Box position='relative' w='100px' h='100px' mt='-20'>
+          <Flex direction="column" justify="center" align="center" w="100%">
+            <Box position="relative" w="100px" h="100px" mt="-20">
               <Avatar
-                size='2xl'
+                size="2xl"
                 name={profile.name}
                 src={profile.avatar?.url}
-                border='8px solid white'
+                border="8px solid white"
               />
               {user.name === name ? (
                 <IconButton
                   icon={<EditIcon />}
-                  size='sm'
-                  bg='black'
-                  color='white'
+                  size="sm"
+                  bg="black"
+                  color="white"
                   _hover={{ bg: 'brand.600', color: 'white' }}
-                  position='absolute'
-                  bottom='-22px'
-                  right='-22px'
+                  position="absolute"
+                  bottom="-22px"
+                  right="-22px"
                   onClick={() => setIsProfileModalOpen(true)}
-                  aria-label='Change avatar'
-                  borderRadius='full'
+                  aria-label="Change avatar"
+                  borderRadius="full"
                 />
               ) : null}
             </Box>
 
-            <Flex direction='column' align='center' mt='8'>
-              <Heading as='h2' mt='4'>
+            <Flex direction="column" align="center" mt="8">
+              <Heading as="h2" mt="4">
                 {profile?.name || 'Unknown'}
               </Heading>
-              <Text fontSize='xs' mt='4'>
+              <Text fontSize="xs" mt="4">
                 {profile.bio || 'No bio available.'}
               </Text>
             </Flex>
           </Flex>
 
-          <Flex gap='6' borderBottom='1px solid #ccc' w='100%' mt='24'>
+          <Flex gap="6" borderBottom="1px solid #ccc" w="100%" mt="24">
             {['all', 'active', ...(user.name === name ? ['wins'] : [])].map(
               (tab) => (
                 <Text
                   key={tab}
-                  cursor='pointer'
+                  cursor="pointer"
                   fontWeight={selectedTab === tab ? 'bold' : 'normal'}
-                  position='relative'
-                  pb='4'
+                  position="relative"
+                  pb="4"
                   _after={{
                     content: '""',
                     position: 'absolute',
@@ -369,8 +369,8 @@ function ProfilePage() {
                   {tab === 'active'
                     ? activeListings.length
                     : tab === 'wins'
-                    ? wins.length
-                    : allListings.length}
+                      ? wins.length
+                      : allListings.length}
                   )
                 </Text>
               )
@@ -378,13 +378,13 @@ function ProfilePage() {
           </Flex>
 
           <Grid
-            w='100%'
-            templateColumns='repeat(auto-fill, minmax(230px, 1fr))'
-            gap='5'
-            rowGap='12'
-            mt='8'
-            mb='24'
-            mx='auto'
+            w="100%"
+            templateColumns="repeat(auto-fill, minmax(230px, 1fr))"
+            gap="5"
+            rowGap="12"
+            mt="8"
+            mb="24"
+            mx="auto"
           >
             {selectedTab === 'all' &&
               (listings.length > 0 ? (
@@ -392,7 +392,7 @@ function ProfilePage() {
                   <GridItem key={listing.id}>
                     <AuctionCard
                       listing={listing}
-                      w='100%'
+                      w="100%"
                       profile={profile}
                       sellerName={profile?.name}
                     />
@@ -410,7 +410,7 @@ function ProfilePage() {
                       isProfilePage={true}
                       sellerName={profile?.name}
                       onEdit={handleEditAuction}
-                      w='100%'
+                      w="100%"
                     />
                   </GridItem>
                 ))
@@ -424,7 +424,7 @@ function ProfilePage() {
                   <GridItem key={win.id}>
                     <AuctionCard
                       listing={win}
-                      w='100%'
+                      w="100%"
                       sellerName={win.seller?.name || 'Unknown Seller'}
                     />
                   </GridItem>
@@ -437,7 +437,7 @@ function ProfilePage() {
           <CustomModal
             isOpen={isProfileModalOpen}
             onClose={() => setIsProfileModalOpen(false)}
-            title='Edit Profile'
+            title="Edit Profile"
           >
             <EditProfileForm
               profile={profile}
@@ -449,7 +449,7 @@ function ProfilePage() {
           <CustomModal
             isOpen={isAuctionModalOpen}
             onClose={() => setIsAuctionModalOpen(false)}
-            title='Edit Auction'
+            title="Edit Auction"
           >
             <AuctionForm
               onSubmit={handleAuctionUpdate}

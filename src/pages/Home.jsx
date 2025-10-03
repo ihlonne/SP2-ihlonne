@@ -61,101 +61,101 @@ function Home() {
   const newlyAdded = sortListings(auctions, 'latest_added').slice(0, 10);
 
   return (
-    <Flex direction='column' justify='center' align='center' mb='16' w='full'>
+    <Flex direction="column" justify="center" align="center" mb="16" w="full">
       <Flex
-        w='100%'
+        w="100%"
         maxH={{ base: '100lvh', lg: '500px' }}
-        mx='auto'
-        position='relative'
-        overflow='hidden'
+        mx="auto"
+        position="relative"
+        overflow="hidden"
         direction={{ base: 'column', lg: 'row' }}
       >
-        <Flex w={{ base: ' 100%', lg: '40%' }} bg='brand.50'>
+        <Flex w={{ base: ' 100%', lg: '40%' }} bg="brand.50">
           <Flex
-            justify='center'
-            align='center'
-            w='100%'
-            px='12'
+            justify="center"
+            align="center"
+            w="100%"
+            px="12"
             py={{ base: '12', lg: 0 }}
           >
             {loading ? (
-              <Flex direction='column' gap='4'>
+              <Flex direction="column" gap="4">
                 {/* ✅ Skeleton for Welcome Message */}
-                <Skeleton height='30px' width='80%' />
-                <SkeletonText mt='4' noOfLines={3} spacing='4' />
-                <Flex gap='2' mt='4'>
-                  <Skeleton height='40px' width='120px' />
-                  <Skeleton height='40px' width='150px' />
+                <Skeleton height="30px" width="80%" />
+                <SkeletonText mt="4" noOfLines={3} spacing="4" />
+                <Flex gap="2" mt="4">
+                  <Skeleton height="40px" width="120px" />
+                  <Skeleton height="40px" width="150px" />
                 </Flex>
               </Flex>
             ) : user ? (
-              <Flex direction='column' gap='4' textAlign='center'>
+              <Flex direction="column" gap="4" textAlign="center">
                 <Heading
-                  as='h1'
+                  as="h1"
                   fontSize={{ base: '2xl', xl: '4xl' }}
-                  fontStyle='italic'
-                  fontWeight='500'
-                  textAlign='left'
+                  fontStyle="italic"
+                  fontWeight="500"
+                  textAlign="left"
                 >
                   Welcome back, {user.name}
                 </Heading>
-                <Text textAlign='left'>
+                <Text textAlign="left">
                   Find new auctions that match your interests and place your
                   bids before time runs out. The next great deal could be yours!
                 </Text>
-                <Flex gap='2' alignSelf='flex-start' mt='4'>
+                <Flex gap="2" alignSelf="flex-start" mt="4">
                   <Button
                     as={Link}
-                    to='/favorites'
-                    bg='brand.600'
-                    color='white'
+                    to="/favorites"
+                    bg="brand.600"
+                    color="white"
                   >
                     Your Favorites
                   </Button>
                   <Button
                     as={Link}
-                    to='/auctions'
-                    bg='transparent'
-                    border='2px'
-                    borderColor='brand.600'
+                    to="/auctions"
+                    bg="transparent"
+                    border="2px"
+                    borderColor="brand.600"
                   >
                     View All Auctions
                   </Button>
                 </Flex>
               </Flex>
             ) : (
-              <Flex direction='column' gap='4' textAlign='center'>
+              <Flex direction="column" gap="4" textAlign="center">
                 <Heading
-                  as='h1'
+                  as="h1"
                   fontSize={{ base: '2xl', xl: '4xl' }}
-                  fontStyle='italic'
-                  fontWeight='500'
-                  textAlign='left'
+                  fontStyle="italic"
+                  fontWeight="500"
+                  textAlign="left"
                 >
                   A new account means 1,000 credits in your pocket. Sign up and
                   enjoy the ride!
                 </Heading>
-                <Text textAlign='left'>
+                <Text textAlign="left">
                   Discover exclusive auctions from trusted sellers worldwide.
                   From vintage collectibles to the latest tech, there&apos;s
                   something for everyone. Start bidding today and find your next
                   great deal!
                 </Text>
-                <Flex gap='2' alignSelf='flex-start' mt='4'>
+                <Flex gap="2" alignSelf="flex-start" mt="4">
                   <Button
                     onClick={openRegister}
-                    bg='brand.600'
-                    color='white'
+                    bg="brand.600"
+                    color="white"
                     _hover={{ bg: 'brand.700' }}
                   >
                     Register now
                   </Button>
                   <Button
                     as={Link}
-                    to='/auctions'
-                    bg='transparent'
-                    border='2px'
-                    borderColor='brand.600'
+                    to="/auctions"
+                    bg="transparent"
+                    border="2px"
+                    borderColor="brand.600"
                   >
                     View Auctions
                   </Button>
@@ -165,36 +165,36 @@ function Home() {
           </Flex>
         </Flex>
         {loading ? (
-          <Skeleton height='600px' w='60%' />
+          <Skeleton height="600px" w="60%" />
         ) : (
           <Image
-            src='https://images.pexels.com/photos/10361481/pexels-photo-10361481.jpeg'
-            alt='Watch'
+            src="https://images.pexels.com/photos/10361481/pexels-photo-10361481.jpeg"
+            alt="Watch"
             w={{ base: '100%', lg: '60%' }}
             h={{ base: '300px', lg: '600px' }}
-            objectFit='cover'
+            objectFit="cover"
           />
         )}
       </Flex>
 
-      <Flex mt='24' w={{ base: '80%', xl: '100%' }} justify='flex-start'>
+      <Flex mt="24" w={{ base: '80%', xl: '100%' }} justify="flex-start">
         {loading ? (
-          <Skeleton height='200px' width='100%' rounded='md' />
+          <Skeleton height="200px" width="100%" rounded="md" />
         ) : (
-          <Carousel title='Last chance' listings={lastChance} />
+          <Carousel title="Last chance" listings={lastChance} />
         )}
       </Flex>
 
       <Flex
-        mt='24'
+        mt="24"
         w={{ base: '80%', xl: '100%' }}
-        justify='flex-start'
+        justify="flex-start"
         mb={{ base: '12', md: 0 }}
       >
         {loading ? (
-          <Skeleton height='200px' width='100%' rounded='md' />
+          <Skeleton height="200px" width="100%" rounded="md" />
         ) : (
-          <Carousel title='Newly added' listings={newlyAdded} />
+          <Carousel title="Newly added" listings={newlyAdded} />
         )}
       </Flex>
 
@@ -202,7 +202,7 @@ function Home() {
       <CustomModal
         isOpen={isLoginOpen}
         onClose={closeLogin}
-        title='Login to Your Account'
+        title="Login to Your Account"
       >
         <LoginForm closeLogin={closeLogin} openRegister={openRegister} />
       </CustomModal>
@@ -211,7 +211,7 @@ function Home() {
       <CustomModal
         isOpen={isRegisterOpen}
         onClose={closeRegister}
-        title='Create a New Account'
+        title="Create a New Account"
       >
         <RegisterForm closeRegister={closeRegister} openLogin={openLogin} />
       </CustomModal>

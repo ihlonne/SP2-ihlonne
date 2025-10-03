@@ -205,49 +205,49 @@ const AuctionDetails = () => {
 
   if (!listing) {
     return (
-      <Flex direction='column' align='center' justify='center'>
-        <Skeleton height='400px' width='80%' mb='4' />
-        <Skeleton height='30px' width='50%' mb='2' />
-        <Skeleton height='20px' width='30%' mb='2' />
-        <Skeleton height='150px' width='70%' />
+      <Flex direction="column" align="center" justify="center">
+        <Skeleton height="400px" width="80%" mb="4" />
+        <Skeleton height="30px" width="50%" mb="2" />
+        <Skeleton height="20px" width="30%" mb="2" />
+        <Skeleton height="150px" width="70%" />
       </Flex>
     );
   }
 
   return (
-    <Flex direction='column' justify='center' align='center' mb='16' w='full'>
+    <Flex direction="column" justify="center" align="center" mb="16" w="full">
       <Grid
         templateColumns={{ base: '1fr', lg: 'repeat(2, 1fr)' }}
-        gap='16'
-        maxW='1290px'
+        gap="16"
+        maxW="1290px"
         w={{ base: '90%', md: '90%', lg: '90% ', xl: '100%' }}
-        mt='24'
+        mt="24"
       >
-        <Flex direction='column'>
+        <Flex direction="column">
           {/* Main Image */}
           <Image
             src={selectedImage}
             alt={listing.data.title}
-            w='100%'
-            maxH='400px'
-            objectFit='cover'
-            rounded='md'
-            mb='4'
+            w="100%"
+            maxH="400px"
+            objectFit="cover"
+            rounded="md"
+            mb="4"
           />
 
           {/* Thumbnails - Only show if there are extra images */}
           {listing.data.media.length > 1 && (
-            <Flex gap='2' justify='center'>
+            <Flex gap="2" justify="center">
               {listing.data.media.map((img, index) => (
                 <Image
                   key={index}
                   src={img.url}
                   alt={listing.data.title}
-                  w='60px'
-                  h='60px'
-                  objectFit='cover'
-                  cursor='pointer'
-                  rounded='md'
+                  w="60px"
+                  h="60px"
+                  objectFit="cover"
+                  cursor="pointer"
+                  rounded="md"
                   border={
                     selectedImage === img.url ? '2px solid black' : 'none'
                   }
@@ -259,17 +259,17 @@ const AuctionDetails = () => {
           )}
         </Flex>
 
-        <Flex direction='column' gap='12' w='100%'>
-          <Flex direction='column' w={{ base: '90%', md: '100%' }}>
-            <Heading as='h1' size={{ base: 'md', md: 'xl' }}>
+        <Flex direction="column" gap="12" w="100%">
+          <Flex direction="column" w={{ base: '90%', md: '100%' }}>
+            <Heading as="h1" size={{ base: 'md', md: 'xl' }}>
               {listing.data.title}
             </Heading>
-            <Flex gap='2' align='center' mt='4' wrap='wrap'>
+            <Flex gap="2" align="center" mt="4" wrap="wrap">
               <Text>Auction held by</Text>
-              <Flex gap='2' align='center'>
+              <Flex gap="2" align="center">
                 <Link to={user?.name ? `/profile/${user.name}` : '#'}>
                   <Avatar
-                    size='xs'
+                    size="xs"
                     name={listing.data.seller.name}
                     src={listing.data.seller.avatar?.url}
                   />
@@ -279,30 +279,30 @@ const AuctionDetails = () => {
                 </Link>
               </Flex>
             </Flex>
-            <Text my='12' fontSize={{ base: 'sm', md: 'md' }}>
+            <Text my="12" fontSize={{ base: 'sm', md: 'md' }}>
               {listing.data.description}
             </Text>
           </Flex>
 
-          <Flex direction='column' w={{ base: '90%', md: '100%' }}>
-            <Text fontSize='s' fontWeight='400'>
+          <Flex direction="column" w={{ base: '90%', md: '100%' }}>
+            <Text fontSize="s" fontWeight="400">
               Current Bid
             </Text>
-            <Heading as='h2' mb='8' size='md'>
+            <Heading as="h2" mb="8" size="md">
               {listing.data.bids?.length > 0
                 ? Math.max(...listing.data.bids.map((bid) => bid.amount))
                 : 0}{' '}
               Credits
             </Heading>
             <Text>{timeRemaining}</Text>
-            <Flex justify='space-between' maxW='400px' w='100%'>
-              <Text fontSize='xs' fontWeight='400'>
+            <Flex justify="space-between" maxW="400px" w="100%">
+              <Text fontSize="xs" fontWeight="400">
                 Created at:{' '}
                 {`${listingCreatedAt.getDate()}/${
                   listingCreatedAt.getMonth() + 1
                 }/${listingCreatedAt.getFullYear()}`}
               </Text>
-              <Text fontSize='xs' fontWeight='400'>
+              <Text fontSize="xs" fontWeight="400">
                 Last updated:{' '}
                 {`${listingUpdatedAt.getDate()}/${
                   listingUpdatedAt.getMonth() + 1
@@ -310,29 +310,29 @@ const AuctionDetails = () => {
               </Text>
             </Flex>
             <Flex
-              direction='column'
-              as='form'
-              mt='8'
+              direction="column"
+              as="form"
+              mt="8"
               onSubmit={handleBidSubmit}
             >
-              <InputGroup maxW='400px' w='100%'>
+              <InputGroup maxW="400px" w="100%">
                 <Input
-                  type='number'
-                  placeholder='Enter your bid'
+                  type="number"
+                  placeholder="Enter your bid"
                   value={bidAmount}
-                  bg='brand.100'
-                  border='none'
-                  roundedRight='md'
+                  bg="brand.100"
+                  border="none"
+                  roundedRight="md"
                   onChange={(e) => setBidAmount(e.target.value)}
                   disabled={!user}
                 />
                 <Button
-                  type='submit'
-                  bg='brand.900'
-                  color='white'
-                  roundedLeft='0'
-                  roundedRight='md'
-                  px='8'
+                  type="submit"
+                  bg="brand.900"
+                  color="white"
+                  roundedLeft="0"
+                  roundedRight="md"
+                  px="8"
                   isDisabled={!user || auctionEnded}
                 >
                   Submit a bid
@@ -341,16 +341,16 @@ const AuctionDetails = () => {
 
               {!user && (
                 <Alert
-                  status='info'
-                  mt='4'
-                  bg='brand.200'
-                  border='1px'
-                  borderColor='purple'
-                  rounded='md'
-                  maxW='400px'
-                  w='100%'
+                  status="info"
+                  mt="4"
+                  bg="brand.200"
+                  border="1px"
+                  borderColor="purple"
+                  rounded="md"
+                  maxW="400px"
+                  w="100%"
                 >
-                  <AlertIcon color='purple' />
+                  <AlertIcon color="purple" />
                   <AlertDescription>
                     Please sign in to place a bid.
                   </AlertDescription>
@@ -358,24 +358,24 @@ const AuctionDetails = () => {
               )}
               {auctionEnded && (
                 <Alert
-                  status='error'
-                  mt='4'
-                  bg='brand.200'
-                  border='1px'
-                  borderColor='purple'
-                  rounded='md'
-                  maxW='400px'
-                  w='100%'
+                  status="error"
+                  mt="4"
+                  bg="brand.200"
+                  border="1px"
+                  borderColor="purple"
+                  rounded="md"
+                  maxW="400px"
+                  w="100%"
                 >
-                  <AlertIcon color='purple' />
+                  <AlertIcon color="purple" />
                   <AlertDescription>The auction has ended.</AlertDescription>
                 </Alert>
               )}
             </Flex>
           </Flex>
 
-          <Flex direction='column'>
-            <Heading as='h2' mb='12'>
+          <Flex direction="column">
+            <Heading as="h2" mb="12">
               Bidding history
             </Heading>
             {listing.data?._count?.bids > 0 ? (
@@ -388,12 +388,12 @@ const AuctionDetails = () => {
       </Grid>
 
       <Flex
-        mt='24'
+        mt="24"
         w={{ base: '90%', xl: '100%' }}
-        justify='flex-start'
+        justify="flex-start"
         mb={{ base: '12', md: 0 }}
       >
-        <Carousel title='Featured listings' listings={randomAuctions} />
+        <Carousel title="Featured listings" listings={randomAuctions} />
       </Flex>
     </Flex>
   );
