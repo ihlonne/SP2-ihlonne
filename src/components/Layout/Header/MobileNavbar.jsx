@@ -93,91 +93,91 @@ function MobileNavbar() {
 
   return (
     <Flex
-      position='fixed'
-      bottom='0'
-      left='0'
-      justify='space-between'
-      align='center'
-      p='15px'
-      bg='brand.100'
-      w='full'
-      zIndex='1000'
+      position="fixed"
+      bottom="0"
+      left="0"
+      justify="space-between"
+      align="center"
+      p="15px"
+      bg="brand.100"
+      w="full"
+      zIndex="1000"
     >
       {user?.accessToken ? (
         <Flex
-          position='fixed'
-          bottom='0'
-          left='0'
-          justify='space-between'
-          align='center'
-          p='15px'
-          bg='brand.100'
-          w='full'
+          position="fixed"
+          bottom="0"
+          left="0"
+          justify="space-between"
+          align="center"
+          p="15px"
+          bg="brand.100"
+          w="full"
         >
-          <Flex flexDirection='column' justify='center'>
-            <IconButton bg='brand.100' onClick={openMenu}>
-              <HamburgerIcon boxSize='8' />
+          <Flex flexDirection="column" justify="center">
+            <IconButton bg="brand.100" onClick={openMenu}>
+              <HamburgerIcon boxSize="8" />
             </IconButton>
-            <Text fontSize='xs'>Categories</Text>
+            <Text fontSize="xs">Categories</Text>
           </Flex>
-          <Flex gap='4' align='center'>
-            <Flex direction='column' align='flex-end'>
+          <Flex gap="4" align="center">
+            <Flex direction="column" align="flex-end">
               <Link to={`/profile/${user.name}`}>
-                <Text fontWeight='600'>{user.name}</Text>
+                <Text fontWeight="600">{user.name}</Text>
               </Link>
-              <Text fontSize='xs'>{credits} Credits</Text>
+              <Text fontSize="xs">{credits} Credits</Text>
             </Flex>
             <Avatar
-              id='profile-avatar'
-              size='md'
+              id="profile-avatar"
+              size="md"
               name={user?.name}
               src={user?.avatar?.url}
               onClick={() => setIsProfileNavOpen((prev) => !prev)}
-              cursor='pointer'
-              aria-label='Profile menu'
+              cursor="pointer"
+              aria-label="Profile menu"
             />
 
             {/* Profile Navigation Menu */}
             {isProfileNavOpen && (
               <Flex
                 ref={menuRef}
-                position='absolute'
-                bg='white'
-                border='1px solid #eee'
-                rounded='md'
-                right='35px'
-                bottom='75px'
-                w='200px'
-                direction='column'
-                p='1rem'
-                zIndex='1000'
-                gap='2'
+                position="absolute"
+                bg="white"
+                border="1px solid #eee"
+                rounded="md"
+                right="35px"
+                bottom="75px"
+                w="200px"
+                direction="column"
+                p="1rem"
+                zIndex="1000"
+                gap="2"
               >
-                <Stack spacing='2'>
+                <Stack spacing="2">
                   <Flex
-                    align='center'
-                    gap='1'
-                    cursor='pointer'
+                    align="center"
+                    gap="1"
+                    cursor="pointer"
                     onClick={() => handleNavigation(`/profile/${user.name}`)}
                   >
                     <Icon as={CgProfile} />
                     <Text>My Profile</Text>
                   </Flex>
                   <Flex
-                    align='center'
-                    gap='1'
-                    cursor='pointer'
+                    align="center"
+                    gap="1"
+                    cursor="pointer"
                     onClick={() => handleNavigation(`/favorites`)}
                   >
                     <Icon as={FaRegHeart} />
                     <Text>My Favorites</Text>
                   </Flex>
                 </Stack>
-                <Divider my='2' />
+                <Divider my="2" />
                 <Flex
-                  align='center'
-                  gap='1'
-                  cursor='pointer'
+                  align="center"
+                  gap="1"
+                  cursor="pointer"
                   onClick={() => {
                     handleNavigation('/');
                     handleLogout(setUser);
@@ -193,43 +193,43 @@ function MobileNavbar() {
         </Flex>
       ) : (
         <Flex
-          position='fixed'
-          bottom='0'
-          left='0'
-          justify='space-between'
-          align='center'
-          p='15px'
-          bg='brand.100'
-          w='full'
+          position="fixed"
+          bottom="0"
+          left="0"
+          justify="space-between"
+          align="center"
+          p="15px"
+          bg="brand.100"
+          w="full"
         >
-          <Flex flexDirection='column' justify='center'>
-            <IconButton bg='brand.100' onClick={openMenu}>
-              <HamburgerIcon boxSize='8' />
+          <Flex flexDirection="column" justify="center">
+            <IconButton bg="brand.100" onClick={openMenu}>
+              <HamburgerIcon boxSize="8" />
             </IconButton>
-            <Text fontSize='xs'>Categories</Text>
+            <Text fontSize="xs">Categories</Text>
           </Flex>
 
-          <Flex flexDirection='column' justify='center'>
-            <IconButton bg='brand.100' onClick={openLogin}>
-              <Icon as={FaSignInAlt} boxSize='8' />
+          <Flex flexDirection="column" justify="center">
+            <IconButton bg="brand.100" onClick={openLogin}>
+              <Icon as={FaSignInAlt} boxSize="8" />
             </IconButton>
-            <Text fontSize='xs'>Sign in</Text>
+            <Text fontSize="xs">Sign in</Text>
           </Flex>
 
-          <Flex flexDirection='column' justify='center'>
-            <IconButton bg='brand.100' onClick={openRegister}>
-              <Icon as={TiUserAdd} boxSize='8' color='brand.600' />
+          <Flex flexDirection="column" justify="center">
+            <IconButton bg="brand.100" onClick={openRegister}>
+              <Icon as={TiUserAdd} boxSize="8" color="brand.600" />
             </IconButton>
-            <Text fontSize='xs'>Register</Text>
+            <Text fontSize="xs">Register</Text>
           </Flex>
         </Flex>
       )}
 
-      <Drawer placement='left' onClose={closeMenu} isOpen={isMenuOpen}>
+      <Drawer placement="left" onClose={closeMenu} isOpen={isMenuOpen}>
         <DrawerOverlay />
         <DrawerContent
-          bg='white'
-          color='black'
+          bg="white"
+          color="black"
           w={{ base: '100%', md: '400px' }}
         >
           <DrawerCloseButton />
@@ -239,7 +239,7 @@ function MobileNavbar() {
           <DrawerBody>
             <Stack>
               <Link
-                to='/auctions'
+                to="/auctions"
                 onClick={closeMenu}
                 style={{ display: 'block', padding: '10px 0', color: 'black' }}
               >
@@ -268,7 +268,7 @@ function MobileNavbar() {
       <CustomModal
         isOpen={isLoginOpen}
         onClose={closeLogin}
-        title='Login to Your Account'
+        title="Login to Your Account"
       >
         <LoginForm closeLogin={closeLogin} openRegister={openRegister} />
       </CustomModal>
@@ -276,7 +276,7 @@ function MobileNavbar() {
       <CustomModal
         isOpen={isRegisterOpen}
         onClose={closeRegister}
-        title='Create a New Account'
+        title="Create a New Account"
       >
         <RegisterForm closeRegister={closeRegister} openLogin={openLogin} />
       </CustomModal>

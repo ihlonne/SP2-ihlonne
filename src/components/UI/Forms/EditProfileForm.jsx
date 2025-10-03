@@ -65,30 +65,30 @@ const EditProfileForm = ({ profile, onProfileUpdate, setUser }) => {
     }
   };
   return (
-    <Box as='form' onSubmit={handleSubmit}>
+    <Box as="form" onSubmit={handleSubmit}>
       <Stack spacing={3}>
         <FormLabel>Bio:</FormLabel>
         <Input
-          name='bio'
-          placeholder='Bio'
+          name="bio"
+          placeholder="Bio"
           value={formData.bio}
           onChange={handleChange}
         />
         <FormLabel>Avatar URL:</FormLabel>
         <Input
-          name='avatar'
-          placeholder='Enter Avatar URL'
+          name="avatar"
+          placeholder="Enter Avatar URL"
           value={formData.avatar}
           onChange={handleChange}
         />
         <FormLabel>Banner URL:</FormLabel>
         <Input
-          name='banner'
-          placeholder='Enter Banner URL'
+          name="banner"
+          placeholder="Enter Banner URL"
           value={formData.banner}
           onChange={handleChange}
         />
-        <Button type='submit' colorScheme='blue'>
+        <Button type="submit" colorScheme="blue">
           Save
         </Button>
       </Stack>

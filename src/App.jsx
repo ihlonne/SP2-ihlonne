@@ -38,14 +38,14 @@ function App() {
           {isLargerThan900 ? <Header /> : <MobileHeader />}
           {isLargerThan900 ? <Navbar /> : <MobileNavbar />}
           <Routes>
-            <Route path='/' element={<Home />} />
-            <Route path='/auctions' element={<Auctions />} />
-            <Route path='/auctions/listing/:id' element={<AuctionDetails />} />
-            <Route path='/profile/:name' element={<ProfilePage />} />
-            <Route path='/favorites' element={<Favorites />} />
-            <Route path='/privacy-policy' element={<PrivacyPolicy />} />
-            <Route path='/about' element={<About />} />
-            <Route path='/*' element={<NotFound />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/auctions" element={<Auctions />} />
+            <Route path="/auctions/listing/:id" element={<AuctionDetails />} />
+            <Route path="/profile/:name" element={<ProfilePage />} />
+            <Route path="/favorites" element={<Favorites />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/*" element={<NotFound />} />
           </Routes>
           <Footer />
         </Router>

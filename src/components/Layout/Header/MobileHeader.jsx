@@ -7,9 +7,9 @@ import SearchBar from '../../UI/SearchBar';
 
 function MobileHeader() {
   return (
-    <Flex align='center' justify='space-between' p='15px' gap='5'>
-      <Link to='/'>
-        <Image src={logo} maxH='30px' alt='Company logo' />
+    <Flex align="center" justify="space-between" p="15px" gap="5">
+      <Link to="/">
+        <Image src={logo} maxH="30px" alt="Company logo" />
       </Link>
       <SearchBar />
     </Flex>

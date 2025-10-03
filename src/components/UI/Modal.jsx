@@ -13,7 +13,7 @@ const CustomModal = ({ isOpen, onClose, title, children }) => {
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
       <ModalContent
-        p='8'
+        p="8"
         maxW={{ base: '90%', md: '500px' }}
         m={{ base: '1rem', md: '0' }}
       >

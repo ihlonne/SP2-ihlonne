@@ -15,22 +15,22 @@ function Navbar() {
   ];
   return (
     <Flex
-      align='center'
-      justify='center'
-      p='5px'
-      gap='5'
-      w='full'
-      borderY='1px'
-      borderColor='brand.100'
+      align="center"
+      justify="center"
+      p="5px"
+      gap="5"
+      w="full"
+      borderY="1px"
+      borderColor="brand.100"
     >
-      <HStack spacing='8'>
+      <HStack spacing="8">
         <Link
-          to='/auctions'
+          to="/auctions"
           style={{ display: 'block', padding: '10px 0', color: 'black' }}
         >
           View all listings
         </Link>
-        <Divider orientation='vertical' h='8' />
+        <Divider orientation="vertical" h="8" />
         {categories.map((category) => (
           <Link
             key={category}

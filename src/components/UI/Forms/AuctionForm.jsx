@@ -70,7 +70,7 @@ const AuctionForm = ({ onSubmit, auctionData, onDelete }) => {
 
   return (
     <Box
-      as='form'
+      as="form"
       onSubmit={handleSubmit((formData) => {
         // Ensure media is correctly formatted as an array of objects
         const formattedMedia = mediaUrls.map((url) => ({
@@ -87,7 +87,7 @@ const AuctionForm = ({ onSubmit, auctionData, onDelete }) => {
           endsAt: formData.endsAt,
         });
       })}
-      p='4'
+      p="4"
     >
       {/* Title */}
       <FormControl isInvalid={errors.title}>
@@ -96,7 +96,7 @@ const AuctionForm = ({ onSubmit, auctionData, onDelete }) => {
       </FormControl>
 
       {/* Description */}
-      <FormControl isInvalid={errors.description} mt='4'>
+      <FormControl isInvalid={errors.description} mt="4">
         <FormLabel>Description</FormLabel>
         <Textarea
           {...register('description', { required: 'Description is required' })}
@@ -104,29 +104,29 @@ const AuctionForm = ({ onSubmit, auctionData, onDelete }) => {
       </FormControl>
 
       {/* Deadline Date */}
-      <FormControl mt='4' isInvalid={errors.endsAt}>
+      <FormControl mt="4" isInvalid={errors.endsAt}>
         <FormLabel>Deadline</FormLabel>
         <Input
-          type='datetime-local'
+          type="datetime-local"
           {...register('endsAt', { required: 'Please select a deadline' })}
         />
       </FormControl>
 
       {/* Media Gallery */}
-      <FormControl mt='4'>
+      <FormControl mt="4">
         <FormLabel>Media Gallery</FormLabel>
         <Flex>
           <Input
-            placeholder='Add image URL...'
+            placeholder="Add image URL..."
             value={mediaInput}
             onChange={(e) => setMediaInput(e.target.value)}
           />
-          <IconButton ml='2' icon={<FiPlusCircle />} onClick={handleAddMedia} />
+          <IconButton ml="2" icon={<FiPlusCircle />} onClick={handleAddMedia} />
         </Flex>
       </FormControl>
-      <Flex wrap='wrap' mt='2'>
+      <Flex wrap="wrap" mt="2">
         {mediaUrls.map((url, index) => (
-          <Tag key={index} mr='2' mt='2'>
+          <Tag key={index} mr="2" mt="2">
             <TagLabel>{url}</TagLabel>
             <TagCloseButton
               onClick={() =>
@@ -138,16 +138,16 @@ const AuctionForm = ({ onSubmit, auctionData, onDelete }) => {
       </Flex>
 
       {/* Tags */}
-      <FormControl mt='4'>
+      <FormControl mt="4">
         <FormLabel>Tags</FormLabel>
         <Flex>
           <Input
-            placeholder='Add a tag...'
+            placeholder="Add a tag..."
             value={tagInput}
             onChange={(e) => setTagInput(e.target.value)}
           />
           <IconButton
-            ml='2'
+            ml="2"
             icon={<FiPlusCircle />}
             onClick={() => {
               if (tagInput) {
@@ -158,9 +158,9 @@ const AuctionForm = ({ onSubmit, auctionData, onDelete }) => {
           />
         </Flex>
       </FormControl>
-      <Flex wrap='wrap' mt='2'>
+      <Flex wrap="wrap" mt="2">
         {tags.map((tag, index) => (
-          <Tag key={index} mr='2' mt='2'>
+          <Tag key={index} mr="2" mt="2">
             <TagLabel>{tag}</TagLabel>
             <TagCloseButton
               onClick={() => setTags(tags.filter((_, i) => i !== index))}
@@ -170,11 +170,11 @@ const AuctionForm = ({ onSubmit, auctionData, onDelete }) => {
       </Flex>
 
       {/* Submit Button */}
-      <Button type='submit' bg='brand.600' color='white' mt='4' w='full'>
+      <Button type="submit" bg="brand.600" color="white" mt="4" w="full">
         {auctionData ? 'Update Auction' : 'Create Auction'}
       </Button>
       {auctionData ? (
-        <Button w='full' mt='2' onClick={async () => onDelete()}>
+        <Button w="full" mt="2" onClick={async () => onDelete()}>
           Delete
         </Button>
       ) : null}

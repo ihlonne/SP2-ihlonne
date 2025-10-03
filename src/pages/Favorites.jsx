@@ -41,23 +41,23 @@ const Favorites = () => {
 
   if (!favorites.length) {
     return (
-      <Flex direction='column' align='center' maxW='1200px' w='100%' mx='auto'>
+      <Flex direction="column" align="center" maxW="1200px" w="100%" mx="auto">
         <Heading>Your Favorite Auctions</Heading>
 
         <Grid
-          w='100%'
-          templateColumns='repeat(auto-fill, minmax(230px, 1fr))'
-          gap='5'
-          rowGap='12'
-          mt='8'
-          mb='24'
-          mx='auto'
-          justify='flex-start'
+          w="100%"
+          templateColumns="repeat(auto-fill, minmax(230px, 1fr))"
+          gap="5"
+          rowGap="12"
+          mt="8"
+          mb="24"
+          mx="auto"
+          justify="flex-start"
         >
           {Array(6)
             .fill('')
             .map((_, index) => (
-              <Skeleton key={index} height='250px' rounded='md' />
+              <Skeleton key={index} height="250px" rounded="md" />
             ))}
         </Grid>
       </Flex>
@@ -66,48 +66,48 @@ const Favorites = () => {
 
   return (
     <Flex
-      direction='column'
-      mx='auto'
-      maxW='1200px'
-      w='100%'
-      minH='100vh'
-      justify='flex-start'
-      align='center'
+      direction="column"
+      mx="auto"
+      maxW="1200px"
+      w="100%"
+      minH="100vh"
+      justify="flex-start"
+      align="center"
       px={{ base: '8', xl: 0 }}
       pb={{ base: '12', xl: 0 }}
-      mt='16'
+      mt="16"
     >
-      <Heading display='flex' alignSelf='flex-start' mt='10' mb='6'>
+      <Heading display="flex" alignSelf="flex-start" mt="10" mb="6">
         Your Favorite Auctions
       </Heading>
       {loading ? (
         // ✅ LOADING STATE (Show Skeletons)
         <Grid
-          w='100%'
-          templateColumns='repeat(auto-fill, minmax(230px, 1fr))'
-          gap='5'
-          rowGap='12'
-          mt='8'
-          mb='24'
-          mx='auto'
-          justify='flex-start'
+          w="100%"
+          templateColumns="repeat(auto-fill, minmax(230px, 1fr))"
+          gap="5"
+          rowGap="12"
+          mt="8"
+          mb="24"
+          mx="auto"
+          justify="flex-start"
         >
           {Array(6)
             .fill('')
             .map((_, index) => (
-              <Skeleton key={index} height='250px' rounded='md' />
+              <Skeleton key={index} height="250px" rounded="md" />
             ))}
         </Grid>
       ) : (
         <Grid
-          w='100%'
-          templateColumns='repeat(auto-fill, minmax(230px, 1fr))'
-          gap='5'
-          rowGap='12'
-          mt='8'
-          mb='24'
-          mx='auto'
-          justify='flex-start'
+          w="100%"
+          templateColumns="repeat(auto-fill, minmax(230px, 1fr))"
+          gap="5"
+          rowGap="12"
+          mt="8"
+          mb="24"
+          mx="auto"
+          justify="flex-start"
         >
           {favorites.length > 0 ? (
             favorites.slice(0, visibleCount).map(({ data }) => (
